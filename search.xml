@@ -33,6 +33,12 @@
       </tags>
   </entry>
   <entry>
+    <title>test</title>
+    <url>/2020/02/08/test/</url>
+    <content><![CDATA[<p>test</p>
+]]></content>
+  </entry>
+  <entry>
     <title>The red scarf on trump&#39;s chest is even brighter</title>
     <url>/2020/04/07/The-red-scarf-on-trump-s-chest-is-even-brighter/</url>
     <content><![CDATA[<blockquote>
@@ -62,12 +68,6 @@
       <tags>
         <tag>Python turtle</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>test</title>
-    <url>/2020/02/08/test/</url>
-    <content><![CDATA[<p>test</p>
-]]></content>
   </entry>
   <entry>
     <title>weibosayhi实现每天自动发天气、名言加配图等微博动态</title>
@@ -111,17 +111,6 @@
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>十六进制登录QQ</title>
-    <url>/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/</url>
-    <content><![CDATA[<h1 id="十六进制账号登录QQ、TIM"><a href="#十六进制账号登录QQ、TIM" class="headerlink" title="十六进制账号登录QQ、TIM"></a>十六进制账号登录QQ、TIM</h1><blockquote>
-<p> 据说近年以来腾讯登录界面采用了新的前端代码，推测为<code>JS</code>的<code>parseInt()</code>函数，可以同时将十进制字符串和十六进制字符串类型数据转换为十进制整型。</p>
-</blockquote>
-<h2 id="在PC端测试"><a href="#在PC端测试" class="headerlink" title="在PC端测试"></a>在PC端测试</h2><h4 id="1-使用计算器将QQ号码转换为十六进制-HEX"><a href="#1-使用计算器将QQ号码转换为十六进制-HEX" class="headerlink" title="1.使用计算器将QQ号码转换为十六进制(HEX)"></a>1.使用计算器将QQ号码转换为十六进制(HEX)</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153320.png" alt></p>
-<h4 id="2-以十六进制账号登录"><a href="#2-以十六进制账号登录" class="headerlink" title="2.以十六进制账号登录"></a>2.以十六进制账号登录</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153451.png" alt></p>
-<p>您见过如此之帅的QQ靓号吗？<br>注意十六进制以 <code>0</code>（数字） <code>x</code>（小写字母）开头</p>
-<h4 id="3-PC端成功登陆，手机端失败显示无此账号。"><a href="#3-PC端成功登陆，手机端失败显示无此账号。" class="headerlink" title="3.PC端成功登陆，手机端失败显示无此账号。"></a>3.PC端成功登陆，手机端失败显示无此账号。</h4>]]></content>
-  </entry>
-  <entry>
     <title>分离方法评价</title>
     <url>/2020/03/15/%E5%88%86%E7%A6%BB%E6%96%B9%E6%B3%95%E8%AF%84%E4%BB%B7/</url>
     <content><![CDATA[<h2 id="回收率"><a href="#回收率" class="headerlink" title="回收率"></a>回收率</h2><blockquote>
@@ -141,6 +130,27 @@ R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <st
       </categories>
       <tags>
         <tag>Chemistry</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>十六进制登录QQ</title>
+    <url>/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/</url>
+    <content><![CDATA[<h1 id="十六进制账号登录QQ、TIM"><a href="#十六进制账号登录QQ、TIM" class="headerlink" title="十六进制账号登录QQ、TIM"></a>十六进制账号登录QQ、TIM</h1><blockquote>
+<p> 据说近年以来腾讯登录界面采用了新的前端代码，推测为<code>JS</code>的<code>parseInt()</code>函数，可以同时将十进制字符串和十六进制字符串类型数据转换为十进制整型。</p>
+</blockquote>
+<h2 id="在PC端测试"><a href="#在PC端测试" class="headerlink" title="在PC端测试"></a>在PC端测试</h2><h4 id="1-使用计算器将QQ号码转换为十六进制-HEX"><a href="#1-使用计算器将QQ号码转换为十六进制-HEX" class="headerlink" title="1.使用计算器将QQ号码转换为十六进制(HEX)"></a>1.使用计算器将QQ号码转换为十六进制(HEX)</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153320.png" alt></p>
+<h4 id="2-以十六进制账号登录"><a href="#2-以十六进制账号登录" class="headerlink" title="2.以十六进制账号登录"></a>2.以十六进制账号登录</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153451.png" alt></p>
+<p>您见过如此之帅的QQ靓号吗？<br>注意十六进制以 <code>0</code>（数字） <code>x</code>（小写字母）开头</p>
+<h4 id="3-PC端成功登陆，手机端失败显示无此账号。"><a href="#3-PC端成功登陆，手机端失败显示无此账号。" class="headerlink" title="3.PC端成功登陆，手机端失败显示无此账号。"></a>3.PC端成功登陆，手机端失败显示无此账号。</h4>]]></content>
+  </entry>
+  <entry>
+    <title>爬取maomi</title>
+    <url>/2020/01/14/%E7%88%AC%E5%8F%96maomi/</url>
+    <content><![CDATA[<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests,re,os</span><br><span class="line">headers = &#123;<span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36"</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">download</span><span class="params">(p,n)</span>:</span>    </span><br><span class="line">    res = requests.get(<span class="string">"https://www.npa69.com/tupian/list-&#123;&#125;-&#123;&#125;.html"</span>.format(p,n+<span class="number">1</span>),headers = headers)</span><br><span class="line">    index_html = res.text</span><br><span class="line">    pages = re.findall(<span class="string">'&lt;a href="(.*?)" title=".*?" target="_blank"&gt;'</span>,index_html)</span><br><span class="line">    print(pages)</span><br><span class="line">    <span class="keyword">for</span> page <span class="keyword">in</span> pages:</span><br><span class="line">        r = requests.get(<span class="string">"https://www.npa69.com"</span>+page,headers = headers)</span><br><span class="line">        r.encoding = <span class="string">"utf-8"</span></span><br><span class="line">        <span class="comment"># print(r.request.headers)</span></span><br><span class="line">        html = r.text</span><br><span class="line">        <span class="comment"># print(html)</span></span><br><span class="line">        dir_name = re.findall(<span class="string">'&lt;!--&lt;title&gt;(.*?)&lt;/title&gt;--&gt;'</span>,html)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(dir_name):</span><br><span class="line">            os.mkdir(dir_name)</span><br><span class="line">        urls = re.findall(<span class="string">'data-original="(.*?)"'</span>,html)</span><br><span class="line">        print(urls)</span><br><span class="line">        <span class="keyword">if</span> len(urls) != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">for</span> url <span class="keyword">in</span> urls:</span><br><span class="line">                print(<span class="string">"download"</span>)</span><br><span class="line">                file_name = url.split(<span class="string">"/"</span>)[<span class="number">-1</span>]</span><br><span class="line">                img = requests.get(url,headers = headers)</span><br><span class="line">                name = dir_name + <span class="string">"/"</span> + file_name</span><br><span class="line">                <span class="keyword">with</span> open(name,<span class="string">"wb"</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(img.content)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    download(<span class="string">"清纯唯美"</span>,i)</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/AlkeySheng/file_bed/raw/master/maomi.py" target="_blank" rel="noopener">Download_maomi.py</a></p>
+]]></content>
+      <tags>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -184,16 +194,6 @@ R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <st
       </categories>
       <tags>
         <tag>Chemistry</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>爬取maomi</title>
-    <url>/2020/01/14/%E7%88%AC%E5%8F%96maomi/</url>
-    <content><![CDATA[<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests,re,os</span><br><span class="line">headers = &#123;<span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36"</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">download</span><span class="params">(p,n)</span>:</span>    </span><br><span class="line">    res = requests.get(<span class="string">"https://www.npa69.com/tupian/list-&#123;&#125;-&#123;&#125;.html"</span>.format(p,n+<span class="number">1</span>),headers = headers)</span><br><span class="line">    index_html = res.text</span><br><span class="line">    pages = re.findall(<span class="string">'&lt;a href="(.*?)" title=".*?" target="_blank"&gt;'</span>,index_html)</span><br><span class="line">    print(pages)</span><br><span class="line">    <span class="keyword">for</span> page <span class="keyword">in</span> pages:</span><br><span class="line">        r = requests.get(<span class="string">"https://www.npa69.com"</span>+page,headers = headers)</span><br><span class="line">        r.encoding = <span class="string">"utf-8"</span></span><br><span class="line">        <span class="comment"># print(r.request.headers)</span></span><br><span class="line">        html = r.text</span><br><span class="line">        <span class="comment"># print(html)</span></span><br><span class="line">        dir_name = re.findall(<span class="string">'&lt;!--&lt;title&gt;(.*?)&lt;/title&gt;--&gt;'</span>,html)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(dir_name):</span><br><span class="line">            os.mkdir(dir_name)</span><br><span class="line">        urls = re.findall(<span class="string">'data-original="(.*?)"'</span>,html)</span><br><span class="line">        print(urls)</span><br><span class="line">        <span class="keyword">if</span> len(urls) != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">for</span> url <span class="keyword">in</span> urls:</span><br><span class="line">                print(<span class="string">"download"</span>)</span><br><span class="line">                file_name = url.split(<span class="string">"/"</span>)[<span class="number">-1</span>]</span><br><span class="line">                img = requests.get(url,headers = headers)</span><br><span class="line">                name = dir_name + <span class="string">"/"</span> + file_name</span><br><span class="line">                <span class="keyword">with</span> open(name,<span class="string">"wb"</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(img.content)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    download(<span class="string">"清纯唯美"</span>,i)</span><br></pre></td></tr></table></figure>
-<p><a href="https://github.com/AlkeySheng/file_bed/raw/master/maomi.py" target="_blank" rel="noopener">Download_maomi.py</a></p>
-]]></content>
-      <tags>
-        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
