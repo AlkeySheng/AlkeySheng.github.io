@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>1970年1月1日0时0分0秒</title>
+    <url>/2020/02/26/1970%E5%B9%B41%E6%9C%881%E6%97%A50%E6%97%B60%E5%88%860%E7%A7%92/</url>
+    <content><![CDATA[<blockquote>
+<p>NTP时间戳的1970年1月1日0时0分0秒有何特殊？</p>
+</blockquote>
+<h3 id="通俗理解"><a href="#通俗理解" class="headerlink" title="通俗理解"></a>通俗理解</h3><p>人类计算机系统起源于革命性的<code>UNIX</code>，而<code>UNIX</code>系统确定1970年1月1日0时为时间起点，所以后世系统及语言的时间戳是以1970年1月1日0时为起点记录时间的。</p>
+<h3 id="深入了解"><a href="#深入了解" class="headerlink" title="深入了解"></a>深入了解</h3><p>最初计算机操作系统是32位，时间也是32位表示。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 32位int类型数据储存最大整数为</span></span><br><span class="line">System.out.println(Integer.MAX_VALUE);     <span class="comment">// 21474836471</span></span><br></pre></td></tr></table></figure>
+<p>int类型数据在<code>java</code>内用32位表示，32位能表示的最大值是<code>2147483647</code>。一年365天的总共31536000秒。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="number">2147483647</span> / <span class="number">31536000</span> = <span class="number">68.1</span> <span class="comment">//年</span></span><br></pre></td></tr></table></figure>
+<p>因此32位数据能表示的最长时间是<code>68.1</code>年，从1970年开始计算，最终到<code>2038年01月19日03时14分07秒</code>时，会达到时间戳的最大值，到时，所有32位操作系统的时间便会发生溢出错误，出现时间回归现象，使系统运行异常。</p>
+<p>用32位来表示时间的最大间隔是68年，因此最早出现的UNIX系统综合考虑应用时限等问题，最终选取1970年1月1日作为UNIX TIME的纪元时间。</p>
+<p>至于时间回归现象，最新64位操作系统可以表示到<code>292,277,026,596年的12月4日14时30分08秒</code>，已经是千亿年以后了。</p>
+]]></content>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Depth-First-Search</title>
+    <url>/2020/01/21/Depth-First-Search/</url>
+    <content><![CDATA[<h2 id="深度优先搜索算法-DFS-回溯法-解数独"><a href="#深度优先搜索算法-DFS-回溯法-解数独" class="headerlink" title="深度优先搜索算法(DFS) - 回溯法 解数独"></a>深度优先搜索算法(DFS) - 回溯法 解数独</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">su = [[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回下一个“0”的坐标(x,y)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_x_y</span><span class="params">(su)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">                    <span class="keyword">if</span> su[x][y] == <span class="number">0</span>:</span><br><span class="line">                        <span class="keyword">return</span> x,y</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"done"</span></span><br><span class="line"><span class="comment"># 检查并填入一个合法数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fill_num</span><span class="params">(su,x_y)</span>:</span></span><br><span class="line">    dcan = set()</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> su[x_y[<span class="number">0</span>]]:</span><br><span class="line">        dcan.add(n)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">        dcan.add(su[i][x_y[<span class="number">1</span>]])</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">                <span class="keyword">if</span> get_gong((x,y)) == get_gong(x_y):</span><br><span class="line">                    dcan.add(su[x][y])</span><br><span class="line">    dcan.remove(<span class="number">0</span>)</span><br><span class="line">    can = list(&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>&#125;-dcan)</span><br><span class="line">    now_n = su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]]</span><br><span class="line">    <span class="keyword">for</span> d <span class="keyword">in</span> range(now_n+<span class="number">1</span>,<span class="number">11</span>):</span><br><span class="line">        <span class="keyword">if</span> d <span class="keyword">in</span> can:</span><br><span class="line">            su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]] = d</span><br><span class="line">            print(<span class="string">"fill-down"</span>,x_y,d)</span><br><span class="line">            print(su)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]] = <span class="number">0</span></span><br><span class="line">        back_set(su,vectors)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"><span class="comment"># 返回“宫”序号</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_gong</span><span class="params">(x_y)</span>:</span></span><br><span class="line">      <span class="keyword">if</span> x_y[<span class="number">0</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line">      <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">0</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">4</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">5</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">6</span></span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">7</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">8</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">9</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">back_set</span><span class="params">(su,vectors)</span>:</span></span><br><span class="line">    x_y = get_x_y(su)</span><br><span class="line">    index = vectors.index(x_y)<span class="number">-1</span></span><br><span class="line">    print(<span class="string">"backset-down&lt;&lt;&lt;"</span>)</span><br><span class="line">    fill_num(su,vectors[index])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">vectors = []</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">      <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">            <span class="keyword">if</span> su[x][y] == <span class="number">0</span>:</span><br><span class="line">                vectors.append((x,y))</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> get_x_y(su) != <span class="string">"done"</span>:</span><br><span class="line">    x_y = get_x_y(su)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> fill_num(su,x_y):</span><br><span class="line">        print(su)</span><br><span class="line">        back_set(su,vectors)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">""</span>)</span><br><span class="line">    </span><br><span class="line">print(<span class="string">"done!!!!!!!!!!!!!!!!!!!!!!!!"</span>)</span><br><span class="line">print(su)</span><br></pre></td></tr></table></figure>
+<h4 id="Download-soduku-py"><a href="#Download-soduku-py" class="headerlink" title="Download_soduku.py"></a><a href="https://github.com/AlkeySheng/file_bed/raw/master/sudoku.py" target="_blank" rel="noopener">Download_soduku.py</a></h4>]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
+      <tags>
+        <tag>算法</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>The red scarf on trump&#39;s chest is even brighter</title>
+    <url>/2020/04/07/The-red-scarf-on-trump-s-chest-is-even-brighter/</url>
+    <content><![CDATA[<blockquote>
+<p>2019 was a year of rollarcoaster experience for Huawei, are they still good? I’m Albert, from Guancha.cn.</p>
+</blockquote>
+<p>On March 31th, Huawei just published its 2019 annual report. I gotta say I’m impressed, with all the difficulties, they’ve still got a beautiful number. In 2019, Huawei’s revenue achieved 123 billion US dollars, with net profits of 9 billion dollars, Which is 19.1 percent more than year 2018. However, if we take a closer look, the fact is that the revenue is below the expectation. Huawei’s H1 2019 report shows a growth of 23.2 percent increase, so it had to be some unavoidable difficulty to pull the number back to 19.1 percent. Well, I think we all know what happened. Just a few days before the announcement of the annual report, I heard something from the other side of the Ocean. According to CNBC, sources familiar with the matter said, Senior officials in the Trump administration agreed to new measures to restrict the global supply of chips to Huawei. Again, Huawei becomes the sacrifice for President Trump to shift the people’s attention away from internal troubles. </p>
+<a id="more"></a>
+<p>For now, the US is leading  the number of confirmed cases with coronavirus in the world and economy suffers from it. Politically, Democratic candidate, Joe Biden is leading the poll on 2020. Hey this number is from Fox News, the only news that Mr. President believes to be real. Meanwhile, Huawei is trying to help. On March 26th, Andrew Cuomo the Governor of the State of New York announced significant donations to help increase the state’s supply capacity and Huawei was among the list. Business is business, but when politics steps in, the free market fades away. President Trump vows to make America great again, but he doesn’t wanna do it decently. In May 2019, The US government banned Huawei from working with some of its longtime partners, such as Google, so Huawei can’t use all of Google’s services. It hurts the company a lot since global consumers heavily depend on Google, Google Maps and Gmail. Luckily the Chinese market doesn’t depend on Google service since is more familiar with local apps such as Baidu, Gaode Maps and Wechat. But still it is huge damage to the company’s global expansion. However, the company still sold 240 million smart-phones and along with PC, tablets, wearables and smart screens, consuming business still contributed over half of Huawei’s revenue in 2019, It means Huawei has proven itself to be a valuable and trustworthy brand in the market. But on the other side, the growth rate outside of the Chinese market had fallen 1.6 percent last year, the damage is real. </p>
+<p>Moreover the Trump administration is doing whatever they can to persuade European allies not to work with Huawei to establish their 5G network. Huawei is the best in this field and it is ridiculous not to use the best. It just like a guy who doesn’t want his girlfriend to speak to other excellent guys. They invest over 10 percent of their sales revenue into research and development every year, in 2019, they spend 18.8 billon dollars in R&amp;D and their total R&amp;D investment over the past decade is more than 85.7 billion dollars, in 2019 they had approximately 96000 R&amp;D employees, accounting for 49% of the total workforce.  All these investments make Huawei one of the largest patent holders in the world, they are granted more than 85000 patents by the end of 2019. Let’s put it simple, they are good they are fast and they are affordable. The Trump administration believes that killing Huawei is the key to maintain American supremacy in Technology. Let’s have a history lesson, Napoleon, the great French conqueror saw Great Britain was an obstacle on his way to conquer the world, in 1806 he created the Continental System to ban the European continent from doing business with Great Britain and he failed, his Empire collapsed with the system. After a brief history lesson, let’s look at the reason that the US holds against Huawei. Hum, interesting. China has never spied on French presidents and German chancellors as the US did. I mean, ask Snowden about it. On February 11th, 2020, the Washington Post had revealed the little secret of Crypto AG, it is a Swiss company that keep communications of spies soldiers and diplomats secret for governments all over the world. Guess who is the owner of this company? Why on earth does the US think they can teach the world about national security? American companies are also suffering from the Trade War. Micron CEO Sanjay Mehrotra made a very clear suggestion that boycotting Huawei will make American companies suffer. The 21st century is the century of globalization. Our world is deeply connected and no one can survive without friends and partners. </p>
+<p>Huawei is just another multinational corporation that wants to do business in America and every other country in the world, there is nothing different from Toyota Siemens or Samsung. Huawei is buying 6 billion US dollars components from American suppliers every year, which indirectly created 35 thousand jobs for American people. In 2018 Huawei even purchased 11 billion dollars of products from its American partners. Many times Huawei has mentioned how much they value American partners, the American market and American people, the company is actually helping out the goal to make America great again.  So cutting Huawei away from the US will do no good to American companies. I mean think about it putting a sanction on Huawei will weaken American tech firm’s revenue and they will have less money for R&amp;D, with less on R&amp;D they will become less competitive on the market, according to The Consulting Group’s report, China has been establishing alternative non-US suppliers for semiconductor demand and it caused the growth of the top 25 American semiconductor firms decreased 4-9 percent in 2019. No mention if the US keeps pushing China, then China will have to fight back. China is the second-largest market for Apple and biggest market for Qualcomm. In 2019 Qualcomm’s revenue was 24.7 billion dollars and the Chinese market contributed 11.6 billion dollars. I don’t think Qualcomm can keep up with the 5G R&amp;D with yearly revenue of 13.1 billion. The US Defense Department made a statement in their own report on 5G and they have already realized the reality. The report says that American companies are not competitive enough to stop the expansion of China’s 5G providers in the world. Wise men said if you can’t beat them join them, doing business side by side, so American companies can keep up with the latest tech development, remain in the playfield and wait for the next opportunity. I mean, isn’t that how you do business? Ren Zhengfei, the founder of Huawei, said 2020 will be the year of a true test. He is no prophet, I believe he was talking about the US sanction. But the coronavirus pandemic has created a bigger challenge to the whole world and we can see how technology can give hand. </p>
+<p>For medical people fighting the virus at the frontline, Huawei has helped carriers quickly deploy 5G networks, so patients could get better treatment and making remote diagnosis possible. For those people in quarantine, they have to work and hold meeting at home, so the company is doing their best to provide a stable and fast network. No one wants their boss to see them in a terrible definition, right? </p>
+<p>After all, can we just work hand in hand, the US is the most powerful country in the world, that’s a fact, no one wants to challenge it and no one wants to change it, we are all living in a world order which is established by the US. At this time of the disaster, why don’t we just give up all the divergence and save the world together? </p>
+<p>Thank you for watching, If you find this video helpful and inspiring, please like it, comment and share it with your friends. Thank you and see you next time.</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>turtle库绘制复杂漫威蜘蛛侠Spiderman</title>
+    <url>/2019/12/28/turtle%E5%BA%93%E7%BB%98%E5%88%B6%E5%A4%8D%E6%9D%82%E6%BC%AB%E5%A8%81%E8%9C%98%E8%9B%9B%E4%BE%A0Spiderman/</url>
+    <content><![CDATA[<h1 id="演示效果"><a href="#演示效果" class="headerlink" title="演示效果"></a>演示效果</h1><p>点击播放：<a href="https://www.python123.io/index/turtles/5c95d01e24577506dc75fa68" target="_blank" rel="noopener">Python123平台 济南大学_盛亚琪_<em>spiderman</em></a></p>
+<p><a href="https://www.python123.io/index/turtles/5c95d01e24577506dc75fa68" target="_blank" rel="noopener">(https://www.python123.io/index/turtles/5c95d01e24577506dc75fa68)</a></p>
+<p><img src="https://img-blog.csdnimg.cn/20190807191601752.gif" alt="效果演示"></p>
+<h1 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h1><p><a href="https://github.com/AlkeySheng/Spiderman.git" target="_blank" rel="noopener">AlkeySheng_Github:turtle库绘制复杂漫威蜘蛛侠Spiderman</a></p>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python turtle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>test</title>
+    <url>/2020/02/08/test/</url>
+    <content><![CDATA[<p>test</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>weibosayhi实现每天自动发天气、名言加配图等微博动态</title>
+    <url>/2019/12/28/weibosayhi%E5%AE%9E%E7%8E%B0%E6%AF%8F%E5%A4%A9%E8%87%AA%E5%8A%A8%E5%8F%91%E5%A4%A9%E6%B0%94%E3%80%81%E5%90%8D%E8%A8%80%E5%8A%A0%E9%85%8D%E5%9B%BE%E7%AD%89%E5%BE%AE%E5%8D%9A%E5%8A%A8%E6%80%81/</url>
+    <content><![CDATA[<h1 id="weibosayhi"><a href="#weibosayhi" class="headerlink" title="weibosayhi"></a>weibosayhi</h1><p>调用新浪微博API实现每天自动发天气、名言加配图等微博动态，并得到发送状态的微信提醒。</p>
+<p>项目地址：<a href="https://github.com/AlkeySheng/weibosayhi" target="_blank" rel="noopener">https://github.com/AlkeySheng/weibosayhi</a></p>
+<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>我的微博 AlkeySheng  <a href="https://weibo.com/2351446567" target="_blank" rel="noopener">weibo.com/2351446567</a></p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9kZXYudGVuY2VudC5jb20vdS9hbGtleXNoZW5nL3Avd2VpYm9zYXloaS9naXQvcmF3L21hc3Rlci9EZW1vLmpwZw?x-oss-process=image/format,png" alt></p>
+<p>(居然还涨粉啦ｈｈｈｈｈ)</p>
+<h2 id="需要"><a href="#需要" class="headerlink" title="需要"></a>需要</h2><ul>
+<li>获得新浪微博API的<a href="https://www.jianshu.com/p/0f20eaaa0047" target="_blank" rel="noopener">token</a>  自行获取token</li>
+<li>获得<a href="https://dev.heweather.com/" target="_blank" rel="noopener">和风天气</a>API的key  注册后记住key</li>
+<li>如需<a href="http://sc.ftqq.com/3.version" target="_blank" rel="noopener">server酱</a>微信提醒(非必要)  获得SCKEY</li>
+</ul>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>python3 确保已安装 json, urllib, requests库</p>
+<ol>
+<li><p><code>git clone</code> 本项目并打开<code>weibo.py</code>文件，填入<code>token</code>,<code>key</code>,<code>SCKEY(非必要)</code>，保存并退出</p>
+</li>
+<li><p>打开<code>goodnight.py</code>填入天气预报的四个城市<code>city_1</code>,<code>city_2</code>,<code>city_3</code>,<code>city_4</code>，保存退出</p>
+</li>
+<li><p>微博文案自行修改替换，但请注意微博140字数限制</p>
+</li>
+<li><p>可添加<code>crontab</code>任务定时自动执行脚本，<code>linux</code>下<code>crontab -e</code>命令编辑输入</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">29 22 * * * python3 ~/weibosayhi/goodnight.py</span><br><span class="line">50 7 * * * python3 ~/weibosayhi/goodmorning.py</span><br></pre></td></tr></table></figure>
+<p>自行替换定时执行时间和文件实际保存路径 　<code>Windows</code>用户自求多福吧</p>
+</li>
+</ol>
+<h2 id="向世界Say-Hi"><a href="#向世界Say-Hi" class="headerlink" title="向世界Ｓａｙ　Ｈｉ"></a>向世界Ｓａｙ　Ｈｉ</h2>]]></content>
+      <categories>
+        <category>RaspberryPi</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>API</tag>
+        <tag>新浪微博</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>世界很大，生活很大</title>
+    <url>/2020/01/01/%E4%B8%96%E7%95%8C%E5%BE%88%E5%A4%A7%EF%BC%8C%E7%94%9F%E6%B4%BB%E5%BE%88%E5%A4%A7/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>十六进制登录QQ</title>
+    <url>/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/</url>
+    <content><![CDATA[<h1 id="十六进制账号登录QQ、TIM"><a href="#十六进制账号登录QQ、TIM" class="headerlink" title="十六进制账号登录QQ、TIM"></a>十六进制账号登录QQ、TIM</h1><blockquote>
+<p> 据说近年以来腾讯登录界面采用了新的前端代码，推测为<code>JS</code>的<code>parseInt()</code>函数，可以同时将十进制字符串和十六进制字符串类型数据转换为十进制整型。</p>
+</blockquote>
+<h2 id="在PC端测试"><a href="#在PC端测试" class="headerlink" title="在PC端测试"></a>在PC端测试</h2><h4 id="1-使用计算器将QQ号码转换为十六进制-HEX"><a href="#1-使用计算器将QQ号码转换为十六进制-HEX" class="headerlink" title="1.使用计算器将QQ号码转换为十六进制(HEX)"></a>1.使用计算器将QQ号码转换为十六进制(HEX)</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153320.png" alt></p>
+<h4 id="2-以十六进制账号登录"><a href="#2-以十六进制账号登录" class="headerlink" title="2.以十六进制账号登录"></a>2.以十六进制账号登录</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153451.png" alt></p>
+<p>您见过如此之帅的QQ靓号吗？<br>注意十六进制以 <code>0</code>（数字） <code>x</code>（小写字母）开头</p>
+<h4 id="3-PC端成功登陆，手机端失败显示无此账号。"><a href="#3-PC端成功登陆，手机端失败显示无此账号。" class="headerlink" title="3.PC端成功登陆，手机端失败显示无此账号。"></a>3.PC端成功登陆，手机端失败显示无此账号。</h4>]]></content>
+  </entry>
+  <entry>
+    <title>分离方法评价</title>
+    <url>/2020/03/15/%E5%88%86%E7%A6%BB%E6%96%B9%E6%B3%95%E8%AF%84%E4%BB%B7/</url>
+    <content><![CDATA[<h2 id="回收率"><a href="#回收率" class="headerlink" title="回收率"></a>回收率</h2><blockquote>
+<p>表示<code>被分离组分</code>在分离中的完全程度。</p>
+</blockquote>
+<script type="math/tex; mode=display">
+R_i = \frac{通过分离后欲分离组分的测得量}{分离前欲分离组分原来的含量}\times100\%</script><h2 id="分离因数"><a href="#分离因数" class="headerlink" title="分离因数"></a>分离因数</h2><blockquote>
+<p><code>干扰组分B</code>与<code>欲测组分A</code>的回收率之比。</p>
+</blockquote>
+<script type="math/tex; mode=display">
+S_{B/A} = \frac{R_B}{R_A} = \frac{Q{^0_A} Q_B} { Q{^0_B} Q_A }</script><h2 id="分离要求"><a href="#分离要求" class="headerlink" title="分离要求"></a>分离要求</h2><p><strong><em>常量分析</em></strong> <strong>：</strong></p>
+<script type="math/tex; mode=display">
+R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <strong>：</strong> </p>
+<script type="math/tex; mode=display">R_i>95\% \quad或\quad R_i\geq90\%,10^{-6}<S_{B/A}<10^{-7}</script>]]></content>
+      <categories>
+        <category>Chemistry</category>
+      </categories>
+      <tags>
+        <tag>Chemistry</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>液-液萃取分离</title>
+    <url>/2020/03/30/%E6%B6%B2-%E6%B6%B2%E8%90%83%E5%8F%96%E5%88%86%E7%A6%BB/</url>
+    <content><![CDATA[<h4 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h4><blockquote>
+<p><strong>分配系数</strong>：当某一种溶质在基本上不相混溶的两个溶剂之间分配时，在<strong>一定温度</strong>下，两项达到<strong>平衡</strong>后，且溶质在<strong>两相中的分子量相等</strong>。则其在两相中的浓度的比值是一常数。</p>
+<p><strong>分配比</strong>：表示溶质在两相中以各种形式存在的总浓度的比值。</p>
+<p><strong>分离因数</strong>：<strong>同一萃取体系</strong>中<strong>相同萃取条件</strong>下两种组分分配比的比值。</p>
+</blockquote>
+<h4 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h4><blockquote>
+<p><strong>盐析剂</strong>：易溶于水但不参与配合反应，但能促进萃取物转入有机相，提高萃取效率的无机物盐类。</p>
+</blockquote>
+<p><strong>盐析剂提高萃取效率：</strong></p>
+<ol>
+<li><p>盐析剂使阴离子浓度增加，产生<code>同离子效应</code>，使萃取平衡朝发生萃取作用的方向移动</p>
+</li>
+<li><p>盐析剂使电解质，其离子水化作用可使溶液中<code>水分子活度减小</code>，降低萃取物与水分子的结合能力</p>
+</li>
+<li><p>高浓度电解质存在，使水的<code>介电常数大为降低</code>，水的<code>偶极矩作用减弱</code>，有利于离子缔合物形成</p>
+</li>
+</ol>
+<h4 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h4><p><strong><em>萃取剂的选择：</em></strong></p>
+<ul>
+<li>$\beta_n$越大越好，萃取剂与萃取的离子形成螯合物稳定性好</li>
+<li>$ K_D $越大越好，螯合物易溶于有机溶剂</li>
+<li>$ K_a $越大越好，萃取剂本身酸性强</li>
+<li><p>$K{^′_D}$越小越好，萃取剂较易电离和较易溶于水</p>
+<p><strong><em>萃取溶剂的选择：</em></strong></p>
+</li>
+<li><p>一般应使螯合物有较大的溶解度</p>
+</li>
+<li>螯合剂有较小的溶解度；溶剂的比重与水相差较大</li>
+<li>粘度较小</li>
+<li>易与原料液相分层、毒性、挥发性较小</li>
+<li>萃取容量大</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Chemistry</category>
+      </categories>
+      <tags>
+        <tag>Chemistry</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>爬取maomi</title>
+    <url>/2020/01/14/%E7%88%AC%E5%8F%96maomi/</url>
+    <content><![CDATA[<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests,re,os</span><br><span class="line">headers = &#123;<span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36"</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">download</span><span class="params">(p,n)</span>:</span>    </span><br><span class="line">    res = requests.get(<span class="string">"https://www.npa69.com/tupian/list-&#123;&#125;-&#123;&#125;.html"</span>.format(p,n+<span class="number">1</span>),headers = headers)</span><br><span class="line">    index_html = res.text</span><br><span class="line">    pages = re.findall(<span class="string">'&lt;a href="(.*?)" title=".*?" target="_blank"&gt;'</span>,index_html)</span><br><span class="line">    print(pages)</span><br><span class="line">    <span class="keyword">for</span> page <span class="keyword">in</span> pages:</span><br><span class="line">        r = requests.get(<span class="string">"https://www.npa69.com"</span>+page,headers = headers)</span><br><span class="line">        r.encoding = <span class="string">"utf-8"</span></span><br><span class="line">        <span class="comment"># print(r.request.headers)</span></span><br><span class="line">        html = r.text</span><br><span class="line">        <span class="comment"># print(html)</span></span><br><span class="line">        dir_name = re.findall(<span class="string">'&lt;!--&lt;title&gt;(.*?)&lt;/title&gt;--&gt;'</span>,html)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(dir_name):</span><br><span class="line">            os.mkdir(dir_name)</span><br><span class="line">        urls = re.findall(<span class="string">'data-original="(.*?)"'</span>,html)</span><br><span class="line">        print(urls)</span><br><span class="line">        <span class="keyword">if</span> len(urls) != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">for</span> url <span class="keyword">in</span> urls:</span><br><span class="line">                print(<span class="string">"download"</span>)</span><br><span class="line">                file_name = url.split(<span class="string">"/"</span>)[<span class="number">-1</span>]</span><br><span class="line">                img = requests.get(url,headers = headers)</span><br><span class="line">                name = dir_name + <span class="string">"/"</span> + file_name</span><br><span class="line">                <span class="keyword">with</span> open(name,<span class="string">"wb"</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(img.content)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    download(<span class="string">"清纯唯美"</span>,i)</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/AlkeySheng/file_bed/raw/master/maomi.py" target="_blank" rel="noopener">Download_maomi.py</a></p>
+]]></content>
+      <tags>
+        <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>@ 鲸鱼的小秘密</title>
+    <url>/2020/03/24/%E9%B2%B8%E9%B1%BC%E7%9A%84%E5%B0%8F%E7%A7%98%E5%AF%86/</url>
+    <content><![CDATA[<blockquote>
+<p>这段往事，看来鲸鱼深爱着星星。鲸鱼却有一个并不自知的小秘密，他热衷于表演自己，真正诱惑他的是追寻星星一缕幻光的过程，因为那里充满了想象、表演和野心。鲸鱼的内心细腻且狂妄，他不会允许自己拿到平淡无奇的剧本。他并不一定真的爱慕着星星，鲸鱼爱自己远胜于爱任何人。</p>
+</blockquote>
+]]></content>
+  </entry>
+  <entry>
+    <title>邻二氮菲吸光光度法测定铁</title>
+    <url>/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/</url>
+    <content><![CDATA[<h1 id="邻二氮菲吸光光度法测定铁"><a href="#邻二氮菲吸光光度法测定铁" class="headerlink" title="邻二氮菲吸光光度法测定铁"></a>邻二氮菲吸光光度法测定铁</h1><hr>
+<h2 id="1-条件实验数据及结果"><a href="#1-条件实验数据及结果" class="headerlink" title="1.条件实验数据及结果"></a>1.条件实验数据及结果</h2><h3 id="（1）吸收曲线的绘制"><a href="#（1）吸收曲线的绘制" class="headerlink" title="（1）吸收曲线的绘制"></a>（1）吸收曲线的绘制</h3><p><strong>表1不同吸收波长下的吸光度</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>λ/nm</strong></th>
+<th>440</th>
+<th>450</th>
+<th>460</th>
+<th>470</th>
+<th>480</th>
+<th>490</th>
+<th>495</th>
+<th>500</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td>0.329</td>
+<td>0.358</td>
+<td>0.375</td>
+<td>0.407</td>
+<td>0.431</td>
+<td>0.441</td>
+<td>0.448</td>
+<td>0.457</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>λ/nm</strong></th>
+<th>505</th>
+<th>510</th>
+<th>515</th>
+<th>520</th>
+<th>530</th>
+<th>540</th>
+<th>550</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td>0.467</td>
+<td>0.473</td>
+<td>0.464</td>
+<td>0.438</td>
+<td>0.346</td>
+<td>0.221</td>
+<td>0.120</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image002.png" alt="img"></p>
+<p>最大吸收波长： 510 nm</p>
+<h3 id="（2）溶液酸度的选择"><a href="#（2）溶液酸度的选择" class="headerlink" title="（2）溶液酸度的选择"></a>（2）溶液酸度的选择</h3><p><strong>表2不同酸度下的吸光度</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>容量瓶编号</strong></th>
+<th><strong>1</strong></th>
+<th><strong>2</strong></th>
+<th><strong>3</strong></th>
+<th><strong>4</strong></th>
+<th><strong>5</strong></th>
+<th><strong>6</strong></th>
+<th><strong>7</strong></th>
+<th><strong>8</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>pH</strong></td>
+<td></td>
+<td>2.01</td>
+<td>2.23</td>
+<td>5.40</td>
+<td>6.37</td>
+<td>6.64</td>
+<td>9.86</td>
+<td>11.63</td>
+</tr>
+<tr>
+<td><strong>A</strong></td>
+<td>0.016</td>
+<td>0.175</td>
+<td>0.335</td>
+<td>0.353</td>
+<td>0.335</td>
+<td>0.344</td>
+<td>0.323</td>
+<td>0.274</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image004.png" alt="img"></p>
+<p>pH范围：3.00 ~ 6.00</p>
+<a id="more"></a>
+<h3 id="（3）显色剂用量的选择"><a href="#（3）显色剂用量的选择" class="headerlink" title="（3）显色剂用量的选择"></a>（3）显色剂用量的选择</h3><p><strong>表3不同显色剂用量时的吸光度</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>Vphen / ml</strong></th>
+<th>1</th>
+<th>1.5</th>
+<th>2</th>
+<th>2.5</th>
+<th>3</th>
+<th>3.5</th>
+<th>4</th>
+<th>4.5</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td>0.059</td>
+<td>0.131</td>
+<td>0.205</td>
+<td>0.265</td>
+<td>0.340</td>
+<td>0.347</td>
+<td>0.351</td>
+<td>0.346</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image006.png" alt="img"></p>
+<p>显色剂用量：3.2 ~ 4.2 mL</p>
+<h3 id="（4）显色时间"><a href="#（4）显色时间" class="headerlink" title="（4）显色时间"></a>（4）显色时间</h3><p><strong>表4不同显色时间时的吸光度</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>放置时间t/min</strong></th>
+<th>0</th>
+<th>5</th>
+<th>10</th>
+<th>30</th>
+<th>60</th>
+<th>120</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A</strong></td>
+<td>0.298</td>
+<td>0.302</td>
+<td>0.302</td>
+<td>0.302</td>
+<td>0.302</td>
+<td>0.296</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image008.png" alt="img"></p>
+<hr>
+<p>显色时间：0 ~ 5 min</p>
+<p>稳定时间：5 ~ 60 min</p>
+<p>由以上实验可得出最佳实验条件：波长510 nm、pH 3.00 ~ 6.00、显色剂用量3.2 ~ 4.2 mL、显色时间5 ~ 60 min</p>
+<h2 id="2-试样分析"><a href="#2-试样分析" class="headerlink" title="2.试样分析"></a>2.试样分析</h2><h3 id="标准曲线的制作"><a href="#标准曲线的制作" class="headerlink" title="标准曲线的制作"></a>标准曲线的制作</h3><p><strong>表5铁标准曲线的制作</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>溶液</strong></th>
+<th><strong>标准铁溶液</strong></th>
+<th><strong>标准铁溶液</strong></th>
+<th><strong>标准铁溶液</strong></th>
+<th><strong>标准铁溶液</strong></th>
+<th><strong>标准铁溶液</strong></th>
+<th><strong>标准铁溶液</strong></th>
+<th><strong>试验溶液</strong></th>
+<th><strong>试验溶液</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>V Fe/ml</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>4.0</td>
+<td>6.0</td>
+<td>8.0</td>
+<td>10.0</td>
+<td>试样1号</td>
+<td>试样2号</td>
+</tr>
+<tr>
+<td>m Fe/μg</td>
+<td>0</td>
+<td>40</td>
+<td>80</td>
+<td>120</td>
+<td>160</td>
+<td>200</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>吸光度 A</td>
+<td>0</td>
+<td>0.133</td>
+<td>0.302</td>
+<td>0.468</td>
+<td>0.61</td>
+<td>0.757</td>
+<td>0.323</td>
+<td>0.274</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image010.png" alt="img"></p>
+<p>试样1号：m Fe = 87 μg</p>
+<p>试样2号：m Fe = 74 μg</p>
+<h2 id="3-组成比、摩尔吸光系数及平衡常数"><a href="#3-组成比、摩尔吸光系数及平衡常数" class="headerlink" title="3.组成比、摩尔吸光系数及平衡常数"></a>3.组成比、摩尔吸光系数及平衡常数</h2><hr>
+<h3 id="组成比测定"><a href="#组成比测定" class="headerlink" title="组成比测定"></a>组成比测定</h3><p><strong>表6 组成比的测定</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>容量瓶编号</strong></th>
+<th><strong>1</strong></th>
+<th><strong>2</strong></th>
+<th><strong>3</strong></th>
+<th><strong>4</strong></th>
+<th><strong>5</strong></th>
+<th><strong>6</strong></th>
+<th><strong>7</strong></th>
+<th><strong>8</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>c phen/ c Fe2+</td>
+<td>1</td>
+<td>1.5</td>
+<td>2</td>
+<td>2.5</td>
+<td>3</td>
+<td>3.5</td>
+<td>4</td>
+<td>4.5</td>
+</tr>
+<tr>
+<td>A</td>
+<td>0.059</td>
+<td>0.131</td>
+<td>0.205</td>
+<td>0.265</td>
+<td>0.340</td>
+<td>0.347</td>
+<td>0.350</td>
+<td>0.351</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image012.png" alt="img"></p>
+<p>A max = 0.350</p>
+<blockquote>
+<p><a href="https://github.com/AlkeySheng/file_bed/raw/master/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81.docx" target="_blank" rel="noopener">Download_邻二氮菲吸光光度法测定铁.docx</a>  — 盛亚琪 &amp; 陈秀琪</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Chemistry</category>
+      </categories>
+      <tags>
+        <tag>Chemistry</tag>
+      </tags>
+  </entry>
+</search>
