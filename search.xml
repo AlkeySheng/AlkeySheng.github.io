@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>1970年1月1日0时0分0秒</title>
-    <url>/2020/02/26/1970%E5%B9%B41%E6%9C%881%E6%97%A50%E6%97%B60%E5%88%860%E7%A7%92/</url>
-    <content><![CDATA[<blockquote>
-<p>NTP时间戳的1970年1月1日0时0分0秒有何特殊？</p>
-</blockquote>
-<h3 id="通俗理解"><a href="#通俗理解" class="headerlink" title="通俗理解"></a>通俗理解</h3><p>人类计算机系统起源于革命性的<code>UNIX</code>，而<code>UNIX</code>系统确定1970年1月1日0时为时间起点，所以后世系统及语言的时间戳是以1970年1月1日0时为起点记录时间的。</p>
-<h3 id="深入了解"><a href="#深入了解" class="headerlink" title="深入了解"></a>深入了解</h3><p>最初计算机操作系统是32位，时间也是32位表示。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 32位int类型数据储存最大整数为</span></span><br><span class="line">System.out.println(Integer.MAX_VALUE);     <span class="comment">// 21474836471</span></span><br></pre></td></tr></table></figure>
-<p>int类型数据在<code>java</code>内用32位表示，32位能表示的最大值是<code>2147483647</code>。一年365天的总共31536000秒。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="number">2147483647</span> / <span class="number">31536000</span> = <span class="number">68.1</span> <span class="comment">//年</span></span><br></pre></td></tr></table></figure>
-<p>因此32位数据能表示的最长时间是<code>68.1</code>年，从1970年开始计算，最终到<code>2038年01月19日03时14分07秒</code>时，会达到时间戳的最大值，到时，所有32位操作系统的时间便会发生溢出错误，出现时间回归现象，使系统运行异常。</p>
-<p>用32位来表示时间的最大间隔是68年，因此最早出现的UNIX系统综合考虑应用时限等问题，最终选取1970年1月1日作为UNIX TIME的纪元时间。</p>
-<p>至于时间回归现象，最新64位操作系统可以表示到<code>292,277,026,596年的12月4日14时30分08秒</code>，已经是千亿年以后了。</p>
-]]></content>
+    <title>Depth-First-Search</title>
+    <url>/2020/01/21/Depth-First-Search/</url>
+    <content><![CDATA[<h2 id="深度优先搜索算法-DFS-回溯法-解数独"><a href="#深度优先搜索算法-DFS-回溯法-解数独" class="headerlink" title="深度优先搜索算法(DFS) - 回溯法 解数独"></a>深度优先搜索算法(DFS) - 回溯法 解数独</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">su = [[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回下一个“0”的坐标(x,y)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_x_y</span><span class="params">(su)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">                    <span class="keyword">if</span> su[x][y] == <span class="number">0</span>:</span><br><span class="line">                        <span class="keyword">return</span> x,y</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"done"</span></span><br><span class="line"><span class="comment"># 检查并填入一个合法数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fill_num</span><span class="params">(su,x_y)</span>:</span></span><br><span class="line">    dcan = set()</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> su[x_y[<span class="number">0</span>]]:</span><br><span class="line">        dcan.add(n)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">        dcan.add(su[i][x_y[<span class="number">1</span>]])</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">                <span class="keyword">if</span> get_gong((x,y)) == get_gong(x_y):</span><br><span class="line">                    dcan.add(su[x][y])</span><br><span class="line">    dcan.remove(<span class="number">0</span>)</span><br><span class="line">    can = list(&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>&#125;-dcan)</span><br><span class="line">    now_n = su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]]</span><br><span class="line">    <span class="keyword">for</span> d <span class="keyword">in</span> range(now_n+<span class="number">1</span>,<span class="number">11</span>):</span><br><span class="line">        <span class="keyword">if</span> d <span class="keyword">in</span> can:</span><br><span class="line">            su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]] = d</span><br><span class="line">            print(<span class="string">"fill-down"</span>,x_y,d)</span><br><span class="line">            print(su)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]] = <span class="number">0</span></span><br><span class="line">        back_set(su,vectors)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"><span class="comment"># 返回“宫”序号</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_gong</span><span class="params">(x_y)</span>:</span></span><br><span class="line">      <span class="keyword">if</span> x_y[<span class="number">0</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line">      <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">0</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">4</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">5</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">6</span></span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">7</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">8</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">9</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">back_set</span><span class="params">(su,vectors)</span>:</span></span><br><span class="line">    x_y = get_x_y(su)</span><br><span class="line">    index = vectors.index(x_y)<span class="number">-1</span></span><br><span class="line">    print(<span class="string">"backset-down&lt;&lt;&lt;"</span>)</span><br><span class="line">    fill_num(su,vectors[index])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">vectors = []</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">      <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">            <span class="keyword">if</span> su[x][y] == <span class="number">0</span>:</span><br><span class="line">                vectors.append((x,y))</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> get_x_y(su) != <span class="string">"done"</span>:</span><br><span class="line">    x_y = get_x_y(su)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> fill_num(su,x_y):</span><br><span class="line">        print(su)</span><br><span class="line">        back_set(su,vectors)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">""</span>)</span><br><span class="line">    </span><br><span class="line">print(<span class="string">"done!!!!!!!!!!!!!!!!!!!!!!!!"</span>)</span><br><span class="line">print(su)</span><br></pre></td></tr></table></figure>
+<h4 id="Download-soduku-py"><a href="#Download-soduku-py" class="headerlink" title="Download_soduku.py"></a><a href="https://github.com/AlkeySheng/file_bed/raw/master/sudoku.py" target="_blank" rel="noopener">Download_soduku.py</a></h4>]]></content>
+      <categories>
+        <category>算法</category>
+      </categories>
       <tags>
-        <tag>Java</tag>
+        <tag>算法</tag>
+        <tag>Python</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>test</title>
+    <url>/2020/02/08/test/</url>
+    <content><![CDATA[<p>test</p>
+]]></content>
   </entry>
   <entry>
     <title>Bili-Luckydog</title>
@@ -37,16 +37,22 @@
       </tags>
   </entry>
   <entry>
-    <title>Depth-First-Search</title>
-    <url>/2020/01/21/Depth-First-Search/</url>
-    <content><![CDATA[<h2 id="深度优先搜索算法-DFS-回溯法-解数独"><a href="#深度优先搜索算法-DFS-回溯法-解数独" class="headerlink" title="深度优先搜索算法(DFS) - 回溯法 解数独"></a>深度优先搜索算法(DFS) - 回溯法 解数独</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">su = [[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回下一个“0”的坐标(x,y)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_x_y</span><span class="params">(su)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">                    <span class="keyword">if</span> su[x][y] == <span class="number">0</span>:</span><br><span class="line">                        <span class="keyword">return</span> x,y</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"done"</span></span><br><span class="line"><span class="comment"># 检查并填入一个合法数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fill_num</span><span class="params">(su,x_y)</span>:</span></span><br><span class="line">    dcan = set()</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> su[x_y[<span class="number">0</span>]]:</span><br><span class="line">        dcan.add(n)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">        dcan.add(su[i][x_y[<span class="number">1</span>]])</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">                <span class="keyword">if</span> get_gong((x,y)) == get_gong(x_y):</span><br><span class="line">                    dcan.add(su[x][y])</span><br><span class="line">    dcan.remove(<span class="number">0</span>)</span><br><span class="line">    can = list(&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>&#125;-dcan)</span><br><span class="line">    now_n = su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]]</span><br><span class="line">    <span class="keyword">for</span> d <span class="keyword">in</span> range(now_n+<span class="number">1</span>,<span class="number">11</span>):</span><br><span class="line">        <span class="keyword">if</span> d <span class="keyword">in</span> can:</span><br><span class="line">            su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]] = d</span><br><span class="line">            print(<span class="string">"fill-down"</span>,x_y,d)</span><br><span class="line">            print(su)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]] = <span class="number">0</span></span><br><span class="line">        back_set(su,vectors)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"><span class="comment"># 返回“宫”序号</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_gong</span><span class="params">(x_y)</span>:</span></span><br><span class="line">      <span class="keyword">if</span> x_y[<span class="number">0</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line">      <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">0</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">4</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">5</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">6</span></span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">7</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">8</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">9</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">back_set</span><span class="params">(su,vectors)</span>:</span></span><br><span class="line">    x_y = get_x_y(su)</span><br><span class="line">    index = vectors.index(x_y)<span class="number">-1</span></span><br><span class="line">    print(<span class="string">"backset-down&lt;&lt;&lt;"</span>)</span><br><span class="line">    fill_num(su,vectors[index])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">vectors = []</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">      <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">            <span class="keyword">if</span> su[x][y] == <span class="number">0</span>:</span><br><span class="line">                vectors.append((x,y))</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> get_x_y(su) != <span class="string">"done"</span>:</span><br><span class="line">    x_y = get_x_y(su)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> fill_num(su,x_y):</span><br><span class="line">        print(su)</span><br><span class="line">        back_set(su,vectors)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">""</span>)</span><br><span class="line">    </span><br><span class="line">print(<span class="string">"done!!!!!!!!!!!!!!!!!!!!!!!!"</span>)</span><br><span class="line">print(su)</span><br></pre></td></tr></table></figure>
-<h4 id="Download-soduku-py"><a href="#Download-soduku-py" class="headerlink" title="Download_soduku.py"></a><a href="https://github.com/AlkeySheng/file_bed/raw/master/sudoku.py" target="_blank" rel="noopener">Download_soduku.py</a></h4>]]></content>
-      <categories>
-        <category>算法</category>
-      </categories>
+    <title>1970年1月1日0时0分0秒</title>
+    <url>/2020/02/26/1970%E5%B9%B41%E6%9C%881%E6%97%A50%E6%97%B60%E5%88%860%E7%A7%92/</url>
+    <content><![CDATA[<blockquote>
+<p>NTP时间戳的1970年1月1日0时0分0秒有何特殊？</p>
+</blockquote>
+<h3 id="通俗理解"><a href="#通俗理解" class="headerlink" title="通俗理解"></a>通俗理解</h3><p>人类计算机系统起源于革命性的<code>UNIX</code>，而<code>UNIX</code>系统确定1970年1月1日0时为时间起点，所以后世系统及语言的时间戳是以1970年1月1日0时为起点记录时间的。</p>
+<h3 id="深入了解"><a href="#深入了解" class="headerlink" title="深入了解"></a>深入了解</h3><p>最初计算机操作系统是32位，时间也是32位表示。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 32位int类型数据储存最大整数为</span></span><br><span class="line">System.out.println(Integer.MAX_VALUE);     <span class="comment">// 21474836471</span></span><br></pre></td></tr></table></figure>
+<p>int类型数据在<code>java</code>内用32位表示，32位能表示的最大值是<code>2147483647</code>。一年365天的总共31536000秒。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="number">2147483647</span> / <span class="number">31536000</span> = <span class="number">68.1</span> <span class="comment">//年</span></span><br></pre></td></tr></table></figure>
+<p>因此32位数据能表示的最长时间是<code>68.1</code>年，从1970年开始计算，最终到<code>2038年01月19日03时14分07秒</code>时，会达到时间戳的最大值，到时，所有32位操作系统的时间便会发生溢出错误，出现时间回归现象，使系统运行异常。</p>
+<p>用32位来表示时间的最大间隔是68年，因此最早出现的UNIX系统综合考虑应用时限等问题，最终选取1970年1月1日作为UNIX TIME的纪元时间。</p>
+<p>至于时间回归现象，最新64位操作系统可以表示到<code>292,277,026,596年的12月4日14时30分08秒</code>，已经是千亿年以后了。</p>
+]]></content>
       <tags>
-        <tag>Python</tag>
-        <tag>算法</tag>
+        <tag>Java</tag>
       </tags>
   </entry>
   <entry>
@@ -64,32 +70,6 @@
 <p>After all, can we just work hand in hand, the US is the most powerful country in the world, that’s a fact, no one wants to challenge it and no one wants to change it, we are all living in a world order which is established by the US. At this time of the disaster, why don’t we just give up all the divergence and save the world together? </p>
 <p>Thank you for watching, If you find this video helpful and inspiring, please like it, comment and share it with your friends. Thank you and see you next time.</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>世界很大，生活很大</title>
-    <url>/2020/01/01/%E4%B8%96%E7%95%8C%E5%BE%88%E5%A4%A7%EF%BC%8C%E7%94%9F%E6%B4%BB%E5%BE%88%E5%A4%A7/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>test</title>
-    <url>/2020/02/08/test/</url>
-    <content><![CDATA[<p>test</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>turtle库绘制复杂漫威蜘蛛侠Spiderman</title>
-    <url>/2019/12/28/turtle%E5%BA%93%E7%BB%98%E5%88%B6%E5%A4%8D%E6%9D%82%E6%BC%AB%E5%A8%81%E8%9C%98%E8%9B%9B%E4%BE%A0Spiderman/</url>
-    <content><![CDATA[<h1 id="演示效果"><a href="#演示效果" class="headerlink" title="演示效果"></a>演示效果</h1><p>点击播放：<a href="https://www.python123.io/index/turtles/5c95d01e24577506dc75fa68" target="_blank" rel="noopener">Python123平台 济南大学_盛亚琪_<em>spiderman</em></a></p>
-<p><a href="https://www.python123.io/index/turtles/5c95d01e24577506dc75fa68" target="_blank" rel="noopener">(https://www.python123.io/index/turtles/5c95d01e24577506dc75fa68)</a></p>
-<p><img src="https://img-blog.csdnimg.cn/20190807191601752.gif" alt="效果演示"></p>
-<h1 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h1><p><a href="https://github.com/AlkeySheng/Spiderman.git" target="_blank" rel="noopener">AlkeySheng_Github:turtle库绘制复杂漫威蜘蛛侠Spiderman</a></p>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python turtle</tag>
-      </tags>
   </entry>
   <entry>
     <title>分离方法评价</title>
@@ -114,15 +94,9 @@ R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <st
       </tags>
   </entry>
   <entry>
-    <title>十六进制登录QQ</title>
-    <url>/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/</url>
-    <content><![CDATA[<h1 id="十六进制账号登录QQ、TIM"><a href="#十六进制账号登录QQ、TIM" class="headerlink" title="十六进制账号登录QQ、TIM"></a>十六进制账号登录QQ、TIM</h1><blockquote>
-<p> 据说近年以来腾讯登录界面采用了新的前端代码，推测为<code>JS</code>的<code>parseInt()</code>函数，可以同时将十进制字符串和十六进制字符串类型数据转换为十进制整型。</p>
-</blockquote>
-<h2 id="在PC端测试"><a href="#在PC端测试" class="headerlink" title="在PC端测试"></a>在PC端测试</h2><h4 id="1-使用计算器将QQ号码转换为十六进制-HEX"><a href="#1-使用计算器将QQ号码转换为十六进制-HEX" class="headerlink" title="1.使用计算器将QQ号码转换为十六进制(HEX)"></a>1.使用计算器将QQ号码转换为十六进制(HEX)</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153320.png" alt></p>
-<h4 id="2-以十六进制账号登录"><a href="#2-以十六进制账号登录" class="headerlink" title="2.以十六进制账号登录"></a>2.以十六进制账号登录</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153451.png" alt></p>
-<p>您见过如此之帅的QQ靓号吗？<br>注意十六进制以 <code>0</code>（数字） <code>x</code>（小写字母）开头</p>
-<h4 id="3-PC端成功登陆，手机端失败显示无此账号。"><a href="#3-PC端成功登陆，手机端失败显示无此账号。" class="headerlink" title="3.PC端成功登陆，手机端失败显示无此账号。"></a>3.PC端成功登陆，手机端失败显示无此账号。</h4>]]></content>
+    <title>世界很大，生活很大</title>
+    <url>/2020/01/01/%E4%B8%96%E7%95%8C%E5%BE%88%E5%A4%A7%EF%BC%8C%E7%94%9F%E6%B4%BB%E5%BE%88%E5%A4%A7/</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>weibosayhi实现每天自动发天气、名言加配图等微博动态</title>
@@ -161,6 +135,32 @@ R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <st
       </tags>
   </entry>
   <entry>
+    <title>十六进制登录QQ</title>
+    <url>/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/</url>
+    <content><![CDATA[<h1 id="十六进制账号登录QQ、TIM"><a href="#十六进制账号登录QQ、TIM" class="headerlink" title="十六进制账号登录QQ、TIM"></a>十六进制账号登录QQ、TIM</h1><blockquote>
+<p> 据说近年以来腾讯登录界面采用了新的前端代码，推测为<code>JS</code>的<code>parseInt()</code>函数，可以同时将十进制字符串和十六进制字符串类型数据转换为十进制整型。</p>
+</blockquote>
+<h2 id="在PC端测试"><a href="#在PC端测试" class="headerlink" title="在PC端测试"></a>在PC端测试</h2><h4 id="1-使用计算器将QQ号码转换为十六进制-HEX"><a href="#1-使用计算器将QQ号码转换为十六进制-HEX" class="headerlink" title="1.使用计算器将QQ号码转换为十六进制(HEX)"></a>1.使用计算器将QQ号码转换为十六进制(HEX)</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153320.png" alt></p>
+<h4 id="2-以十六进制账号登录"><a href="#2-以十六进制账号登录" class="headerlink" title="2.以十六进制账号登录"></a>2.以十六进制账号登录</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153451.png" alt></p>
+<p>您见过如此之帅的QQ靓号吗？<br>注意十六进制以 <code>0</code>（数字） <code>x</code>（小写字母）开头</p>
+<h4 id="3-PC端成功登陆，手机端失败显示无此账号。"><a href="#3-PC端成功登陆，手机端失败显示无此账号。" class="headerlink" title="3.PC端成功登陆，手机端失败显示无此账号。"></a>3.PC端成功登陆，手机端失败显示无此账号。</h4>]]></content>
+  </entry>
+  <entry>
+    <title>turtle库绘制复杂漫威蜘蛛侠Spiderman</title>
+    <url>/2019/12/28/turtle%E5%BA%93%E7%BB%98%E5%88%B6%E5%A4%8D%E6%9D%82%E6%BC%AB%E5%A8%81%E8%9C%98%E8%9B%9B%E4%BE%A0Spiderman/</url>
+    <content><![CDATA[<h1 id="演示效果"><a href="#演示效果" class="headerlink" title="演示效果"></a>演示效果</h1><p>点击播放：<a href="https://www.python123.io/index/turtles/5c95d01e24577506dc75fa68" target="_blank" rel="noopener">Python123平台 济南大学_盛亚琪_<em>spiderman</em></a></p>
+<p><a href="https://www.python123.io/index/turtles/5c95d01e24577506dc75fa68" target="_blank" rel="noopener">(https://www.python123.io/index/turtles/5c95d01e24577506dc75fa68)</a></p>
+<p><img src="https://img-blog.csdnimg.cn/20190807191601752.gif" alt="效果演示"></p>
+<h1 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h1><p><a href="https://github.com/AlkeySheng/Spiderman.git" target="_blank" rel="noopener">AlkeySheng_Github:turtle库绘制复杂漫威蜘蛛侠Spiderman</a></p>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python turtle</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>爬取maomi</title>
     <url>/2020/01/14/%E7%88%AC%E5%8F%96maomi/</url>
     <content><![CDATA[<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests,re,os</span><br><span class="line">headers = &#123;<span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36"</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">download</span><span class="params">(p,n)</span>:</span>    </span><br><span class="line">    res = requests.get(<span class="string">"https://www.npa69.com/tupian/list-&#123;&#125;-&#123;&#125;.html"</span>.format(p,n+<span class="number">1</span>),headers = headers)</span><br><span class="line">    index_html = res.text</span><br><span class="line">    pages = re.findall(<span class="string">'&lt;a href="(.*?)" title=".*?" target="_blank"&gt;'</span>,index_html)</span><br><span class="line">    print(pages)</span><br><span class="line">    <span class="keyword">for</span> page <span class="keyword">in</span> pages:</span><br><span class="line">        r = requests.get(<span class="string">"https://www.npa69.com"</span>+page,headers = headers)</span><br><span class="line">        r.encoding = <span class="string">"utf-8"</span></span><br><span class="line">        <span class="comment"># print(r.request.headers)</span></span><br><span class="line">        html = r.text</span><br><span class="line">        <span class="comment"># print(html)</span></span><br><span class="line">        dir_name = re.findall(<span class="string">'&lt;!--&lt;title&gt;(.*?)&lt;/title&gt;--&gt;'</span>,html)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(dir_name):</span><br><span class="line">            os.mkdir(dir_name)</span><br><span class="line">        urls = re.findall(<span class="string">'data-original="(.*?)"'</span>,html)</span><br><span class="line">        print(urls)</span><br><span class="line">        <span class="keyword">if</span> len(urls) != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">for</span> url <span class="keyword">in</span> urls:</span><br><span class="line">                print(<span class="string">"download"</span>)</span><br><span class="line">                file_name = url.split(<span class="string">"/"</span>)[<span class="number">-1</span>]</span><br><span class="line">                img = requests.get(url,headers = headers)</span><br><span class="line">                name = dir_name + <span class="string">"/"</span> + file_name</span><br><span class="line">                <span class="keyword">with</span> open(name,<span class="string">"wb"</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(img.content)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    download(<span class="string">"清纯唯美"</span>,i)</span><br></pre></td></tr></table></figure>
@@ -168,6 +168,49 @@ R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <st
 ]]></content>
       <tags>
         <tag>爬虫</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>液-液萃取分离</title>
+    <url>/2020/03/30/%E6%B6%B2-%E6%B6%B2%E8%90%83%E5%8F%96%E5%88%86%E7%A6%BB/</url>
+    <content><![CDATA[<h4 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h4><blockquote>
+<p><strong>分配系数</strong>：当某一种溶质在基本上不相混溶的两个溶剂之间分配时，在<strong>一定温度</strong>下，两项达到<strong>平衡</strong>后，且溶质在<strong>两相中的分子量相等</strong>。则其在两相中的浓度的比值是一常数。</p>
+<p><strong>分配比</strong>：表示溶质在两相中以各种形式存在的总浓度的比值。</p>
+<p><strong>分离因数</strong>：<strong>同一萃取体系</strong>中<strong>相同萃取条件</strong>下两种组分分配比的比值。</p>
+</blockquote>
+<h4 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h4><blockquote>
+<p><strong>盐析剂</strong>：易溶于水但不参与配合反应，但能促进萃取物转入有机相，提高萃取效率的无机物盐类。</p>
+</blockquote>
+<p><strong>盐析剂提高萃取效率：</strong></p>
+<ol>
+<li><p>盐析剂使阴离子浓度增加，产生<code>同离子效应</code>，使萃取平衡朝发生萃取作用的方向移动</p>
+</li>
+<li><p>盐析剂使电解质，其离子水化作用可使溶液中<code>水分子活度减小</code>，降低萃取物与水分子的结合能力</p>
+</li>
+<li><p>高浓度电解质存在，使水的<code>介电常数大为降低</code>，水的<code>偶极矩作用减弱</code>，有利于离子缔合物形成</p>
+</li>
+</ol>
+<h4 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h4><p><strong><em>萃取剂的选择：</em></strong></p>
+<ul>
+<li>$\beta_n$越大越好，萃取剂与萃取的离子形成螯合物稳定性好</li>
+<li>$ K_D $越大越好，螯合物易溶于有机溶剂</li>
+<li>$ K_a $越大越好，萃取剂本身酸性强</li>
+<li><p>$K{^′_D}$越小越好，萃取剂较易电离和较易溶于水</p>
+<p><strong><em>萃取溶剂的选择：</em></strong></p>
+</li>
+<li><p>一般应使螯合物有较大的溶解度</p>
+</li>
+<li>螯合剂有较小的溶解度；溶剂的比重与水相差较大</li>
+<li>粘度较小</li>
+<li>易与原料液相分层、毒性、挥发性较小</li>
+<li>萃取容量大</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Chemistry</category>
+      </categories>
+      <tags>
+        <tag>Chemistry</tag>
       </tags>
   </entry>
   <entry>
@@ -248,49 +291,6 @@ R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <st
 </ul>
 </li>
 </ol>
-]]></content>
-      <categories>
-        <category>Chemistry</category>
-      </categories>
-      <tags>
-        <tag>Chemistry</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>液-液萃取分离</title>
-    <url>/2020/03/30/%E6%B6%B2-%E6%B6%B2%E8%90%83%E5%8F%96%E5%88%86%E7%A6%BB/</url>
-    <content><![CDATA[<h4 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h4><blockquote>
-<p><strong>分配系数</strong>：当某一种溶质在基本上不相混溶的两个溶剂之间分配时，在<strong>一定温度</strong>下，两项达到<strong>平衡</strong>后，且溶质在<strong>两相中的分子量相等</strong>。则其在两相中的浓度的比值是一常数。</p>
-<p><strong>分配比</strong>：表示溶质在两相中以各种形式存在的总浓度的比值。</p>
-<p><strong>分离因数</strong>：<strong>同一萃取体系</strong>中<strong>相同萃取条件</strong>下两种组分分配比的比值。</p>
-</blockquote>
-<h4 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h4><blockquote>
-<p><strong>盐析剂</strong>：易溶于水但不参与配合反应，但能促进萃取物转入有机相，提高萃取效率的无机物盐类。</p>
-</blockquote>
-<p><strong>盐析剂提高萃取效率：</strong></p>
-<ol>
-<li><p>盐析剂使阴离子浓度增加，产生<code>同离子效应</code>，使萃取平衡朝发生萃取作用的方向移动</p>
-</li>
-<li><p>盐析剂使电解质，其离子水化作用可使溶液中<code>水分子活度减小</code>，降低萃取物与水分子的结合能力</p>
-</li>
-<li><p>高浓度电解质存在，使水的<code>介电常数大为降低</code>，水的<code>偶极矩作用减弱</code>，有利于离子缔合物形成</p>
-</li>
-</ol>
-<h4 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h4><p><strong><em>萃取剂的选择：</em></strong></p>
-<ul>
-<li>$\beta_n$越大越好，萃取剂与萃取的离子形成螯合物稳定性好</li>
-<li>$ K_D $越大越好，螯合物易溶于有机溶剂</li>
-<li>$ K_a $越大越好，萃取剂本身酸性强</li>
-<li><p>$K{^′_D}$越小越好，萃取剂较易电离和较易溶于水</p>
-<p><strong><em>萃取溶剂的选择：</em></strong></p>
-</li>
-<li><p>一般应使螯合物有较大的溶解度</p>
-</li>
-<li>螯合剂有较小的溶解度；溶剂的比重与水相差较大</li>
-<li>粘度较小</li>
-<li>易与原料液相分层、毒性、挥发性较小</li>
-<li>萃取容量大</li>
-</ul>
 ]]></content>
       <categories>
         <category>Chemistry</category>
