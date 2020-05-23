@@ -26,7 +26,7 @@
 <p>B站评论区抽奖[python]</p>
 <p>by - ALKEYSHENG    2020.5.21</p>
 </blockquote>
-<p><strong>Github: <a href="https://github.com/AlkeySheng/Bili-Luckydog" target="_blank" rel="noopener">Bili-Luckydog</a></strong></p>
+<p><strong>Github项目: <a href="https://github.com/AlkeySheng/Bili-Luckydog" target="_blank" rel="noopener">Bili-Luckydog</a></strong></p>
 <p><img src="/2020/05/22/Bili-Luckydog/Bili-Luckdog.gif" alt="Demo" style="zoom:50%;"></p>
 <a id="more"></a>
 <p>安装第三方库<code>requests</code></p>
