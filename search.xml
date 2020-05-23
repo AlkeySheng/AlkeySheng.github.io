@@ -1,783 +1,329 @@
 <?xml version="1.0" encoding="utf-8"?>
-<search>
-  <entry>
-    <title>Depth-First-Search</title>
-    <url>/2020/01/21/Depth-First-Search/</url>
-    <content><![CDATA[<h2 id="深度优先搜索算法-DFS-回溯法-解数独"><a href="#深度优先搜索算法-DFS-回溯法-解数独" class="headerlink" title="深度优先搜索算法(DFS) - 回溯法 解数独"></a>深度优先搜索算法(DFS) - 回溯法 解数独</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">su = [[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回下一个“0”的坐标(x,y)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_x_y</span><span class="params">(su)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">                    <span class="keyword">if</span> su[x][y] == <span class="number">0</span>:</span><br><span class="line">                        <span class="keyword">return</span> x,y</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"done"</span></span><br><span class="line"><span class="comment"># 检查并填入一个合法数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fill_num</span><span class="params">(su,x_y)</span>:</span></span><br><span class="line">    dcan = set()</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> su[x_y[<span class="number">0</span>]]:</span><br><span class="line">        dcan.add(n)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">        dcan.add(su[i][x_y[<span class="number">1</span>]])</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">                <span class="keyword">if</span> get_gong((x,y)) == get_gong(x_y):</span><br><span class="line">                    dcan.add(su[x][y])</span><br><span class="line">    dcan.remove(<span class="number">0</span>)</span><br><span class="line">    can = list(&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>&#125;-dcan)</span><br><span class="line">    now_n = su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]]</span><br><span class="line">    <span class="keyword">for</span> d <span class="keyword">in</span> range(now_n+<span class="number">1</span>,<span class="number">11</span>):</span><br><span class="line">        <span class="keyword">if</span> d <span class="keyword">in</span> can:</span><br><span class="line">            su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]] = d</span><br><span class="line">            print(<span class="string">"fill-down"</span>,x_y,d)</span><br><span class="line">            print(su)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]] = <span class="number">0</span></span><br><span class="line">        back_set(su,vectors)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"><span class="comment"># 返回“宫”序号</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_gong</span><span class="params">(x_y)</span>:</span></span><br><span class="line">      <span class="keyword">if</span> x_y[<span class="number">0</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line">      <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">0</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">4</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">5</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">6</span></span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">7</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">8</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">9</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">back_set</span><span class="params">(su,vectors)</span>:</span></span><br><span class="line">    x_y = get_x_y(su)</span><br><span class="line">    index = vectors.index(x_y)<span class="number">-1</span></span><br><span class="line">    print(<span class="string">"backset-down&lt;&lt;&lt;"</span>)</span><br><span class="line">    fill_num(su,vectors[index])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">vectors = []</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">      <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">            <span class="keyword">if</span> su[x][y] == <span class="number">0</span>:</span><br><span class="line">                vectors.append((x,y))</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> get_x_y(su) != <span class="string">"done"</span>:</span><br><span class="line">    x_y = get_x_y(su)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> fill_num(su,x_y):</span><br><span class="line">        print(su)</span><br><span class="line">        back_set(su,vectors)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">""</span>)</span><br><span class="line">    </span><br><span class="line">print(<span class="string">"done!!!!!!!!!!!!!!!!!!!!!!!!"</span>)</span><br><span class="line">print(su)</span><br></pre></td></tr></table></figure>
-<h4 id="Download-soduku-py"><a href="#Download-soduku-py" class="headerlink" title="Download_soduku.py"></a><a href="https://github.com/AlkeySheng/file_bed/raw/master/sudoku.py" target="_blank" rel="noopener">Download_soduku.py</a></h4>]]></content>
+<search> 
+  
+  
+    
+    <entry>
+      <title>Bili-Luckydog</title>
+      <link href="/2020/05/22/Bili-Luckydog/"/>
+      <url>/2020/05/22/Bili-Luckydog/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Bili-Luckydog"><a href="#Bili-Luckydog" class="headerlink" title="Bili-Luckydog"></a>Bili-Luckydog</h1><blockquote><p>B站评论区抽奖[python]</p><p>by - ALKEYSHENG    2020.5.21</p></blockquote><p><strong>Github: <a href="https://github.com/AlkeySheng/Bili-Luckydog" target="_blank" rel="noopener">Bili-Luckydog</a></strong></p><p><img src="/2020/05/22/Bili-Luckydog/Bili-Luckdog.gif" alt="Demo" style="zoom:50%;"></p><a id="more"></a><p>第三方库<code>requests</code></p><p><strong>Github: <a href="https://github.com/AlkeySheng/Bili-Luckydog" target="_blank" rel="noopener">Bili-Luckydog</a></strong></p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- encoding: utf-8 -*-</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">@File: Bili-Luckydog.py</span></span><br><span class="line"><span class="string">@Description: BiliBili评论区抽奖 (仅评论,回复无效)</span></span><br><span class="line"><span class="string">@Time: 2020/05/21 11:47:55</span></span><br><span class="line"><span class="string">@Author: 盛亚琪</span></span><br><span class="line"><span class="string">@Blog: i.2017.work</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="comment"># setting  保留""</span></span><br><span class="line"><span class="comment"># ----------------------------------------------------------</span></span><br><span class="line">bvid = <span class="string">""</span>  <span class="comment"># 视频BV号   如: "BV1NZ4y147X6"</span></span><br><span class="line">num = <span class="string">""</span>   <span class="comment"># 抽奖个数   如: "1"</span></span><br><span class="line"><span class="comment"># ----------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将B站BV号转换为AV号</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getAid</span><span class="params">(bvid)</span>:</span></span><br><span class="line">    root = requests.get(</span><br><span class="line">        <span class="string">"https://api.bilibili.com/x/web-interface/view?bvid=&#123;&#125;"</span>.format(bvid)).json()</span><br><span class="line">    aid = root[<span class="string">"data"</span>][<span class="string">"aid"</span>]</span><br><span class="line">    <span class="keyword">return</span> aid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取某一页JSON</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getJson</span><span class="params">(aid, page=<span class="number">1</span>)</span>:</span></span><br><span class="line">    url = <span class="string">"http://api.bilibili.com/x/v2/reply?jsonp=jsonp&amp;;pn=&#123;&#125;&amp;type=1&amp;oid=&#123;&#125;"</span></span><br><span class="line">    re = requests.get(url.format(page, aid))</span><br><span class="line">    root = re.json()</span><br><span class="line">    <span class="keyword">return</span> root</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 提取JSON中名单添加到列表</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addLi</span><span class="params">(root, li)</span>:</span></span><br><span class="line">    members = root[<span class="string">"data"</span>][<span class="string">"replies"</span>]</span><br><span class="line">    <span class="keyword">for</span> member <span class="keyword">in</span> members:</span><br><span class="line">        uname = member[<span class="string">"member"</span>][<span class="string">"uname"</span>]</span><br><span class="line">        message = member[<span class="string">"content"</span>][<span class="string">"message"</span>]</span><br><span class="line">        li.append([uname, message])</span><br><span class="line">        time.sleep(<span class="number">0.01</span>)</span><br><span class="line">        print(<span class="string">"&#123;:&gt;3d&#125;: &#123;&#125;"</span>.format(len(li), uname))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 随机数抽奖</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getDog</span><span class="params">(n, li)</span>:</span></span><br><span class="line">    lucky_indexs = set()</span><br><span class="line">    <span class="keyword">while</span> len(lucky_indexs) &lt; n:</span><br><span class="line">        randomNum = random.randint(<span class="number">0</span>, len(li)<span class="number">-1</span>)</span><br><span class="line">        lucky_indexs.add(randomNum)</span><br><span class="line">    <span class="keyword">return</span> lucky_indexs</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(bvid, num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> bvid == <span class="string">""</span>:</span><br><span class="line">        bvid = input(<span class="string">"视频BV号 如: BV1NZ4y147X6\n"</span>)</span><br><span class="line">    <span class="keyword">if</span> num == <span class="string">""</span>:</span><br><span class="line">        num = input(<span class="string">"抽奖个数 如: 1\n"</span>)</span><br><span class="line"></span><br><span class="line">    aid = getAid(bvid)</span><br><span class="line">    n = int(num)</span><br><span class="line">    li = []</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"members:\n-----------------------------"</span>)</span><br><span class="line">    page_1 = getJson(aid)</span><br><span class="line">    pages = (page_1[<span class="string">"data"</span>][<span class="string">"page"</span>][<span class="string">"count"</span>]) // (</span><br><span class="line">        page_1[<span class="string">"data"</span>][<span class="string">"page"</span>][<span class="string">"size"</span>]) + <span class="number">1</span></span><br><span class="line">    <span class="comment"># print(pages)</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, pages+<span class="number">1</span>):</span><br><span class="line">        root = getJson(aid, i)</span><br><span class="line">        addLi(root, li)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"-----------------------------"</span>)</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    lucky_indexs = list(getDog(n, li))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">        print(<span class="string">"\n"</span>, <span class="string">" Luckydog:"</span>, li[lucky_indexs[i]][<span class="number">0</span>],</span><br><span class="line">              <span class="string">"\n  comment:"</span>, li[lucky_indexs[i]][<span class="number">1</span>])</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"\nDate-Time:"</span>, datetime.datetime.now().strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main(bvid, num)</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>翡翠结课论文</title>
+      <link href="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/"/>
+      <url>/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/</url>
+      
+        <content type="html"><![CDATA[<h2 id="帝王绿"><a href="#帝王绿" class="headerlink" title="帝王绿"></a>帝王绿</h2><p><a href="https://baike.baidu.com/item/%E5%B8%9D%E7%8E%8B%E7%BB%BF/9473585?fr=aladdin" target="_blank" rel="noopener">帝王绿</a>^[1]^ 绿色色正，色浓，与<a href="https://baike.baidu.com/item/祖母绿/231887" target="_blank" rel="noopener">祖母绿</a>一样，绿中泛出蓝色调，但不偏色。帝王绿色是<a href="https://baike.baidu.com/item/翡翠/5573" target="_blank" rel="noopener">翡翠</a>中颜色最好、<a href="https://baike.baidu.com/item/价值/3771581" target="_blank" rel="noopener">价值</a>最高的绿色，也称“祖母绿色”，给人以高贵之美感。</p><p>[帝王绿]:典型的 “帝王绿”翡翠颜色明度值为 <strong>41</strong> , 其明度级别应为“<strong>Medium</strong>”（中等），“帝王绿”翡翠的颜色级别应为 “<strong>Medium Vivd Green(41, 45, 164)</strong>” （中等明度的浓绿色）。^[2]^</p><p>[2]:刘 严, 陆太进, 张 辉.  绿色翡翠颜色分级方法[D].  北京：中国珠宝首饰学术交流会, 2009</p><hr><p>“帝王绿”这一名称是新兴的称谓，在封建时代，任何事物都不可能称”帝”。到了民国时期，随着挖掘技术能力的提高，一种新的绿色翡翠，在非常难以开采的山矿中被发现，这就是现在的”帝王绿“。这种翡翠以浓郁，大气，庄重，得到上层社会特别是政治家的追捧。浓重的翠色，更能烘托气质，庄重大气。当时人们管这种新色称之为老绿，或者称为老种老色。新中国的建立后，喜欢老种老色的前社会精英们，流向了港台地区，通过和西方文明的接触，发现“老”这个词不适合形容这种高等级的翠色。于是把“老”字代之以“祖母”借西方祖母绿的命名，将老种老色正式命名为“祖母绿翡翠”。一直到90年代末，大陆人们重新唤醒了对翡翠文化的喜爱和继承，祖母绿的命名也就由港台传到了大陆，一直运用至今。但约在2005年前后，首批翡翠电子商务平台兴起。人们发现在互联网上介绍祖母绿翡翠时，容易与西方的祖母绿宝石混淆，且两者颜色区别不大。于是便大胆地将祖母绿翡翠更名为帝王绿翡翠，在互联网上予以推广宣传。借助网络的力量，帝王绿翡翠一炮而红，被广泛推广使用。翡翠从此也进入了帝王绿时代。</p><a id="more"></a><h3 id="翡翠品质评价"><a href="#翡翠品质评价" class="headerlink" title="翡翠品质评价"></a>翡翠品质评价</h3><p>一般评价翡翠的品质的好坏，主要是由以下几个方面，分别是种、（底）、水、色、工、重。</p><ul><li>==<strong><em>种</em></strong>==<strong>，综合翡翠内部矿物颗粒大小以及矿物颗粒之间结合的紧密程度的关系</strong><ul><li>按翡翠内部的矿物晶体颗粒的大小划分<ul><li><code>玻璃种</code>、<code>冰种</code>、<code>糯种</code>、<code>豆种</code>等</li></ul></li><li>按翡翠内部矿物颗粒之间结合的紧密程度划分<ul><li><code>老种</code>、<code>新种</code>、<code>新老种</code></li></ul></li></ul></li><li>==<strong><em>水</em></strong>==<strong>，指光线在翡翠中透射范围的大小，即透明度</strong><ul><li>一分水即透光深度是一分，约为 <strong>3</strong> 毫米</li><li>二分水指透光深度是二分，约为 <strong>6</strong> 毫米</li><li>三分水指透光深度是三分，约为 <strong>9</strong> 毫米</li></ul></li><li>==<strong><em>色</em></strong>==<strong>，翡翠的颜色</strong><ul><li>常见的颜色<ul><li><code>绿</code>、<code>红</code>、<code>黄</code>、<code>紫</code>、<code>蓝</code>、<code>白</code>、<code>黑</code>等</li></ul></li><li>翡翠的绿色变化多端，“色差一分，价差十倍”</li><li>民间有三十六水、七十二豆和一百零八蓝之说</li></ul></li><li>==<strong><em>工</em></strong>==<strong>，含成品的形状、做工等方面</strong><ul><li>由于制作年代、雕刻师、工艺、文化内涵等方面的差异，每件作品都有其自身的特点</li><li>“工必有意，意必吉祥”</li></ul></li><li>==<strong><em>重</em></strong>==，<strong>，指翡翠成品的总重量</strong><ul><li>同品质下，越大、越厚、越重者为贵</li></ul></li><li>==<strong><em>底</em></strong>==，<strong>由物质成分和内部结构所决定</strong><ul><li>主要是玉石色泽的艳丽程度、透明度、致密细腻和坚韧度等<ul><li>一般分为：<code>玻璃底</code>、<code>冰底</code>、<code>糯化底</code>、<code>藕粉底</code>、<code>豆底</code>、<code>瓷底</code>等</li></ul></li></ul></li></ul><h3 id="绿色的判断"><a href="#绿色的判断" class="headerlink" title="绿色的判断"></a>绿色的判断</h3><p>==绿色==是翡翠的至尊之色，由于绿色翡翠拥有着悠久的历史文化地位和积累深厚的社会审美趋势，现当代的翡翠热好者都是以“绿色”为翡翠的帝王之色。在绿色这个大色系里面还分为<code>浅绿</code>（豆绿）、<code>正阳绿</code>、<code>翠绿</code>（帝王绿和祖母绿）、<code>深绿</code>（油青）、<code>蓝绿</code>（蓝水）、<code>墨绿</code>（墨翠）。如同自然界的绿一样，它并不是单一的，有深浅、浓艳、透明度的巨大差别。</p><p>绿色，可四方面判断，==阳、浓、正、匀==。</p><div class="table-container"><table><thead><tr><th style="text-align:center"><strong>阳</strong></th><th style="text-align:center"><strong>浓</strong></th><th style="text-align:center"><strong>正</strong></th><th style="text-align:center"><strong>匀</strong></th></tr></thead><tbody><tr><td style="text-align:center">绿的鲜艳、明亮程度，主要由翡翠含绿色、黑色、灰色的比例来决定的。绿色多颜色明亮，如果黑或灰多，颜色就灰暗了</td><td style="text-align:center">绿的深浅程度，浓度最好在 70% - 80% 之间</td><td style="text-align:center">色调范围，根据主色与次色的比例而定，是纯正的绿色，如果混有其他的颜色，绿色色调就下降</td><td style="text-align:center">绿色分布的均匀度，直接反映绿色的分布情况</td></tr><tr><td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/微信图片_20200504221435-1588601998408.jpg" style="zoom:10%;"></td><td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/微信图片_20200504221445.jpg" style="zoom:32%;"></td><td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/微信图片_20200504221453.jpg" style="zoom:10%;"></td><td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/微信图片_20200504221426.jpg" style="zoom:35%;"></td></tr></tbody></table></div><h3 id="影响翡翠色的因素"><a href="#影响翡翠色的因素" class="headerlink" title="影响翡翠色的因素"></a>影响翡翠色的因素</h3><p>天然形成的绿色翡翠种类繁多，颜色很难分布均匀，那么，影响翡翠绿色的因素主要有以下几种</p><h4 id="1、铬元素"><a href="#1、铬元素" class="headerlink" title="1、铬元素"></a>1、铬元素</h4><p>铬元素含量的多少会影响翡翠的绿色。铬离子含量过高，翡翠的绿色就会变深，甚至是衍生黑点、黑丝及黑斑；若铬离子含量过低，绿色就会变浅。</p><h4 id="2、铁及其杂质金属"><a href="#2、铁及其杂质金属" class="headerlink" title="2、铁及其杂质金属"></a>2、铁及其杂质金属</h4><p>绿色翡翠中含有铁及黑色金属，它的颜色就会变深、变暗，饱和度或鲜艳度也会受到影响，好像有一种发灰的绿色。</p><h4 id="3、杂质矿物"><a href="#3、杂质矿物" class="headerlink" title="3、杂质矿物"></a>3、杂质矿物</h4><p>天然翡翠在形成过程中，不可避免的掺进一些杂质矿物，不仅影响翡翠的亮度和饱和度，还会使翡翠的绿色变成灰绿色、黑绿色或黑色，使翡翠的绿色变得不均匀。</p><h4 id="4、翡翠的种"><a href="#4、翡翠的种" class="headerlink" title="4、翡翠的种"></a>4、翡翠的种</h4><p>翡翠的颗粒细小均匀，结构致密，这样的翡翠绿色就会均匀亮丽。</p><h4 id="5、翡翠的水"><a href="#5、翡翠的水" class="headerlink" title="5、翡翠的水"></a>5、翡翠的水</h4><p>水好，翡翠的绿就就会灵动有活力；水差，翡翠的绿就会变得呆板，缺乏生气。</p><h3 id="帝王绿的价值"><a href="#帝王绿的价值" class="headerlink" title="帝王绿的价值"></a>帝王绿的价值</h3><p><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/Users\dabai\Desktop\我最爱的帝王绿翡翠.assets\微信图片_20200504225956.jpg" style="zoom:33%;"></p><p>翡翠如果有帝王绿，那么价格即不菲。 帝王绿非常难得，非常稀少，因此价格非常昂贵。帝王绿翡翠是一种硬玉，可以做成各种各样的首饰和摆饰，在光线照耀下绿得发亮。其中糯种帝王绿，属于近代翡翠里的极品，材质结构丝絮状，透光看，质地细密，晶莹闪烁，绿丝悬浮，抛光后表面没有现代翡翠的水晶折光感，帝王绿给人以内敛凝重闻名于世，价值连城。因此，帝王绿具备极高的收藏和投资价值，广受翠友的青睐，也便有了各大拍卖会上常出现的各式帝王绿藏品以天价拔得头筹的现象。</p><h3 id="帝王绿与祖母绿"><a href="#帝王绿与祖母绿" class="headerlink" title="帝王绿与祖母绿"></a>帝王绿与祖母绿</h3><p>帝王绿色是翡翠中颜色最好、价值最高的绿色，给人以高贵之美感，也称“祖母绿色”。因此很容易把帝王绿与祖母绿混淆，实际上，除了颜色相似外，==<code>帝王绿</code>与<code>祖母绿</code>本质上毫无关系==。</p><div class="table-container"><table><thead><tr><th style="text-align:center">帝王绿</th><th style="text-align:center">祖母绿</th></tr></thead><tbody><tr><td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/640-1588603817932.webp" style="zoom: 30%;"></td><td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/5882b2b7d0a20cf43b85966b7c094b36acaf9968.jpg" alt="5882b2b7d0a20cf43b85966b7c094b36acaf9968" style="zoom:80%;"></td></tr></tbody></table></div><p>在宝石里，祖母绿被称为“绿宝石”，价值相当贵重，是国际珠宝界公认的四大名贵宝石之一。它的绿中带点黄，又似乎带点蓝，这绿色会随着晴天和阴天微妙地改变，这独特的绿为其所独有。祖母绿是宝石级的绿色绿柱石。其绿色要达到中等达到浓艳的绿色调，就是色的浓度要比较饱和。浅淡绿色的通常称之为绿色绿柱石。</p><p>帝王绿是一种独特的颜色，在日光下显现一种凝重的湖绿色，乍看近似湖蓝色，在强光照射下显现翠绿色，在数码闪光灯下呈现阳绿色，变化莫测。</p><h3 id="帝王绿的特征"><a href="#帝王绿的特征" class="headerlink" title="帝王绿的特征"></a>帝王绿的特征</h3><p>翡翠原石的种和水及色每一种必须要达到极致，才能叫做“帝王绿”，真正的帝王绿翡翠原石，非常的稀少，这种极致的美，如世间最美最绚丽一般，让人无法释怀。</p><p><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/微信图片_20200505110008.jpg" style="zoom:20%;"></p><p>帝王绿翡翠原石的绿色较为浓艳，干净，晶莹剔透，翡翠原石的绿色部分是由于含有致色元素<code>铬</code>和<code>铁</code>造成的，==有色离子铁和铬置换了无色的铝离子，铁离子常呈现浅绿色，铬离子会呈现非常鲜艳的绿色==，高档绿色都是由于含铬离子形成的。如果含铬过多，那翡翠的绿色就会变得太浓，看起来就像黑色 ，价值反而会降低很多。如果含==铬和铁的比例不同，翡翠原石就会呈现各种不同的绿色==，有纯正的翠绿，也有偏蓝和偏黄及偏灰色调的绿色，不同的绿色价值就不同，最贵的宝石绿非帝王绿翡翠莫属，帝王绿为深浓的正绿，透明度好，高雅而庄重，色似祖母绿，也称为祖母绿。</p><p>绿色是构成翡翠身价高低的一个非常重要的因素，这些绿色又呈现不同的形状，如带状的带子绿，大小不等，还有呈块状的团块绿，均匀绿和靠皮绿，还有丝块绿和丝絮状的丝絮绿，这也使得翡翠绿色更加变幻莫测。翡翠的绿色最为艳丽名贵，常常是判断一件翡翠优劣的元素。</p><h3 id="帝王绿的价格"><a href="#帝王绿的价格" class="headerlink" title="帝王绿的价格"></a>帝王绿的价格</h3><p>帝王绿翡翠价值太高，因此很难去估算具体的价位，不过帝王绿翡翠手镯之间，还是有品质和价格上的差异的，翡翠的种水不同，翡翠绿色面积大小不同都会使帝王绿翡翠手镯的品质和价格不一样。</p><p>而帝王绿翡翠手镯的==颜色则是最关键的因素==，帝王绿是翡翠绿色中是颜色最纯正的，如果颜色偏了，那就不是帝王绿翡翠手镯了，比如说帝王绿翡翠手镯颜色偏黄了，带有黄味，那就是苹果绿翡翠手镯了，帝王绿翡翠手镯和苹果绿翡翠手镯的价格是相差很多的。另外，帝王绿翡翠手镯中颜色的“浓、阳、正、和”对帝王绿翡翠手镯的价格影响也是非常大的，帝王绿颜色面积越大，越均匀，翡翠手镯的价格也越高。</p><blockquote><p>部分手镯价格分析表</p></blockquote><div class="table-container"><table><thead><tr><th style="text-align:center">帝王绿玻璃种翡翠手镯</th><th style="text-align:center">冰种翡翠手镯</th><th style="text-align:center">糯种翡翠手镯</th></tr></thead><tbody><tr><td style="text-align:center">约 <strong>390</strong>万</td><td style="text-align:center">约 <strong>190</strong>万</td><td style="text-align:center">约 <strong>230</strong>万</td></tr><tr><td style="text-align:center">这一段翡翠真正达到了“浓、阳、正、和”这四个标准，颜色色调非常纯正，达到了帝王绿，翡翠是满绿的</td><td style="text-align:center">手镯绿色部分色调纯正，那团绿色已经达到了帝王绿，虽然绿色只是手镯的一小部分，但正因为这一团帝王绿让手镯增添了无穷的诱惑，提升了手镯的价格</td><td style="text-align:center">非常值得收藏的翡翠手镯，满绿帝王绿手镯，绿色浓郁纯正，但种水没有达到冰种、玻璃种</td></tr><tr><td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/640-1588649785665.webp" alt="img" style="zoom: 45%;"></td><td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/640-1588649785523.webp" alt="img" style="zoom: 45%;"></td><td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/640-1588649785746.webp" alt="img"></td></tr></tbody></table></div><h3 id="帝王绿的选购方法"><a href="#帝王绿的选购方法" class="headerlink" title="帝王绿的选购方法"></a>帝王绿的选购方法</h3><ul><li><strong>翡翠的种水</strong><ul><li>种水好的帝王绿翡翠手镯晶莹通透，并且十分珍希，更有审美价值和收藏价值</li></ul></li></ul><ul><li><strong>注重翡翠的颜色</strong><ul><li>帝王绿翡翠手镯是绿得最纯正的绿色，颜色不能偏色，有一点偏色都不属于帝王绿翡翠手镯</li></ul></li></ul><p><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/640-1588649785745.webp" alt="img" style="zoom:33%;"></p><ul><li><p><strong>帝王绿翡翠的颜色面积</strong></p><ul><li>面积越大及分布越均匀帝王绿翡翠手镯的价值会越高</li><li>符合绿色翡翠的评价标准“==浓、阳、正、匀==”</li></ul></li><li><p><strong>翡翠内部瑕疵</strong></p><ul><li>翡翠石棉、裂纹等会大大影响翡翠手镯的价格</li></ul></li></ul><blockquote><p>因此，购买帝王绿翡翠手镯来作为收藏或增值保值，应该尽量选择<code>种水好</code>、<code>颜色纯正</code>、<code>颜色面积大</code>且<code>颜色均匀</code>、<code>瑕疵少</code>的翡翠手镯，这样的帝王绿翡翠手镯才更有收藏价值和增值保值价值。</p></blockquote><p>帝王绿翡翠手镯自古以来都受到爱玉者们的喜爱，像清代的慈喜太后、民国时期的宋庆龄女士以及一些名人都是非常喜爱翡翠，并也喜欢佩戴和收藏翡翠，对于这些有历史或者是名人佩戴过的帝王绿翡翠手镯更具有收藏价值，这些有历史的帝王绿翡翠手镯价值更高。</p><h3 id="关于翡翠及翡翠鉴赏课程"><a href="#关于翡翠及翡翠鉴赏课程" class="headerlink" title="关于翡翠及翡翠鉴赏课程"></a>关于翡翠及翡翠鉴赏课程</h3><p>“翡翠”一词最早用来指红与青绿两种羽毛的鸟，称之为翡翠鸟或翠鸟，俗称“打鱼郎”。</p><p>在参与此门课程之前我并未了解过翡翠，这门课程对我最大的意义是纠正了我对翡翠的误解与偏见。翡翠不是富贾名流显示奢侈身家的工具，更不是上流社会的专利品，当然也不是毫无价值的庸俗石头。我国翡翠文化历史悠久，蕴涵了丰富的民间传统色彩。翡翠本确为石头，凝结了自然巧合与人文色彩的石头确实有其价值所在，翡翠本身就是大自然震撼人心的馈赠。从未间断地对翡翠的开采、买卖、收藏，既是对财富的永恒追求，也正是表现了人们对美好世界的不懈向往。</p><p>课程结束，但是我对翡翠了解认知旅途才刚刚开始，继续前行。</p><p>江湖路远，后会有期。</p><p>Download_<a href="https://github.com/AlkeySheng/file_bed/raw/master/%E6%88%91%E6%9C%80%E7%88%B1%E7%9A%84%E5%B8%9D%E7%8E%8B%E7%BB%BF%E7%BF%A1%E7%BF%A0.pdf" target="_blank" rel="noopener">我最爱的帝王绿翡翠.pdf</a></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 翡翠 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>离子交换树脂</title>
+      <link href="/2020/04/19/%E7%A6%BB%E5%AD%90%E4%BA%A4%E6%8D%A2%E6%A0%91%E8%84%82/"/>
+      <url>/2020/04/19/%E7%A6%BB%E5%AD%90%E4%BA%A4%E6%8D%A2%E6%A0%91%E8%84%82/</url>
+      
+        <content type="html"><![CDATA[<h2 id="交联度"><a href="#交联度" class="headerlink" title="交联度"></a>交联度</h2><blockquote><p>指树脂的交联程度。</p></blockquote><p>交联度用加入 树脂中交联剂的百分含量表示</p><script type="math/tex; mode=display">交联度 = \frac{交联剂质量}{反应混合物质量}\times100\%</script><p><strong><em>交联度对树脂的影响</em></strong></p><ol><li><p><strong>树脂的交联度大</strong>：网间孔隙小，树脂对离子的选 择性增加，机械性能好。</p><p> <code>但网间孔隙过小，会降低离子交换的速度，降低树脂的有效交换容量</code></p></li><li><p><strong>树脂的交联度小</strong>：网间孔隙大，交换反应速度快， 交换的选择性差，树脂的机械强度、化学稳定性差。</p></li></ol><h2 id="离子交换树脂性质"><a href="#离子交换树脂性质" class="headerlink" title="离子交换树脂性质"></a>离子交换树脂性质</h2><ol><li><p><strong>含水量：</strong></p><ul><li>含水量是树脂的固有性质</li><li>取决于亲水基团的多少及树脂孔隙的大小</li><li>含水量的变化反映着树脂内在质量的变化</li></ul></li><li><p><strong>溶胀性：</strong></p><ul><li>在水中发生体积的膨胀</li><li>影响膨胀度的因素：<ul><li>交联度增大，膨胀度减少。 </li><li>同交换基团的数量和离子的类型有关 <code>裸半径小而电荷大的离子水化能力强</code></li></ul></li></ul></li><li><p><strong>密度：</strong></p><ul><li><p>表观密度：<em>指树脂在交换柱中的装填密度</em></p><script type="math/tex; mode=display">表观密度(Da)=\frac{溶胀后树脂重量(m)}{树脂在水中的表观体积(V)}(g/mL)</script></li><li><p>真密度：<em>指树脂颗粒本身密度</em></p><script type="math/tex; mode=display">真密度(Dw)=\frac{溶胀后树脂重量(m)}{树脂所排除水的体积(V)}(g/mL)</script></li></ul></li><li><p><strong>交换容量：</strong></p><ul><li>总交换容量<ul><li>单位重量干树脂或单位体积湿树脂中，所有交换基团的总数</li><li>单位<code>mol/g</code>、<code>mmol/g</code>、 <code>mol/L</code>、<code>mmol/mL</code></li></ul></li><li>操作交换容量<ul><li>单位体积湿树脂或单位重量干树脂中，实际参加反应的交换基团的总数</li><li>单位：<code>mmol/mL</code>、 <code>mmol/g</code></li></ul></li></ul></li></ol><a id="more"></a><h2 id="离子交换树脂例"><a href="#离子交换树脂例" class="headerlink" title="离子交换树脂例"></a>离子交换树脂例</h2><ol><li><strong>强酸性阳离子交换树脂：</strong><ul><li>淡黄色球状颗粒</li><li>化学稳定性好，耐磨性好</li><li>在酸性、碱性和中性介质中都可使用</li><li>交换反应速度快</li><li>无机、有机阴离子均可交换</li></ul></li><li><strong>弱酸性阳离子交换树脂：</strong><ul><li>含有弱酸性活泼基团，如：<code>-COOH</code>、<code>-OH</code> 等</li><li>交换能力受酸度的影响较大</li></ul></li><li><strong>螯合树脂：</strong><ul><li>高选择性（主要决定于树脂中螯合基的结构）</li><li>高稳定性（由于它与金属离子形成了内络盐的缘故）</li></ul></li></ol>]]></content>
+      
+      
       <categories>
-        <category>算法</category>
+          
+          <category> Chemistry </category>
+          
       </categories>
-      <tags>
-        <tag>算法</tag>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>test</title>
-    <url>/2020/02/08/test/</url>
-    <content><![CDATA[<p>test</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>Bili-Luckydog</title>
-    <url>/2020/05/22/Bili-Luckydog/</url>
-    <content><![CDATA[<h1 id="Bili-Luckydog"><a href="#Bili-Luckydog" class="headerlink" title="Bili-Luckydog"></a>Bili-Luckydog</h1><blockquote>
-<p>B站评论区抽奖[python]</p>
-<p>by - ALKEYSHENG    2020.5.21</p>
-</blockquote>
-<p>第三方库<code>requests</code></p>
-<p><strong>Blog: <a href="https://i.2017.work" target="_blank" rel="noopener">i.2017.work</a></strong></p>
-<p><strong>Github: <a href="https://github.com/AlkeySheng/Bili-Luckydog" target="_blank" rel="noopener">Bili-Luckydog</a></strong></p>
-<a id="more"></a>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># -*- encoding: utf-8 -*-</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">@File: Bili-Luckydog.py</span></span><br><span class="line"><span class="string">@Description: BiliBili评论区抽奖 (仅评论,回复无效)</span></span><br><span class="line"><span class="string">@Time: 2020/05/21 11:47:55</span></span><br><span class="line"><span class="string">@Author: 盛亚琪</span></span><br><span class="line"><span class="string">@Blog: i.2017.work</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="comment"># setting  保留""</span></span><br><span class="line"><span class="comment"># ----------------------------------------------------------</span></span><br><span class="line">bvid = <span class="string">""</span>  <span class="comment"># 视频BV号   如: "BV1NZ4y147X6"</span></span><br><span class="line">num = <span class="string">""</span>   <span class="comment"># 抽奖个数   如: "1"</span></span><br><span class="line"><span class="comment"># ----------------------------------------------------------</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将B站BV号转换为AV号</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getAid</span><span class="params">(bvid)</span>:</span></span><br><span class="line">    root = requests.get(</span><br><span class="line">        <span class="string">"https://api.bilibili.com/x/web-interface/view?bvid=&#123;&#125;"</span>.format(bvid)).json()</span><br><span class="line">    aid = root[<span class="string">"data"</span>][<span class="string">"aid"</span>]</span><br><span class="line">    <span class="keyword">return</span> aid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取某一页JSON</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getJson</span><span class="params">(aid, page=<span class="number">1</span>)</span>:</span></span><br><span class="line">    url = <span class="string">"http://api.bilibili.com/x/v2/reply?jsonp=jsonp&amp;;pn=&#123;&#125;&amp;type=1&amp;oid=&#123;&#125;"</span></span><br><span class="line">    re = requests.get(url.format(page, aid))</span><br><span class="line">    root = re.json()</span><br><span class="line">    <span class="keyword">return</span> root</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 提取JSON中名单添加到列表</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addLi</span><span class="params">(root, li)</span>:</span></span><br><span class="line">    members = root[<span class="string">"data"</span>][<span class="string">"replies"</span>]</span><br><span class="line">    <span class="keyword">for</span> member <span class="keyword">in</span> members:</span><br><span class="line">        uname = member[<span class="string">"member"</span>][<span class="string">"uname"</span>]</span><br><span class="line">        message = member[<span class="string">"content"</span>][<span class="string">"message"</span>]</span><br><span class="line">        li.append([uname, message])</span><br><span class="line">        time.sleep(<span class="number">0.01</span>)</span><br><span class="line">        print(<span class="string">"&#123;:&gt;3d&#125;: &#123;&#125;"</span>.format(len(li), uname))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 随机数抽奖</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getDog</span><span class="params">(n, li)</span>:</span></span><br><span class="line">    lucky_indexs = set()</span><br><span class="line">    <span class="keyword">while</span> len(lucky_indexs) &lt; n:</span><br><span class="line">        randomNum = random.randint(<span class="number">0</span>, len(li)<span class="number">-1</span>)</span><br><span class="line">        lucky_indexs.add(randomNum)</span><br><span class="line">    <span class="keyword">return</span> lucky_indexs</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">(bvid, num)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> bvid == <span class="string">""</span>:</span><br><span class="line">        bvid = input(<span class="string">"视频BV号 如: BV1NZ4y147X6\n"</span>)</span><br><span class="line">    <span class="keyword">if</span> num == <span class="string">""</span>:</span><br><span class="line">        num = input(<span class="string">"抽奖个数 如: 1\n"</span>)</span><br><span class="line"></span><br><span class="line">    aid = getAid(bvid)</span><br><span class="line">    n = int(num)</span><br><span class="line">    li = []</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"members:\n-----------------------------"</span>)</span><br><span class="line">    page_1 = getJson(aid)</span><br><span class="line">    pages = (page_1[<span class="string">"data"</span>][<span class="string">"page"</span>][<span class="string">"count"</span>]) // (</span><br><span class="line">        page_1[<span class="string">"data"</span>][<span class="string">"page"</span>][<span class="string">"size"</span>]) + <span class="number">1</span></span><br><span class="line">    <span class="comment"># print(pages)</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, pages+<span class="number">1</span>):</span><br><span class="line">        root = getJson(aid, i)</span><br><span class="line">        addLi(root, li)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"-----------------------------"</span>)</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    lucky_indexs = list(getDog(n, li))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">        print(<span class="string">"\n"</span>, <span class="string">" Luckydog:"</span>, li[lucky_indexs[i]][<span class="number">0</span>],</span><br><span class="line">              <span class="string">"\n  comment:"</span>, li[lucky_indexs[i]][<span class="number">1</span>])</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"\nDate-Time:"</span>, datetime.datetime.now().strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main(bvid, num)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>1970年1月1日0时0分0秒</title>
-    <url>/2020/02/26/1970%E5%B9%B41%E6%9C%881%E6%97%A50%E6%97%B60%E5%88%860%E7%A7%92/</url>
-    <content><![CDATA[<blockquote>
-<p>NTP时间戳的1970年1月1日0时0分0秒有何特殊？</p>
-</blockquote>
-<h3 id="通俗理解"><a href="#通俗理解" class="headerlink" title="通俗理解"></a>通俗理解</h3><p>人类计算机系统起源于革命性的<code>UNIX</code>，而<code>UNIX</code>系统确定1970年1月1日0时为时间起点，所以后世系统及语言的时间戳是以1970年1月1日0时为起点记录时间的。</p>
-<h3 id="深入了解"><a href="#深入了解" class="headerlink" title="深入了解"></a>深入了解</h3><p>最初计算机操作系统是32位，时间也是32位表示。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 32位int类型数据储存最大整数为</span></span><br><span class="line">System.out.println(Integer.MAX_VALUE);     <span class="comment">// 21474836471</span></span><br></pre></td></tr></table></figure>
-<p>int类型数据在<code>java</code>内用32位表示，32位能表示的最大值是<code>2147483647</code>。一年365天的总共31536000秒。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="number">2147483647</span> / <span class="number">31536000</span> = <span class="number">68.1</span> <span class="comment">//年</span></span><br></pre></td></tr></table></figure>
-<p>因此32位数据能表示的最长时间是<code>68.1</code>年，从1970年开始计算，最终到<code>2038年01月19日03时14分07秒</code>时，会达到时间戳的最大值，到时，所有32位操作系统的时间便会发生溢出错误，出现时间回归现象，使系统运行异常。</p>
-<p>用32位来表示时间的最大间隔是68年，因此最早出现的UNIX系统综合考虑应用时限等问题，最终选取1970年1月1日作为UNIX TIME的纪元时间。</p>
-<p>至于时间回归现象，最新64位操作系统可以表示到<code>292,277,026,596年的12月4日14时30分08秒</code>，已经是千亿年以后了。</p>
-]]></content>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>The red scarf on trump&#39;s chest is even brighter</title>
-    <url>/2020/04/07/The-red-scarf-on-trump-s-chest-is-even-brighter/</url>
-    <content><![CDATA[<blockquote>
-<p>2019 was a year of rollarcoaster experience for Huawei, are they still good? I’m Albert, from Guancha.cn.</p>
-</blockquote>
-<p>On March 31th, Huawei just published its 2019 annual report. I gotta say I’m impressed, with all the difficulties, they’ve still got a beautiful number. In 2019, Huawei’s revenue achieved 123 billion US dollars, with net profits of 9 billion dollars, Which is 19.1 percent more than year 2018. However, if we take a closer look, the fact is that the revenue is below the expectation. Huawei’s H1 2019 report shows a growth of 23.2 percent increase, so it had to be some unavoidable difficulty to pull the number back to 19.1 percent. Well, I think we all know what happened. Just a few days before the announcement of the annual report, I heard something from the other side of the Ocean. According to CNBC, sources familiar with the matter said, Senior officials in the Trump administration agreed to new measures to restrict the global supply of chips to Huawei. Again, Huawei becomes the sacrifice for President Trump to shift the people’s attention away from internal troubles. </p>
-<a id="more"></a>
-<p>For now, the US is leading  the number of confirmed cases with coronavirus in the world and economy suffers from it. Politically, Democratic candidate, Joe Biden is leading the poll on 2020. Hey this number is from Fox News, the only news that Mr. President believes to be real. Meanwhile, Huawei is trying to help. On March 26th, Andrew Cuomo the Governor of the State of New York announced significant donations to help increase the state’s supply capacity and Huawei was among the list. Business is business, but when politics steps in, the free market fades away. President Trump vows to make America great again, but he doesn’t wanna do it decently. In May 2019, The US government banned Huawei from working with some of its longtime partners, such as Google, so Huawei can’t use all of Google’s services. It hurts the company a lot since global consumers heavily depend on Google, Google Maps and Gmail. Luckily the Chinese market doesn’t depend on Google service since is more familiar with local apps such as Baidu, Gaode Maps and Wechat. But still it is huge damage to the company’s global expansion. However, the company still sold 240 million smart-phones and along with PC, tablets, wearables and smart screens, consuming business still contributed over half of Huawei’s revenue in 2019, It means Huawei has proven itself to be a valuable and trustworthy brand in the market. But on the other side, the growth rate outside of the Chinese market had fallen 1.6 percent last year, the damage is real. </p>
-<p>Moreover the Trump administration is doing whatever they can to persuade European allies not to work with Huawei to establish their 5G network. Huawei is the best in this field and it is ridiculous not to use the best. It just like a guy who doesn’t want his girlfriend to speak to other excellent guys. They invest over 10 percent of their sales revenue into research and development every year, in 2019, they spend 18.8 billon dollars in R&amp;D and their total R&amp;D investment over the past decade is more than 85.7 billion dollars, in 2019 they had approximately 96000 R&amp;D employees, accounting for 49% of the total workforce.  All these investments make Huawei one of the largest patent holders in the world, they are granted more than 85000 patents by the end of 2019. Let’s put it simple, they are good they are fast and they are affordable. The Trump administration believes that killing Huawei is the key to maintain American supremacy in Technology. Let’s have a history lesson, Napoleon, the great French conqueror saw Great Britain was an obstacle on his way to conquer the world, in 1806 he created the Continental System to ban the European continent from doing business with Great Britain and he failed, his Empire collapsed with the system. After a brief history lesson, let’s look at the reason that the US holds against Huawei. Hum, interesting. China has never spied on French presidents and German chancellors as the US did. I mean, ask Snowden about it. On February 11th, 2020, the Washington Post had revealed the little secret of Crypto AG, it is a Swiss company that keep communications of spies soldiers and diplomats secret for governments all over the world. Guess who is the owner of this company? Why on earth does the US think they can teach the world about national security? American companies are also suffering from the Trade War. Micron CEO Sanjay Mehrotra made a very clear suggestion that boycotting Huawei will make American companies suffer. The 21st century is the century of globalization. Our world is deeply connected and no one can survive without friends and partners. </p>
-<p>Huawei is just another multinational corporation that wants to do business in America and every other country in the world, there is nothing different from Toyota Siemens or Samsung. Huawei is buying 6 billion US dollars components from American suppliers every year, which indirectly created 35 thousand jobs for American people. In 2018 Huawei even purchased 11 billion dollars of products from its American partners. Many times Huawei has mentioned how much they value American partners, the American market and American people, the company is actually helping out the goal to make America great again.  So cutting Huawei away from the US will do no good to American companies. I mean think about it putting a sanction on Huawei will weaken American tech firm’s revenue and they will have less money for R&amp;D, with less on R&amp;D they will become less competitive on the market, according to The Consulting Group’s report, China has been establishing alternative non-US suppliers for semiconductor demand and it caused the growth of the top 25 American semiconductor firms decreased 4-9 percent in 2019. No mention if the US keeps pushing China, then China will have to fight back. China is the second-largest market for Apple and biggest market for Qualcomm. In 2019 Qualcomm’s revenue was 24.7 billion dollars and the Chinese market contributed 11.6 billion dollars. I don’t think Qualcomm can keep up with the 5G R&amp;D with yearly revenue of 13.1 billion. The US Defense Department made a statement in their own report on 5G and they have already realized the reality. The report says that American companies are not competitive enough to stop the expansion of China’s 5G providers in the world. Wise men said if you can’t beat them join them, doing business side by side, so American companies can keep up with the latest tech development, remain in the playfield and wait for the next opportunity. I mean, isn’t that how you do business? Ren Zhengfei, the founder of Huawei, said 2020 will be the year of a true test. He is no prophet, I believe he was talking about the US sanction. But the coronavirus pandemic has created a bigger challenge to the whole world and we can see how technology can give hand. </p>
-<p>For medical people fighting the virus at the frontline, Huawei has helped carriers quickly deploy 5G networks, so patients could get better treatment and making remote diagnosis possible. For those people in quarantine, they have to work and hold meeting at home, so the company is doing their best to provide a stable and fast network. No one wants their boss to see them in a terrible definition, right? </p>
-<p>After all, can we just work hand in hand, the US is the most powerful country in the world, that’s a fact, no one wants to challenge it and no one wants to change it, we are all living in a world order which is established by the US. At this time of the disaster, why don’t we just give up all the divergence and save the world together? </p>
-<p>Thank you for watching, If you find this video helpful and inspiring, please like it, comment and share it with your friends. Thank you and see you next time.</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>分离方法评价</title>
-    <url>/2020/03/15/%E5%88%86%E7%A6%BB%E6%96%B9%E6%B3%95%E8%AF%84%E4%BB%B7/</url>
-    <content><![CDATA[<h2 id="回收率"><a href="#回收率" class="headerlink" title="回收率"></a>回收率</h2><blockquote>
-<p>表示<code>被分离组分</code>在分离中的完全程度。</p>
-</blockquote>
-<script type="math/tex; mode=display">
-R_i = \frac{通过分离后欲分离组分的测得量}{分离前欲分离组分原来的含量}\times100\%</script><h2 id="分离因数"><a href="#分离因数" class="headerlink" title="分离因数"></a>分离因数</h2><blockquote>
-<p><code>干扰组分B</code>与<code>欲测组分A</code>的回收率之比。</p>
-</blockquote>
-<script type="math/tex; mode=display">
-S_{B/A} = \frac{R_B}{R_A} = \frac{Q{^0_A} Q_B} { Q{^0_B} Q_A }</script><h2 id="分离要求"><a href="#分离要求" class="headerlink" title="分离要求"></a>分离要求</h2><p><strong><em>常量分析</em></strong> <strong>：</strong></p>
-<script type="math/tex; mode=display">
-R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <strong>：</strong> </p>
-<script type="math/tex; mode=display">R_i>95\% \quad或\quad R_i\geq90\%,10^{-6}<S_{B/A}<10^{-7}</script>]]></content>
+      
+      
+        <tags>
+            
+            <tag> Chemistry </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>The red scarf on trump&#39;s chest is even brighter</title>
+      <link href="/2020/04/07/The-red-scarf-on-trump-s-chest-is-even-brighter/"/>
+      <url>/2020/04/07/The-red-scarf-on-trump-s-chest-is-even-brighter/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>2019 was a year of rollarcoaster experience for Huawei, are they still good? I’m Albert, from Guancha.cn.</p></blockquote><p>On March 31th, Huawei just published its 2019 annual report. I gotta say I’m impressed, with all the difficulties, they’ve still got a beautiful number. In 2019, Huawei’s revenue achieved 123 billion US dollars, with net profits of 9 billion dollars, Which is 19.1 percent more than year 2018. However, if we take a closer look, the fact is that the revenue is below the expectation. Huawei’s H1 2019 report shows a growth of 23.2 percent increase, so it had to be some unavoidable difficulty to pull the number back to 19.1 percent. Well, I think we all know what happened. Just a few days before the announcement of the annual report, I heard something from the other side of the Ocean. According to CNBC, sources familiar with the matter said, Senior officials in the Trump administration agreed to new measures to restrict the global supply of chips to Huawei. Again, Huawei becomes the sacrifice for President Trump to shift the people’s attention away from internal troubles. </p><a id="more"></a><p>For now, the US is leading  the number of confirmed cases with coronavirus in the world and economy suffers from it. Politically, Democratic candidate, Joe Biden is leading the poll on 2020. Hey this number is from Fox News, the only news that Mr. President believes to be real. Meanwhile, Huawei is trying to help. On March 26th, Andrew Cuomo the Governor of the State of New York announced significant donations to help increase the state’s supply capacity and Huawei was among the list. Business is business, but when politics steps in, the free market fades away. President Trump vows to make America great again, but he doesn’t wanna do it decently. In May 2019, The US government banned Huawei from working with some of its longtime partners, such as Google, so Huawei can’t use all of Google’s services. It hurts the company a lot since global consumers heavily depend on Google, Google Maps and Gmail. Luckily the Chinese market doesn’t depend on Google service since is more familiar with local apps such as Baidu, Gaode Maps and Wechat. But still it is huge damage to the company’s global expansion. However, the company still sold 240 million smart-phones and along with PC, tablets, wearables and smart screens, consuming business still contributed over half of Huawei’s revenue in 2019, It means Huawei has proven itself to be a valuable and trustworthy brand in the market. But on the other side, the growth rate outside of the Chinese market had fallen 1.6 percent last year, the damage is real. </p><p>Moreover the Trump administration is doing whatever they can to persuade European allies not to work with Huawei to establish their 5G network. Huawei is the best in this field and it is ridiculous not to use the best. It just like a guy who doesn’t want his girlfriend to speak to other excellent guys. They invest over 10 percent of their sales revenue into research and development every year, in 2019, they spend 18.8 billon dollars in R&amp;D and their total R&amp;D investment over the past decade is more than 85.7 billion dollars, in 2019 they had approximately 96000 R&amp;D employees, accounting for 49% of the total workforce.  All these investments make Huawei one of the largest patent holders in the world, they are granted more than 85000 patents by the end of 2019. Let’s put it simple, they are good they are fast and they are affordable. The Trump administration believes that killing Huawei is the key to maintain American supremacy in Technology. Let’s have a history lesson, Napoleon, the great French conqueror saw Great Britain was an obstacle on his way to conquer the world, in 1806 he created the Continental System to ban the European continent from doing business with Great Britain and he failed, his Empire collapsed with the system. After a brief history lesson, let’s look at the reason that the US holds against Huawei. Hum, interesting. China has never spied on French presidents and German chancellors as the US did. I mean, ask Snowden about it. On February 11th, 2020, the Washington Post had revealed the little secret of Crypto AG, it is a Swiss company that keep communications of spies soldiers and diplomats secret for governments all over the world. Guess who is the owner of this company? Why on earth does the US think they can teach the world about national security? American companies are also suffering from the Trade War. Micron CEO Sanjay Mehrotra made a very clear suggestion that boycotting Huawei will make American companies suffer. The 21st century is the century of globalization. Our world is deeply connected and no one can survive without friends and partners. </p><p>Huawei is just another multinational corporation that wants to do business in America and every other country in the world, there is nothing different from Toyota Siemens or Samsung. Huawei is buying 6 billion US dollars components from American suppliers every year, which indirectly created 35 thousand jobs for American people. In 2018 Huawei even purchased 11 billion dollars of products from its American partners. Many times Huawei has mentioned how much they value American partners, the American market and American people, the company is actually helping out the goal to make America great again.  So cutting Huawei away from the US will do no good to American companies. I mean think about it putting a sanction on Huawei will weaken American tech firm’s revenue and they will have less money for R&amp;D, with less on R&amp;D they will become less competitive on the market, according to The Consulting Group’s report, China has been establishing alternative non-US suppliers for semiconductor demand and it caused the growth of the top 25 American semiconductor firms decreased 4-9 percent in 2019. No mention if the US keeps pushing China, then China will have to fight back. China is the second-largest market for Apple and biggest market for Qualcomm. In 2019 Qualcomm’s revenue was 24.7 billion dollars and the Chinese market contributed 11.6 billion dollars. I don’t think Qualcomm can keep up with the 5G R&amp;D with yearly revenue of 13.1 billion. The US Defense Department made a statement in their own report on 5G and they have already realized the reality. The report says that American companies are not competitive enough to stop the expansion of China’s 5G providers in the world. Wise men said if you can’t beat them join them, doing business side by side, so American companies can keep up with the latest tech development, remain in the playfield and wait for the next opportunity. I mean, isn’t that how you do business? Ren Zhengfei, the founder of Huawei, said 2020 will be the year of a true test. He is no prophet, I believe he was talking about the US sanction. But the coronavirus pandemic has created a bigger challenge to the whole world and we can see how technology can give hand. </p><p>For medical people fighting the virus at the frontline, Huawei has helped carriers quickly deploy 5G networks, so patients could get better treatment and making remote diagnosis possible. For those people in quarantine, they have to work and hold meeting at home, so the company is doing their best to provide a stable and fast network. No one wants their boss to see them in a terrible definition, right? </p><p>After all, can we just work hand in hand, the US is the most powerful country in the world, that’s a fact, no one wants to challenge it and no one wants to change it, we are all living in a world order which is established by the US. At this time of the disaster, why don’t we just give up all the divergence and save the world together? </p><p>Thank you for watching, If you find this video helpful and inspiring, please like it, comment and share it with your friends. Thank you and see you next time.</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>液-液萃取分离</title>
+      <link href="/2020/03/30/%E6%B6%B2-%E6%B6%B2%E8%90%83%E5%8F%96%E5%88%86%E7%A6%BB/"/>
+      <url>/2020/03/30/%E6%B6%B2-%E6%B6%B2%E8%90%83%E5%8F%96%E5%88%86%E7%A6%BB/</url>
+      
+        <content type="html"><![CDATA[<h4 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h4><blockquote><p><strong>分配系数</strong>：当某一种溶质在基本上不相混溶的两个溶剂之间分配时，在<strong>一定温度</strong>下，两项达到<strong>平衡</strong>后，且溶质在<strong>两相中的分子量相等</strong>。则其在两相中的浓度的比值是一常数。</p><p><strong>分配比</strong>：表示溶质在两相中以各种形式存在的总浓度的比值。</p><p><strong>分离因数</strong>：<strong>同一萃取体系</strong>中<strong>相同萃取条件</strong>下两种组分分配比的比值。</p></blockquote><h4 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h4><blockquote><p><strong>盐析剂</strong>：易溶于水但不参与配合反应，但能促进萃取物转入有机相，提高萃取效率的无机物盐类。</p></blockquote><p><strong>盐析剂提高萃取效率：</strong></p><ol><li><p>盐析剂使阴离子浓度增加，产生<code>同离子效应</code>，使萃取平衡朝发生萃取作用的方向移动</p></li><li><p>盐析剂使电解质，其离子水化作用可使溶液中<code>水分子活度减小</code>，降低萃取物与水分子的结合能力</p></li><li><p>高浓度电解质存在，使水的<code>介电常数大为降低</code>，水的<code>偶极矩作用减弱</code>，有利于离子缔合物形成</p></li></ol><h4 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h4><p><strong><em>萃取剂的选择：</em></strong></p><ul><li>$\beta_n$越大越好，萃取剂与萃取的离子形成螯合物稳定性好</li><li>$ K_D $越大越好，螯合物易溶于有机溶剂</li><li>$ K_a $越大越好，萃取剂本身酸性强</li><li><p>$K{^′_D}$越小越好，萃取剂较易电离和较易溶于水</p><p><strong><em>萃取溶剂的选择：</em></strong></p></li><li><p>一般应使螯合物有较大的溶解度</p></li><li>螯合剂有较小的溶解度；溶剂的比重与水相差较大</li><li>粘度较小</li><li>易与原料液相分层、毒性、挥发性较小</li><li>萃取容量大</li></ul>]]></content>
+      
+      
       <categories>
-        <category>Chemistry</category>
+          
+          <category> Chemistry </category>
+          
       </categories>
-      <tags>
-        <tag>Chemistry</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>世界很大，生活很大</title>
-    <url>/2020/01/01/%E4%B8%96%E7%95%8C%E5%BE%88%E5%A4%A7%EF%BC%8C%E7%94%9F%E6%B4%BB%E5%BE%88%E5%A4%A7/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>weibosayhi实现每天自动发天气、名言加配图等微博动态</title>
-    <url>/2019/12/28/weibosayhi%E5%AE%9E%E7%8E%B0%E6%AF%8F%E5%A4%A9%E8%87%AA%E5%8A%A8%E5%8F%91%E5%A4%A9%E6%B0%94%E3%80%81%E5%90%8D%E8%A8%80%E5%8A%A0%E9%85%8D%E5%9B%BE%E7%AD%89%E5%BE%AE%E5%8D%9A%E5%8A%A8%E6%80%81/</url>
-    <content><![CDATA[<h1 id="weibosayhi"><a href="#weibosayhi" class="headerlink" title="weibosayhi"></a>weibosayhi</h1><p>调用新浪微博API实现每天自动发天气、名言加配图等微博动态，并得到发送状态的微信提醒。</p>
-<p>项目地址：<a href="https://github.com/AlkeySheng/weibosayhi" target="_blank" rel="noopener">https://github.com/AlkeySheng/weibosayhi</a></p>
-<h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>我的微博 AlkeySheng  <a href="https://weibo.com/2351446567" target="_blank" rel="noopener">weibo.com/2351446567</a></p>
-<p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9kZXYudGVuY2VudC5jb20vdS9hbGtleXNoZW5nL3Avd2VpYm9zYXloaS9naXQvcmF3L21hc3Rlci9EZW1vLmpwZw?x-oss-process=image/format,png" alt></p>
-<p>(居然还涨粉啦ｈｈｈｈｈ)</p>
-<h2 id="需要"><a href="#需要" class="headerlink" title="需要"></a>需要</h2><ul>
-<li>获得新浪微博API的<a href="https://www.jianshu.com/p/0f20eaaa0047" target="_blank" rel="noopener">token</a>  自行获取token</li>
-<li>获得<a href="https://dev.heweather.com/" target="_blank" rel="noopener">和风天气</a>API的key  注册后记住key</li>
-<li>如需<a href="http://sc.ftqq.com/3.version" target="_blank" rel="noopener">server酱</a>微信提醒(非必要)  获得SCKEY</li>
-</ul>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>python3 确保已安装 json, urllib, requests库</p>
-<ol>
-<li><p><code>git clone</code> 本项目并打开<code>weibo.py</code>文件，填入<code>token</code>,<code>key</code>,<code>SCKEY(非必要)</code>，保存并退出</p>
-</li>
-<li><p>打开<code>goodnight.py</code>填入天气预报的四个城市<code>city_1</code>,<code>city_2</code>,<code>city_3</code>,<code>city_4</code>，保存退出</p>
-</li>
-<li><p>微博文案自行修改替换，但请注意微博140字数限制</p>
-</li>
-<li><p>可添加<code>crontab</code>任务定时自动执行脚本，<code>linux</code>下<code>crontab -e</code>命令编辑输入</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">29 22 * * * python3 ~/weibosayhi/goodnight.py</span><br><span class="line">50 7 * * * python3 ~/weibosayhi/goodmorning.py</span><br></pre></td></tr></table></figure>
-<p>自行替换定时执行时间和文件实际保存路径 　<code>Windows</code>用户自求多福吧</p>
-</li>
-</ol>
-<h2 id="向世界Say-Hi"><a href="#向世界Say-Hi" class="headerlink" title="向世界Ｓａｙ　Ｈｉ"></a>向世界Ｓａｙ　Ｈｉ</h2>]]></content>
+      
+      
+        <tags>
+            
+            <tag> Chemistry </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>@ 鲸鱼的小秘密</title>
+      <link href="/2020/03/24/%E9%B2%B8%E9%B1%BC%E7%9A%84%E5%B0%8F%E7%A7%98%E5%AF%86/"/>
+      <url>/2020/03/24/%E9%B2%B8%E9%B1%BC%E7%9A%84%E5%B0%8F%E7%A7%98%E5%AF%86/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>这段往事，看来鲸鱼深爱着星星。鲸鱼却有一个并不自知的小秘密，他热衷于表演自己，真正诱惑他的是追寻星星一缕幻光的过程，因为那里充满了想象、表演和野心。鲸鱼的内心细腻且狂妄，他不会允许自己拿到平淡无奇的剧本。他并不一定真的爱慕着星星，鲸鱼爱自己远胜于爱任何人。</p></blockquote>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>分离方法评价</title>
+      <link href="/2020/03/15/%E5%88%86%E7%A6%BB%E6%96%B9%E6%B3%95%E8%AF%84%E4%BB%B7/"/>
+      <url>/2020/03/15/%E5%88%86%E7%A6%BB%E6%96%B9%E6%B3%95%E8%AF%84%E4%BB%B7/</url>
+      
+        <content type="html"><![CDATA[<h2 id="回收率"><a href="#回收率" class="headerlink" title="回收率"></a>回收率</h2><blockquote><p>表示<code>被分离组分</code>在分离中的完全程度。</p></blockquote><script type="math/tex; mode=display">R_i = \frac{通过分离后欲分离组分的测得量}{分离前欲分离组分原来的含量}\times100\%</script><h2 id="分离因数"><a href="#分离因数" class="headerlink" title="分离因数"></a>分离因数</h2><blockquote><p><code>干扰组分B</code>与<code>欲测组分A</code>的回收率之比。</p></blockquote><script type="math/tex; mode=display">S_{B/A} = \frac{R_B}{R_A} = \frac{Q{^0_A} Q_B} { Q{^0_B} Q_A }</script><h2 id="分离要求"><a href="#分离要求" class="headerlink" title="分离要求"></a>分离要求</h2><p><strong><em>常量分析</em></strong> <strong>：</strong></p><script type="math/tex; mode=display">R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <strong>：</strong> </p><script type="math/tex; mode=display">R_i>95\% \quad或\quad R_i\geq90\%,10^{-6}<S_{B/A}<10^{-7}</script>]]></content>
+      
+      
       <categories>
-        <category>RaspberryPi</category>
+          
+          <category> Chemistry </category>
+          
       </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>API</tag>
-        <tag>新浪微博</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>十六进制登录QQ</title>
-    <url>/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/</url>
-    <content><![CDATA[<h1 id="十六进制账号登录QQ、TIM"><a href="#十六进制账号登录QQ、TIM" class="headerlink" title="十六进制账号登录QQ、TIM"></a>十六进制账号登录QQ、TIM</h1><blockquote>
-<p> 据说近年以来腾讯登录界面采用了新的前端代码，推测为<code>JS</code>的<code>parseInt()</code>函数，可以同时将十进制字符串和十六进制字符串类型数据转换为十进制整型。</p>
-</blockquote>
-<h2 id="在PC端测试"><a href="#在PC端测试" class="headerlink" title="在PC端测试"></a>在PC端测试</h2><h4 id="1-使用计算器将QQ号码转换为十六进制-HEX"><a href="#1-使用计算器将QQ号码转换为十六进制-HEX" class="headerlink" title="1.使用计算器将QQ号码转换为十六进制(HEX)"></a>1.使用计算器将QQ号码转换为十六进制(HEX)</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153320.png" alt></p>
-<h4 id="2-以十六进制账号登录"><a href="#2-以十六进制账号登录" class="headerlink" title="2.以十六进制账号登录"></a>2.以十六进制账号登录</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153451.png" alt></p>
-<p>您见过如此之帅的QQ靓号吗？<br>注意十六进制以 <code>0</code>（数字） <code>x</code>（小写字母）开头</p>
-<h4 id="3-PC端成功登陆，手机端失败显示无此账号。"><a href="#3-PC端成功登陆，手机端失败显示无此账号。" class="headerlink" title="3.PC端成功登陆，手机端失败显示无此账号。"></a>3.PC端成功登陆，手机端失败显示无此账号。</h4>]]></content>
-  </entry>
-  <entry>
-    <title>turtle库绘制复杂漫威蜘蛛侠Spiderman</title>
-    <url>/2019/12/28/turtle%E5%BA%93%E7%BB%98%E5%88%B6%E5%A4%8D%E6%9D%82%E6%BC%AB%E5%A8%81%E8%9C%98%E8%9B%9B%E4%BE%A0Spiderman/</url>
-    <content><![CDATA[<h1 id="演示效果"><a href="#演示效果" class="headerlink" title="演示效果"></a>演示效果</h1><p>点击播放：<a href="https://www.python123.io/index/turtles/5c95d01e24577506dc75fa68" target="_blank" rel="noopener">Python123平台 济南大学_盛亚琪_<em>spiderman</em></a></p>
-<p><a href="https://www.python123.io/index/turtles/5c95d01e24577506dc75fa68" target="_blank" rel="noopener">(https://www.python123.io/index/turtles/5c95d01e24577506dc75fa68)</a></p>
-<p><img src="https://img-blog.csdnimg.cn/20190807191601752.gif" alt="效果演示"></p>
-<h1 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h1><p><a href="https://github.com/AlkeySheng/Spiderman.git" target="_blank" rel="noopener">AlkeySheng_Github:turtle库绘制复杂漫威蜘蛛侠Spiderman</a></p>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> Chemistry </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>1970年1月1日0时0分0秒</title>
+      <link href="/2020/02/26/1970%E5%B9%B41%E6%9C%881%E6%97%A50%E6%97%B60%E5%88%860%E7%A7%92/"/>
+      <url>/2020/02/26/1970%E5%B9%B41%E6%9C%881%E6%97%A50%E6%97%B60%E5%88%860%E7%A7%92/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>NTP时间戳的1970年1月1日0时0分0秒有何特殊？</p></blockquote><h3 id="通俗理解"><a href="#通俗理解" class="headerlink" title="通俗理解"></a>通俗理解</h3><p>人类计算机系统起源于革命性的<code>UNIX</code>，而<code>UNIX</code>系统确定1970年1月1日0时为时间起点，所以后世系统及语言的时间戳是以1970年1月1日0时为起点记录时间的。</p><h3 id="深入了解"><a href="#深入了解" class="headerlink" title="深入了解"></a>深入了解</h3><p>最初计算机操作系统是32位，时间也是32位表示。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 32位int类型数据储存最大整数为</span></span><br><span class="line">System.out.println(Integer.MAX_VALUE);     <span class="comment">// 21474836471</span></span><br></pre></td></tr></table></figure><p>int类型数据在<code>java</code>内用32位表示，32位能表示的最大值是<code>2147483647</code>。一年365天的总共31536000秒。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2147483647</span> / <span class="number">31536000</span> = <span class="number">68.1</span> <span class="comment">//年</span></span><br></pre></td></tr></table></figure><p>因此32位数据能表示的最长时间是<code>68.1</code>年，从1970年开始计算，最终到<code>2038年01月19日03时14分07秒</code>时，会达到时间戳的最大值，到时，所有32位操作系统的时间便会发生溢出错误，出现时间回归现象，使系统运行异常。</p><p>用32位来表示时间的最大间隔是68年，因此最早出现的UNIX系统综合考虑应用时限等问题，最终选取1970年1月1日作为UNIX TIME的纪元时间。</p><p>至于时间回归现象，最新64位操作系统可以表示到<code>292,277,026,596年的12月4日14时30分08秒</code>，已经是千亿年以后了。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> Java </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>test</title>
+      <link href="/2020/02/08/test/"/>
+      <url>/2020/02/08/test/</url>
+      
+        <content type="html"><![CDATA[<p>test</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Depth-First-Search</title>
+      <link href="/2020/01/21/Depth-First-Search/"/>
+      <url>/2020/01/21/Depth-First-Search/</url>
+      
+        <content type="html"><![CDATA[<h2 id="深度优先搜索算法-DFS-回溯法-解数独"><a href="#深度优先搜索算法-DFS-回溯法-解数独" class="headerlink" title="深度优先搜索算法(DFS) - 回溯法 解数独"></a>深度优先搜索算法(DFS) - 回溯法 解数独</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line">su = [[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回下一个“0”的坐标(x,y)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_x_y</span><span class="params">(su)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">                    <span class="keyword">if</span> su[x][y] == <span class="number">0</span>:</span><br><span class="line">                        <span class="keyword">return</span> x,y</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"done"</span></span><br><span class="line"><span class="comment"># 检查并填入一个合法数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fill_num</span><span class="params">(su,x_y)</span>:</span></span><br><span class="line">    dcan = set()</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> su[x_y[<span class="number">0</span>]]:</span><br><span class="line">        dcan.add(n)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">        dcan.add(su[i][x_y[<span class="number">1</span>]])</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">                <span class="keyword">if</span> get_gong((x,y)) == get_gong(x_y):</span><br><span class="line">                    dcan.add(su[x][y])</span><br><span class="line">    dcan.remove(<span class="number">0</span>)</span><br><span class="line">    can = list(&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>&#125;-dcan)</span><br><span class="line">    now_n = su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]]</span><br><span class="line">    <span class="keyword">for</span> d <span class="keyword">in</span> range(now_n+<span class="number">1</span>,<span class="number">11</span>):</span><br><span class="line">        <span class="keyword">if</span> d <span class="keyword">in</span> can:</span><br><span class="line">            su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]] = d</span><br><span class="line">            print(<span class="string">"fill-down"</span>,x_y,d)</span><br><span class="line">            print(su)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]] = <span class="number">0</span></span><br><span class="line">        back_set(su,vectors)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"><span class="comment"># 返回“宫”序号</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_gong</span><span class="params">(x_y)</span>:</span></span><br><span class="line">      <span class="keyword">if</span> x_y[<span class="number">0</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line">      <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">0</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">4</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">5</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">6</span></span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">7</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">8</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">9</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">back_set</span><span class="params">(su,vectors)</span>:</span></span><br><span class="line">    x_y = get_x_y(su)</span><br><span class="line">    index = vectors.index(x_y)<span class="number">-1</span></span><br><span class="line">    print(<span class="string">"backset-down&lt;&lt;&lt;"</span>)</span><br><span class="line">    fill_num(su,vectors[index])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">vectors = []</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">      <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">            <span class="keyword">if</span> su[x][y] == <span class="number">0</span>:</span><br><span class="line">                vectors.append((x,y))</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> get_x_y(su) != <span class="string">"done"</span>:</span><br><span class="line">    x_y = get_x_y(su)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> fill_num(su,x_y):</span><br><span class="line">        print(su)</span><br><span class="line">        back_set(su,vectors)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">""</span>)</span><br><span class="line">    </span><br><span class="line">print(<span class="string">"done!!!!!!!!!!!!!!!!!!!!!!!!"</span>)</span><br><span class="line">print(su)</span><br></pre></td></tr></table></figure><h4 id="Download-soduku-py"><a href="#Download-soduku-py" class="headerlink" title="Download_soduku.py"></a><a href="https://github.com/AlkeySheng/file_bed/raw/master/sudoku.py" target="_blank" rel="noopener">Download_soduku.py</a></h4>]]></content>
+      
+      
       <categories>
-        <category>Python</category>
+          
+          <category> 算法 </category>
+          
       </categories>
-      <tags>
-        <tag>Python turtle</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>爬取maomi</title>
-    <url>/2020/01/14/%E7%88%AC%E5%8F%96maomi/</url>
-    <content><![CDATA[<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests,re,os</span><br><span class="line">headers = &#123;<span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36"</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">download</span><span class="params">(p,n)</span>:</span>    </span><br><span class="line">    res = requests.get(<span class="string">"https://www.npa69.com/tupian/list-&#123;&#125;-&#123;&#125;.html"</span>.format(p,n+<span class="number">1</span>),headers = headers)</span><br><span class="line">    index_html = res.text</span><br><span class="line">    pages = re.findall(<span class="string">'&lt;a href="(.*?)" title=".*?" target="_blank"&gt;'</span>,index_html)</span><br><span class="line">    print(pages)</span><br><span class="line">    <span class="keyword">for</span> page <span class="keyword">in</span> pages:</span><br><span class="line">        r = requests.get(<span class="string">"https://www.npa69.com"</span>+page,headers = headers)</span><br><span class="line">        r.encoding = <span class="string">"utf-8"</span></span><br><span class="line">        <span class="comment"># print(r.request.headers)</span></span><br><span class="line">        html = r.text</span><br><span class="line">        <span class="comment"># print(html)</span></span><br><span class="line">        dir_name = re.findall(<span class="string">'&lt;!--&lt;title&gt;(.*?)&lt;/title&gt;--&gt;'</span>,html)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(dir_name):</span><br><span class="line">            os.mkdir(dir_name)</span><br><span class="line">        urls = re.findall(<span class="string">'data-original="(.*?)"'</span>,html)</span><br><span class="line">        print(urls)</span><br><span class="line">        <span class="keyword">if</span> len(urls) != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">for</span> url <span class="keyword">in</span> urls:</span><br><span class="line">                print(<span class="string">"download"</span>)</span><br><span class="line">                file_name = url.split(<span class="string">"/"</span>)[<span class="number">-1</span>]</span><br><span class="line">                img = requests.get(url,headers = headers)</span><br><span class="line">                name = dir_name + <span class="string">"/"</span> + file_name</span><br><span class="line">                <span class="keyword">with</span> open(name,<span class="string">"wb"</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(img.content)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    download(<span class="string">"清纯唯美"</span>,i)</span><br></pre></td></tr></table></figure>
-<p><a href="https://github.com/AlkeySheng/file_bed/raw/master/maomi.py" target="_blank" rel="noopener">Download_maomi.py</a></p>
-]]></content>
-      <tags>
-        <tag>爬虫</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>液-液萃取分离</title>
-    <url>/2020/03/30/%E6%B6%B2-%E6%B6%B2%E8%90%83%E5%8F%96%E5%88%86%E7%A6%BB/</url>
-    <content><![CDATA[<h4 id="1"><a href="#1" class="headerlink" title="1."></a>1.</h4><blockquote>
-<p><strong>分配系数</strong>：当某一种溶质在基本上不相混溶的两个溶剂之间分配时，在<strong>一定温度</strong>下，两项达到<strong>平衡</strong>后，且溶质在<strong>两相中的分子量相等</strong>。则其在两相中的浓度的比值是一常数。</p>
-<p><strong>分配比</strong>：表示溶质在两相中以各种形式存在的总浓度的比值。</p>
-<p><strong>分离因数</strong>：<strong>同一萃取体系</strong>中<strong>相同萃取条件</strong>下两种组分分配比的比值。</p>
-</blockquote>
-<h4 id="2"><a href="#2" class="headerlink" title="2."></a>2.</h4><blockquote>
-<p><strong>盐析剂</strong>：易溶于水但不参与配合反应，但能促进萃取物转入有机相，提高萃取效率的无机物盐类。</p>
-</blockquote>
-<p><strong>盐析剂提高萃取效率：</strong></p>
-<ol>
-<li><p>盐析剂使阴离子浓度增加，产生<code>同离子效应</code>，使萃取平衡朝发生萃取作用的方向移动</p>
-</li>
-<li><p>盐析剂使电解质，其离子水化作用可使溶液中<code>水分子活度减小</code>，降低萃取物与水分子的结合能力</p>
-</li>
-<li><p>高浓度电解质存在，使水的<code>介电常数大为降低</code>，水的<code>偶极矩作用减弱</code>，有利于离子缔合物形成</p>
-</li>
-</ol>
-<h4 id="3"><a href="#3" class="headerlink" title="3."></a>3.</h4><p><strong><em>萃取剂的选择：</em></strong></p>
-<ul>
-<li>$\beta_n$越大越好，萃取剂与萃取的离子形成螯合物稳定性好</li>
-<li>$ K_D $越大越好，螯合物易溶于有机溶剂</li>
-<li>$ K_a $越大越好，萃取剂本身酸性强</li>
-<li><p>$K{^′_D}$越小越好，萃取剂较易电离和较易溶于水</p>
-<p><strong><em>萃取溶剂的选择：</em></strong></p>
-</li>
-<li><p>一般应使螯合物有较大的溶解度</p>
-</li>
-<li>螯合剂有较小的溶解度；溶剂的比重与水相差较大</li>
-<li>粘度较小</li>
-<li>易与原料液相分层、毒性、挥发性较小</li>
-<li>萃取容量大</li>
-</ul>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> 算法 </tag>
+            
+            <tag> Python </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>爬取maomi</title>
+      <link href="/2020/01/14/%E7%88%AC%E5%8F%96maomi/"/>
+      <url>/2020/01/14/%E7%88%AC%E5%8F%96maomi/</url>
+      
+        <content type="html"><![CDATA[<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests,re,os</span><br><span class="line">headers = &#123;<span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36"</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">download</span><span class="params">(p,n)</span>:</span>    </span><br><span class="line">    res = requests.get(<span class="string">"https://www.npa69.com/tupian/list-&#123;&#125;-&#123;&#125;.html"</span>.format(p,n+<span class="number">1</span>),headers = headers)</span><br><span class="line">    index_html = res.text</span><br><span class="line">    pages = re.findall(<span class="string">'&lt;a href="(.*?)" title=".*?" target="_blank"&gt;'</span>,index_html)</span><br><span class="line">    print(pages)</span><br><span class="line">    <span class="keyword">for</span> page <span class="keyword">in</span> pages:</span><br><span class="line">        r = requests.get(<span class="string">"https://www.npa69.com"</span>+page,headers = headers)</span><br><span class="line">        r.encoding = <span class="string">"utf-8"</span></span><br><span class="line">        <span class="comment"># print(r.request.headers)</span></span><br><span class="line">        html = r.text</span><br><span class="line">        <span class="comment"># print(html)</span></span><br><span class="line">        dir_name = re.findall(<span class="string">'&lt;!--&lt;title&gt;(.*?)&lt;/title&gt;--&gt;'</span>,html)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(dir_name):</span><br><span class="line">            os.mkdir(dir_name)</span><br><span class="line">        urls = re.findall(<span class="string">'data-original="(.*?)"'</span>,html)</span><br><span class="line">        print(urls)</span><br><span class="line">        <span class="keyword">if</span> len(urls) != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">for</span> url <span class="keyword">in</span> urls:</span><br><span class="line">                print(<span class="string">"download"</span>)</span><br><span class="line">                file_name = url.split(<span class="string">"/"</span>)[<span class="number">-1</span>]</span><br><span class="line">                img = requests.get(url,headers = headers)</span><br><span class="line">                name = dir_name + <span class="string">"/"</span> + file_name</span><br><span class="line">                <span class="keyword">with</span> open(name,<span class="string">"wb"</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(img.content)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    download(<span class="string">"清纯唯美"</span>,i)</span><br></pre></td></tr></table></figure><p><a href="https://github.com/AlkeySheng/file_bed/raw/master/maomi.py" target="_blank" rel="noopener">Download_maomi.py</a></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 爬虫 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>十六进制登录QQ</title>
+      <link href="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/"/>
+      <url>/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/</url>
+      
+        <content type="html"><![CDATA[<h1 id="十六进制账号登录QQ、TIM"><a href="#十六进制账号登录QQ、TIM" class="headerlink" title="十六进制账号登录QQ、TIM"></a>十六进制账号登录QQ、TIM</h1><blockquote><p> 据说近年以来腾讯登录界面采用了新的前端代码，推测为<code>JS</code>的<code>parseInt()</code>函数，可以同时将十进制字符串和十六进制字符串类型数据转换为十进制整型。</p></blockquote><h2 id="在PC端测试"><a href="#在PC端测试" class="headerlink" title="在PC端测试"></a>在PC端测试</h2><h4 id="1-使用计算器将QQ号码转换为十六进制-HEX"><a href="#1-使用计算器将QQ号码转换为十六进制-HEX" class="headerlink" title="1.使用计算器将QQ号码转换为十六进制(HEX)"></a>1.使用计算器将QQ号码转换为十六进制(HEX)</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153320.png" alt></p><h4 id="2-以十六进制账号登录"><a href="#2-以十六进制账号登录" class="headerlink" title="2.以十六进制账号登录"></a>2.以十六进制账号登录</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153451.png" alt></p><p>您见过如此之帅的QQ靓号吗？<br>注意十六进制以 <code>0</code>（数字） <code>x</code>（小写字母）开头</p><h4 id="3-PC端成功登陆，手机端失败显示无此账号。"><a href="#3-PC端成功登陆，手机端失败显示无此账号。" class="headerlink" title="3.PC端成功登陆，手机端失败显示无此账号。"></a>3.PC端成功登陆，手机端失败显示无此账号。</h4>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>世界很大，生活很大</title>
+      <link href="/2020/01/01/%E4%B8%96%E7%95%8C%E5%BE%88%E5%A4%A7%EF%BC%8C%E7%94%9F%E6%B4%BB%E5%BE%88%E5%A4%A7/"/>
+      <url>/2020/01/01/%E4%B8%96%E7%95%8C%E5%BE%88%E5%A4%A7%EF%BC%8C%E7%94%9F%E6%B4%BB%E5%BE%88%E5%A4%A7/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>邻二氮菲吸光光度法测定铁</title>
+      <link href="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/"/>
+      <url>/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/</url>
+      
+        <content type="html"><![CDATA[<h1 id="邻二氮菲吸光光度法测定铁"><a href="#邻二氮菲吸光光度法测定铁" class="headerlink" title="邻二氮菲吸光光度法测定铁"></a>邻二氮菲吸光光度法测定铁</h1><hr><h2 id="1-条件实验数据及结果"><a href="#1-条件实验数据及结果" class="headerlink" title="1.条件实验数据及结果"></a>1.条件实验数据及结果</h2><h3 id="（1）吸收曲线的绘制"><a href="#（1）吸收曲线的绘制" class="headerlink" title="（1）吸收曲线的绘制"></a>（1）吸收曲线的绘制</h3><p><strong>表1不同吸收波长下的吸光度</strong></p><div class="table-container"><table><thead><tr><th><strong>λ/nm</strong></th><th>440</th><th>450</th><th>460</th><th>470</th><th>480</th><th>490</th><th>495</th><th>500</th></tr></thead><tbody><tr><td><strong>A</strong></td><td>0.329</td><td>0.358</td><td>0.375</td><td>0.407</td><td>0.431</td><td>0.441</td><td>0.448</td><td>0.457</td></tr></tbody></table></div><div class="table-container"><table><thead><tr><th><strong>λ/nm</strong></th><th>505</th><th>510</th><th>515</th><th>520</th><th>530</th><th>540</th><th>550</th></tr></thead><tbody><tr><td><strong>A</strong></td><td>0.467</td><td>0.473</td><td>0.464</td><td>0.438</td><td>0.346</td><td>0.221</td><td>0.120</td></tr></tbody></table></div><p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image002.png" alt="img"></p><p>最大吸收波长： 510 nm</p><h3 id="（2）溶液酸度的选择"><a href="#（2）溶液酸度的选择" class="headerlink" title="（2）溶液酸度的选择"></a>（2）溶液酸度的选择</h3><p><strong>表2不同酸度下的吸光度</strong></p><div class="table-container"><table><thead><tr><th><strong>容量瓶编号</strong></th><th><strong>1</strong></th><th><strong>2</strong></th><th><strong>3</strong></th><th><strong>4</strong></th><th><strong>5</strong></th><th><strong>6</strong></th><th><strong>7</strong></th><th><strong>8</strong></th></tr></thead><tbody><tr><td><strong>pH</strong></td><td></td><td>2.01</td><td>2.23</td><td>5.40</td><td>6.37</td><td>6.64</td><td>9.86</td><td>11.63</td></tr><tr><td><strong>A</strong></td><td>0.016</td><td>0.175</td><td>0.335</td><td>0.353</td><td>0.335</td><td>0.344</td><td>0.323</td><td>0.274</td></tr></tbody></table></div><p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image004.png" alt="img"></p><p>pH范围：3.00 ~ 6.00</p><a id="more"></a><h3 id="（3）显色剂用量的选择"><a href="#（3）显色剂用量的选择" class="headerlink" title="（3）显色剂用量的选择"></a>（3）显色剂用量的选择</h3><p><strong>表3不同显色剂用量时的吸光度</strong></p><div class="table-container"><table><thead><tr><th><strong>Vphen / ml</strong></th><th>1</th><th>1.5</th><th>2</th><th>2.5</th><th>3</th><th>3.5</th><th>4</th><th>4.5</th></tr></thead><tbody><tr><td><strong>A</strong></td><td>0.059</td><td>0.131</td><td>0.205</td><td>0.265</td><td>0.340</td><td>0.347</td><td>0.351</td><td>0.346</td></tr></tbody></table></div><p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image006.png" alt="img"></p><p>显色剂用量：3.2 ~ 4.2 mL</p><h3 id="（4）显色时间"><a href="#（4）显色时间" class="headerlink" title="（4）显色时间"></a>（4）显色时间</h3><p><strong>表4不同显色时间时的吸光度</strong></p><div class="table-container"><table><thead><tr><th><strong>放置时间t/min</strong></th><th>0</th><th>5</th><th>10</th><th>30</th><th>60</th><th>120</th></tr></thead><tbody><tr><td><strong>A</strong></td><td>0.298</td><td>0.302</td><td>0.302</td><td>0.302</td><td>0.302</td><td>0.296</td></tr></tbody></table></div><p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image008.png" alt="img"></p><hr><p>显色时间：0 ~ 5 min</p><p>稳定时间：5 ~ 60 min</p><p>由以上实验可得出最佳实验条件：波长510 nm、pH 3.00 ~ 6.00、显色剂用量3.2 ~ 4.2 mL、显色时间5 ~ 60 min</p><h2 id="2-试样分析"><a href="#2-试样分析" class="headerlink" title="2.试样分析"></a>2.试样分析</h2><h3 id="标准曲线的制作"><a href="#标准曲线的制作" class="headerlink" title="标准曲线的制作"></a>标准曲线的制作</h3><p><strong>表5铁标准曲线的制作</strong></p><div class="table-container"><table><thead><tr><th><strong>溶液</strong></th><th><strong>标准铁溶液</strong></th><th><strong>标准铁溶液</strong></th><th><strong>标准铁溶液</strong></th><th><strong>标准铁溶液</strong></th><th><strong>标准铁溶液</strong></th><th><strong>标准铁溶液</strong></th><th><strong>试验溶液</strong></th><th><strong>试验溶液</strong></th></tr></thead><tbody><tr><td>V Fe/ml</td><td>0.0</td><td>2.0</td><td>4.0</td><td>6.0</td><td>8.0</td><td>10.0</td><td>试样1号</td><td>试样2号</td></tr><tr><td>m Fe/μg</td><td>0</td><td>40</td><td>80</td><td>120</td><td>160</td><td>200</td><td></td><td></td></tr><tr><td>吸光度 A</td><td>0</td><td>0.133</td><td>0.302</td><td>0.468</td><td>0.61</td><td>0.757</td><td>0.323</td><td>0.274</td></tr></tbody></table></div><p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image010.png" alt="img"></p><p>试样1号：m Fe = 87 μg</p><p>试样2号：m Fe = 74 μg</p><h2 id="3-组成比、摩尔吸光系数及平衡常数"><a href="#3-组成比、摩尔吸光系数及平衡常数" class="headerlink" title="3.组成比、摩尔吸光系数及平衡常数"></a>3.组成比、摩尔吸光系数及平衡常数</h2><hr><h3 id="组成比测定"><a href="#组成比测定" class="headerlink" title="组成比测定"></a>组成比测定</h3><p><strong>表6 组成比的测定</strong></p><div class="table-container"><table><thead><tr><th><strong>容量瓶编号</strong></th><th><strong>1</strong></th><th><strong>2</strong></th><th><strong>3</strong></th><th><strong>4</strong></th><th><strong>5</strong></th><th><strong>6</strong></th><th><strong>7</strong></th><th><strong>8</strong></th></tr></thead><tbody><tr><td>c phen/ c Fe2+</td><td>1</td><td>1.5</td><td>2</td><td>2.5</td><td>3</td><td>3.5</td><td>4</td><td>4.5</td></tr><tr><td>A</td><td>0.059</td><td>0.131</td><td>0.205</td><td>0.265</td><td>0.340</td><td>0.347</td><td>0.350</td><td>0.351</td></tr></tbody></table></div><p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image012.png" alt="img"></p><p>A max = 0.350</p><blockquote><p><a href="https://github.com/AlkeySheng/file_bed/raw/master/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81.docx" target="_blank" rel="noopener">Download_邻二氮菲吸光光度法测定铁.docx</a>  — 盛亚琪 &amp; 陈秀琪</p></blockquote>]]></content>
+      
+      
       <categories>
-        <category>Chemistry</category>
+          
+          <category> Chemistry </category>
+          
       </categories>
-      <tags>
-        <tag>Chemistry</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>离子交换树脂</title>
-    <url>/2020/04/19/%E7%A6%BB%E5%AD%90%E4%BA%A4%E6%8D%A2%E6%A0%91%E8%84%82/</url>
-    <content><![CDATA[<h2 id="交联度"><a href="#交联度" class="headerlink" title="交联度"></a>交联度</h2><blockquote>
-<p>指树脂的交联程度。</p>
-</blockquote>
-<p>交联度用加入 树脂中交联剂的百分含量表示</p>
-<script type="math/tex; mode=display">
-交联度 = \frac{交联剂质量}{反应混合物质量}\times100\%</script><p><strong><em>交联度对树脂的影响</em></strong></p>
-<ol>
-<li><p><strong>树脂的交联度大</strong>：网间孔隙小，树脂对离子的选 择性增加，机械性能好。</p>
-<p> <code>但网间孔隙过小，会降低离子交换的速度，降低树脂的有效交换容量</code></p>
-</li>
-<li><p><strong>树脂的交联度小</strong>：网间孔隙大，交换反应速度快， 交换的选择性差，树脂的机械强度、化学稳定性差。</p>
-</li>
-</ol>
-<h2 id="离子交换树脂性质"><a href="#离子交换树脂性质" class="headerlink" title="离子交换树脂性质"></a>离子交换树脂性质</h2><ol>
-<li><p><strong>含水量：</strong></p>
-<ul>
-<li>含水量是树脂的固有性质</li>
-<li>取决于亲水基团的多少及树脂孔隙的大小</li>
-<li>含水量的变化反映着树脂内在质量的变化</li>
-</ul>
-</li>
-<li><p><strong>溶胀性：</strong></p>
-<ul>
-<li>在水中发生体积的膨胀</li>
-<li>影响膨胀度的因素：<ul>
-<li>交联度增大，膨胀度减少。 </li>
-<li>同交换基团的数量和离子的类型有关 <code>裸半径小而电荷大的离子水化能力强</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>密度：</strong></p>
-<ul>
-<li><p>表观密度：<em>指树脂在交换柱中的装填密度</em></p>
-<script type="math/tex; mode=display">表观密度(Da)=\frac{溶胀后树脂重量(m)}{树脂在水中的表观体积(V)}(g/mL)</script></li>
-<li><p>真密度：<em>指树脂颗粒本身密度</em></p>
-<script type="math/tex; mode=display">真密度(Dw)=\frac{溶胀后树脂重量(m)}{树脂所排除水的体积(V)}(g/mL)</script></li>
-</ul>
-</li>
-<li><p><strong>交换容量：</strong></p>
-<ul>
-<li>总交换容量<ul>
-<li>单位重量干树脂或单位体积湿树脂中，所有交换基团的总数</li>
-<li>单位<code>mol/g</code>、<code>mmol/g</code>、 <code>mol/L</code>、<code>mmol/mL</code></li>
-</ul>
-</li>
-<li>操作交换容量<ul>
-<li>单位体积湿树脂或单位重量干树脂中，实际参加反应的交换基团的总数</li>
-<li>单位：<code>mmol/mL</code>、 <code>mmol/g</code></li>
-</ul>
-</li>
-</ul>
-</li>
-</ol>
-<a id="more"></a>
-<h2 id="离子交换树脂例"><a href="#离子交换树脂例" class="headerlink" title="离子交换树脂例"></a>离子交换树脂例</h2><ol>
-<li><strong>强酸性阳离子交换树脂：</strong><ul>
-<li>淡黄色球状颗粒</li>
-<li>化学稳定性好，耐磨性好</li>
-<li>在酸性、碱性和中性介质中都可使用</li>
-<li>交换反应速度快</li>
-<li>无机、有机阴离子均可交换</li>
-</ul>
-</li>
-<li><strong>弱酸性阳离子交换树脂：</strong><ul>
-<li>含有弱酸性活泼基团，如：<code>-COOH</code>、<code>-OH</code> 等</li>
-<li>交换能力受酸度的影响较大</li>
-</ul>
-</li>
-<li><strong>螯合树脂：</strong><ul>
-<li>高选择性（主要决定于树脂中螯合基的结构）</li>
-<li>高稳定性（由于它与金属离子形成了内络盐的缘故）</li>
-</ul>
-</li>
-</ol>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> Chemistry </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>weibosayhi实现每天自动发天气、名言加配图等微博动态</title>
+      <link href="/2019/12/28/weibosayhi%E5%AE%9E%E7%8E%B0%E6%AF%8F%E5%A4%A9%E8%87%AA%E5%8A%A8%E5%8F%91%E5%A4%A9%E6%B0%94%E3%80%81%E5%90%8D%E8%A8%80%E5%8A%A0%E9%85%8D%E5%9B%BE%E7%AD%89%E5%BE%AE%E5%8D%9A%E5%8A%A8%E6%80%81/"/>
+      <url>/2019/12/28/weibosayhi%E5%AE%9E%E7%8E%B0%E6%AF%8F%E5%A4%A9%E8%87%AA%E5%8A%A8%E5%8F%91%E5%A4%A9%E6%B0%94%E3%80%81%E5%90%8D%E8%A8%80%E5%8A%A0%E9%85%8D%E5%9B%BE%E7%AD%89%E5%BE%AE%E5%8D%9A%E5%8A%A8%E6%80%81/</url>
+      
+        <content type="html"><![CDATA[<h1 id="weibosayhi"><a href="#weibosayhi" class="headerlink" title="weibosayhi"></a>weibosayhi</h1><p>调用新浪微博API实现每天自动发天气、名言加配图等微博动态，并得到发送状态的微信提醒。</p><p>项目地址：<a href="https://github.com/AlkeySheng/weibosayhi" target="_blank" rel="noopener">https://github.com/AlkeySheng/weibosayhi</a></p><h2 id="演示"><a href="#演示" class="headerlink" title="演示"></a>演示</h2><p>我的微博 AlkeySheng  <a href="https://weibo.com/2351446567" target="_blank" rel="noopener">weibo.com/2351446567</a></p><p><img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9kZXYudGVuY2VudC5jb20vdS9hbGtleXNoZW5nL3Avd2VpYm9zYXloaS9naXQvcmF3L21hc3Rlci9EZW1vLmpwZw?x-oss-process=image/format,png" alt></p><p>(居然还涨粉啦ｈｈｈｈｈ)</p><h2 id="需要"><a href="#需要" class="headerlink" title="需要"></a>需要</h2><ul><li>获得新浪微博API的<a href="https://www.jianshu.com/p/0f20eaaa0047" target="_blank" rel="noopener">token</a>  自行获取token</li><li>获得<a href="https://dev.heweather.com/" target="_blank" rel="noopener">和风天气</a>API的key  注册后记住key</li><li>如需<a href="http://sc.ftqq.com/3.version" target="_blank" rel="noopener">server酱</a>微信提醒(非必要)  获得SCKEY</li></ul><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>python3 确保已安装 json, urllib, requests库</p><ol><li><p><code>git clone</code> 本项目并打开<code>weibo.py</code>文件，填入<code>token</code>,<code>key</code>,<code>SCKEY(非必要)</code>，保存并退出</p></li><li><p>打开<code>goodnight.py</code>填入天气预报的四个城市<code>city_1</code>,<code>city_2</code>,<code>city_3</code>,<code>city_4</code>，保存退出</p></li><li><p>微博文案自行修改替换，但请注意微博140字数限制</p></li><li><p>可添加<code>crontab</code>任务定时自动执行脚本，<code>linux</code>下<code>crontab -e</code>命令编辑输入</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">29 22 * * * python3 ~/weibosayhi/goodnight.py</span><br><span class="line">50 7 * * * python3 ~/weibosayhi/goodmorning.py</span><br></pre></td></tr></table></figure><p>自行替换定时执行时间和文件实际保存路径 　<code>Windows</code>用户自求多福吧</p></li></ol><h2 id="向世界Say-Hi"><a href="#向世界Say-Hi" class="headerlink" title="向世界Ｓａｙ　Ｈｉ"></a>向世界Ｓａｙ　Ｈｉ</h2>]]></content>
+      
+      
       <categories>
-        <category>Chemistry</category>
+          
+          <category> RaspberryPi </category>
+          
       </categories>
-      <tags>
-        <tag>Chemistry</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>翡翠结课论文</title>
-    <url>/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/</url>
-    <content><![CDATA[<h2 id="帝王绿"><a href="#帝王绿" class="headerlink" title="帝王绿"></a>帝王绿</h2><p><a href="https://baike.baidu.com/item/%E5%B8%9D%E7%8E%8B%E7%BB%BF/9473585?fr=aladdin" target="_blank" rel="noopener">帝王绿</a>^[1]^ 绿色色正，色浓，与<a href="https://baike.baidu.com/item/祖母绿/231887" target="_blank" rel="noopener">祖母绿</a>一样，绿中泛出蓝色调，但不偏色。帝王绿色是<a href="https://baike.baidu.com/item/翡翠/5573" target="_blank" rel="noopener">翡翠</a>中颜色最好、<a href="https://baike.baidu.com/item/价值/3771581" target="_blank" rel="noopener">价值</a>最高的绿色，也称“祖母绿色”，给人以高贵之美感。</p>
-<p>[帝王绿]:典型的 “帝王绿”翡翠颜色明度值为 <strong>41</strong> , 其明度级别应为“<strong>Medium</strong>”（中等），“帝王绿”翡翠的颜色级别应为 “<strong>Medium Vivd Green(41, 45, 164)</strong>” （中等明度的浓绿色）。^[2]^</p>
-<p>[2]:刘 严, 陆太进, 张 辉.  绿色翡翠颜色分级方法[D].  北京：中国珠宝首饰学术交流会, 2009</p>
-<hr>
-<p>“帝王绿”这一名称是新兴的称谓，在封建时代，任何事物都不可能称”帝”。到了民国时期，随着挖掘技术能力的提高，一种新的绿色翡翠，在非常难以开采的山矿中被发现，这就是现在的”帝王绿“。这种翡翠以浓郁，大气，庄重，得到上层社会特别是政治家的追捧。浓重的翠色，更能烘托气质，庄重大气。当时人们管这种新色称之为老绿，或者称为老种老色。新中国的建立后，喜欢老种老色的前社会精英们，流向了港台地区，通过和西方文明的接触，发现“老”这个词不适合形容这种高等级的翠色。于是把“老”字代之以“祖母”借西方祖母绿的命名，将老种老色正式命名为“祖母绿翡翠”。一直到90年代末，大陆人们重新唤醒了对翡翠文化的喜爱和继承，祖母绿的命名也就由港台传到了大陆，一直运用至今。但约在2005年前后，首批翡翠电子商务平台兴起。人们发现在互联网上介绍祖母绿翡翠时，容易与西方的祖母绿宝石混淆，且两者颜色区别不大。于是便大胆地将祖母绿翡翠更名为帝王绿翡翠，在互联网上予以推广宣传。借助网络的力量，帝王绿翡翠一炮而红，被广泛推广使用。翡翠从此也进入了帝王绿时代。</p>
-<a id="more"></a>
-<h3 id="翡翠品质评价"><a href="#翡翠品质评价" class="headerlink" title="翡翠品质评价"></a>翡翠品质评价</h3><p>一般评价翡翠的品质的好坏，主要是由以下几个方面，分别是种、（底）、水、色、工、重。</p>
-<ul>
-<li>==<strong><em>种</em></strong>==<strong>，综合翡翠内部矿物颗粒大小以及矿物颗粒之间结合的紧密程度的关系</strong><ul>
-<li>按翡翠内部的矿物晶体颗粒的大小划分<ul>
-<li><code>玻璃种</code>、<code>冰种</code>、<code>糯种</code>、<code>豆种</code>等</li>
-</ul>
-</li>
-<li>按翡翠内部矿物颗粒之间结合的紧密程度划分<ul>
-<li><code>老种</code>、<code>新种</code>、<code>新老种</code></li>
-</ul>
-</li>
-</ul>
-</li>
-<li>==<strong><em>水</em></strong>==<strong>，指光线在翡翠中透射范围的大小，即透明度</strong><ul>
-<li>一分水即透光深度是一分，约为 <strong>3</strong> 毫米</li>
-<li>二分水指透光深度是二分，约为 <strong>6</strong> 毫米</li>
-<li>三分水指透光深度是三分，约为 <strong>9</strong> 毫米</li>
-</ul>
-</li>
-<li>==<strong><em>色</em></strong>==<strong>，翡翠的颜色</strong><ul>
-<li>常见的颜色<ul>
-<li><code>绿</code>、<code>红</code>、<code>黄</code>、<code>紫</code>、<code>蓝</code>、<code>白</code>、<code>黑</code>等</li>
-</ul>
-</li>
-<li>翡翠的绿色变化多端，“色差一分，价差十倍”</li>
-<li>民间有三十六水、七十二豆和一百零八蓝之说</li>
-</ul>
-</li>
-<li>==<strong><em>工</em></strong>==<strong>，含成品的形状、做工等方面</strong><ul>
-<li>由于制作年代、雕刻师、工艺、文化内涵等方面的差异，每件作品都有其自身的特点</li>
-<li>“工必有意，意必吉祥”</li>
-</ul>
-</li>
-<li>==<strong><em>重</em></strong>==，<strong>，指翡翠成品的总重量</strong><ul>
-<li>同品质下，越大、越厚、越重者为贵</li>
-</ul>
-</li>
-<li>==<strong><em>底</em></strong>==，<strong>由物质成分和内部结构所决定</strong><ul>
-<li>主要是玉石色泽的艳丽程度、透明度、致密细腻和坚韧度等<ul>
-<li>一般分为：<code>玻璃底</code>、<code>冰底</code>、<code>糯化底</code>、<code>藕粉底</code>、<code>豆底</code>、<code>瓷底</code>等</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="绿色的判断"><a href="#绿色的判断" class="headerlink" title="绿色的判断"></a>绿色的判断</h3><p>==绿色==是翡翠的至尊之色，由于绿色翡翠拥有着悠久的历史文化地位和积累深厚的社会审美趋势，现当代的翡翠热好者都是以“绿色”为翡翠的帝王之色。在绿色这个大色系里面还分为<code>浅绿</code>（豆绿）、<code>正阳绿</code>、<code>翠绿</code>（帝王绿和祖母绿）、<code>深绿</code>（油青）、<code>蓝绿</code>（蓝水）、<code>墨绿</code>（墨翠）。如同自然界的绿一样，它并不是单一的，有深浅、浓艳、透明度的巨大差别。</p>
-<p>绿色，可四方面判断，==阳、浓、正、匀==。</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center"><strong>阳</strong></th>
-<th style="text-align:center"><strong>浓</strong></th>
-<th style="text-align:center"><strong>正</strong></th>
-<th style="text-align:center"><strong>匀</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">绿的鲜艳、明亮程度，主要由翡翠含绿色、黑色、灰色的比例来决定的。绿色多颜色明亮，如果黑或灰多，颜色就灰暗了</td>
-<td style="text-align:center">绿的深浅程度，浓度最好在 70% - 80% 之间</td>
-<td style="text-align:center">色调范围，根据主色与次色的比例而定，是纯正的绿色，如果混有其他的颜色，绿色色调就下降</td>
-<td style="text-align:center">绿色分布的均匀度，直接反映绿色的分布情况</td>
-</tr>
-<tr>
-<td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/微信图片_20200504221435-1588601998408.jpg" style="zoom:10%;"></td>
-<td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/微信图片_20200504221445.jpg" style="zoom:32%;"></td>
-<td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/微信图片_20200504221453.jpg" style="zoom:10%;"></td>
-<td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/微信图片_20200504221426.jpg" style="zoom:35%;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-<h3 id="影响翡翠色的因素"><a href="#影响翡翠色的因素" class="headerlink" title="影响翡翠色的因素"></a>影响翡翠色的因素</h3><p>天然形成的绿色翡翠种类繁多，颜色很难分布均匀，那么，影响翡翠绿色的因素主要有以下几种</p>
-<h4 id="1、铬元素"><a href="#1、铬元素" class="headerlink" title="1、铬元素"></a>1、铬元素</h4><p>铬元素含量的多少会影响翡翠的绿色。铬离子含量过高，翡翠的绿色就会变深，甚至是衍生黑点、黑丝及黑斑；若铬离子含量过低，绿色就会变浅。</p>
-<h4 id="2、铁及其杂质金属"><a href="#2、铁及其杂质金属" class="headerlink" title="2、铁及其杂质金属"></a>2、铁及其杂质金属</h4><p>绿色翡翠中含有铁及黑色金属，它的颜色就会变深、变暗，饱和度或鲜艳度也会受到影响，好像有一种发灰的绿色。</p>
-<h4 id="3、杂质矿物"><a href="#3、杂质矿物" class="headerlink" title="3、杂质矿物"></a>3、杂质矿物</h4><p>天然翡翠在形成过程中，不可避免的掺进一些杂质矿物，不仅影响翡翠的亮度和饱和度，还会使翡翠的绿色变成灰绿色、黑绿色或黑色，使翡翠的绿色变得不均匀。</p>
-<h4 id="4、翡翠的种"><a href="#4、翡翠的种" class="headerlink" title="4、翡翠的种"></a>4、翡翠的种</h4><p>翡翠的颗粒细小均匀，结构致密，这样的翡翠绿色就会均匀亮丽。</p>
-<h4 id="5、翡翠的水"><a href="#5、翡翠的水" class="headerlink" title="5、翡翠的水"></a>5、翡翠的水</h4><p>水好，翡翠的绿就就会灵动有活力；水差，翡翠的绿就会变得呆板，缺乏生气。</p>
-<h3 id="帝王绿的价值"><a href="#帝王绿的价值" class="headerlink" title="帝王绿的价值"></a>帝王绿的价值</h3><p><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/Users\dabai\Desktop\我最爱的帝王绿翡翠.assets\微信图片_20200504225956.jpg" style="zoom:33%;"></p>
-<p>翡翠如果有帝王绿，那么价格即不菲。 帝王绿非常难得，非常稀少，因此价格非常昂贵。帝王绿翡翠是一种硬玉，可以做成各种各样的首饰和摆饰，在光线照耀下绿得发亮。其中糯种帝王绿，属于近代翡翠里的极品，材质结构丝絮状，透光看，质地细密，晶莹闪烁，绿丝悬浮，抛光后表面没有现代翡翠的水晶折光感，帝王绿给人以内敛凝重闻名于世，价值连城。因此，帝王绿具备极高的收藏和投资价值，广受翠友的青睐，也便有了各大拍卖会上常出现的各式帝王绿藏品以天价拔得头筹的现象。</p>
-<h3 id="帝王绿与祖母绿"><a href="#帝王绿与祖母绿" class="headerlink" title="帝王绿与祖母绿"></a>帝王绿与祖母绿</h3><p>帝王绿色是翡翠中颜色最好、价值最高的绿色，给人以高贵之美感，也称“祖母绿色”。因此很容易把帝王绿与祖母绿混淆，实际上，除了颜色相似外，==<code>帝王绿</code>与<code>祖母绿</code>本质上毫无关系==。</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">帝王绿</th>
-<th style="text-align:center">祖母绿</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/640-1588603817932.webp" style="zoom: 30%;"></td>
-<td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/5882b2b7d0a20cf43b85966b7c094b36acaf9968.jpg" alt="5882b2b7d0a20cf43b85966b7c094b36acaf9968" style="zoom:80%;"></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>在宝石里，祖母绿被称为“绿宝石”，价值相当贵重，是国际珠宝界公认的四大名贵宝石之一。它的绿中带点黄，又似乎带点蓝，这绿色会随着晴天和阴天微妙地改变，这独特的绿为其所独有。祖母绿是宝石级的绿色绿柱石。其绿色要达到中等达到浓艳的绿色调，就是色的浓度要比较饱和。浅淡绿色的通常称之为绿色绿柱石。</p>
-<p>帝王绿是一种独特的颜色，在日光下显现一种凝重的湖绿色，乍看近似湖蓝色，在强光照射下显现翠绿色，在数码闪光灯下呈现阳绿色，变化莫测。</p>
-<h3 id="帝王绿的特征"><a href="#帝王绿的特征" class="headerlink" title="帝王绿的特征"></a>帝王绿的特征</h3><p>翡翠原石的种和水及色每一种必须要达到极致，才能叫做“帝王绿”，真正的帝王绿翡翠原石，非常的稀少，这种极致的美，如世间最美最绚丽一般，让人无法释怀。</p>
-<p><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/微信图片_20200505110008.jpg" style="zoom:20%;"></p>
-<p>帝王绿翡翠原石的绿色较为浓艳，干净，晶莹剔透，翡翠原石的绿色部分是由于含有致色元素<code>铬</code>和<code>铁</code>造成的，==有色离子铁和铬置换了无色的铝离子，铁离子常呈现浅绿色，铬离子会呈现非常鲜艳的绿色==，高档绿色都是由于含铬离子形成的。如果含铬过多，那翡翠的绿色就会变得太浓，看起来就像黑色 ，价值反而会降低很多。如果含==铬和铁的比例不同，翡翠原石就会呈现各种不同的绿色==，有纯正的翠绿，也有偏蓝和偏黄及偏灰色调的绿色，不同的绿色价值就不同，最贵的宝石绿非帝王绿翡翠莫属，帝王绿为深浓的正绿，透明度好，高雅而庄重，色似祖母绿，也称为祖母绿。</p>
-<p>绿色是构成翡翠身价高低的一个非常重要的因素，这些绿色又呈现不同的形状，如带状的带子绿，大小不等，还有呈块状的团块绿，均匀绿和靠皮绿，还有丝块绿和丝絮状的丝絮绿，这也使得翡翠绿色更加变幻莫测。翡翠的绿色最为艳丽名贵，常常是判断一件翡翠优劣的元素。</p>
-<h3 id="帝王绿的价格"><a href="#帝王绿的价格" class="headerlink" title="帝王绿的价格"></a>帝王绿的价格</h3><p>帝王绿翡翠价值太高，因此很难去估算具体的价位，不过帝王绿翡翠手镯之间，还是有品质和价格上的差异的，翡翠的种水不同，翡翠绿色面积大小不同都会使帝王绿翡翠手镯的品质和价格不一样。</p>
-<p>而帝王绿翡翠手镯的==颜色则是最关键的因素==，帝王绿是翡翠绿色中是颜色最纯正的，如果颜色偏了，那就不是帝王绿翡翠手镯了，比如说帝王绿翡翠手镯颜色偏黄了，带有黄味，那就是苹果绿翡翠手镯了，帝王绿翡翠手镯和苹果绿翡翠手镯的价格是相差很多的。另外，帝王绿翡翠手镯中颜色的“浓、阳、正、和”对帝王绿翡翠手镯的价格影响也是非常大的，帝王绿颜色面积越大，越均匀，翡翠手镯的价格也越高。</p>
-<blockquote>
-<p>部分手镯价格分析表</p>
-</blockquote>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th style="text-align:center">帝王绿玻璃种翡翠手镯</th>
-<th style="text-align:center">冰种翡翠手镯</th>
-<th style="text-align:center">糯种翡翠手镯</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">约 <strong>390</strong>万</td>
-<td style="text-align:center">约 <strong>190</strong>万</td>
-<td style="text-align:center">约 <strong>230</strong>万</td>
-</tr>
-<tr>
-<td style="text-align:center">这一段翡翠真正达到了“浓、阳、正、和”这四个标准，颜色色调非常纯正，达到了帝王绿，翡翠是满绿的</td>
-<td style="text-align:center">手镯绿色部分色调纯正，那团绿色已经达到了帝王绿，虽然绿色只是手镯的一小部分，但正因为这一团帝王绿让手镯增添了无穷的诱惑，提升了手镯的价格</td>
-<td style="text-align:center">非常值得收藏的翡翠手镯，满绿帝王绿手镯，绿色浓郁纯正，但种水没有达到冰种、玻璃种</td>
-</tr>
-<tr>
-<td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/640-1588649785665.webp" alt="img" style="zoom: 45%;"></td>
-<td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/640-1588649785523.webp" alt="img" style="zoom: 45%;"></td>
-<td style="text-align:center"><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/640-1588649785746.webp" alt="img"></td>
-</tr>
-</tbody>
-</table>
-</div>
-<h3 id="帝王绿的选购方法"><a href="#帝王绿的选购方法" class="headerlink" title="帝王绿的选购方法"></a>帝王绿的选购方法</h3><ul>
-<li><strong>翡翠的种水</strong><ul>
-<li>种水好的帝王绿翡翠手镯晶莹通透，并且十分珍希，更有审美价值和收藏价值</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><strong>注重翡翠的颜色</strong><ul>
-<li>帝王绿翡翠手镯是绿得最纯正的绿色，颜色不能偏色，有一点偏色都不属于帝王绿翡翠手镯</li>
-</ul>
-</li>
-</ul>
-<p><img src="/2020/05/05/%E7%BF%A1%E7%BF%A0%E7%BB%93%E8%AF%BE%E8%AE%BA%E6%96%87/640-1588649785745.webp" alt="img" style="zoom:33%;"></p>
-<ul>
-<li><p><strong>帝王绿翡翠的颜色面积</strong></p>
-<ul>
-<li>面积越大及分布越均匀帝王绿翡翠手镯的价值会越高</li>
-<li>符合绿色翡翠的评价标准“==浓、阳、正、匀==”</li>
-</ul>
-</li>
-<li><p><strong>翡翠内部瑕疵</strong></p>
-<ul>
-<li>翡翠石棉、裂纹等会大大影响翡翠手镯的价格</li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p>因此，购买帝王绿翡翠手镯来作为收藏或增值保值，应该尽量选择<code>种水好</code>、<code>颜色纯正</code>、<code>颜色面积大</code>且<code>颜色均匀</code>、<code>瑕疵少</code>的翡翠手镯，这样的帝王绿翡翠手镯才更有收藏价值和增值保值价值。</p>
-</blockquote>
-<p>帝王绿翡翠手镯自古以来都受到爱玉者们的喜爱，像清代的慈喜太后、民国时期的宋庆龄女士以及一些名人都是非常喜爱翡翠，并也喜欢佩戴和收藏翡翠，对于这些有历史或者是名人佩戴过的帝王绿翡翠手镯更具有收藏价值，这些有历史的帝王绿翡翠手镯价值更高。</p>
-<h3 id="关于翡翠及翡翠鉴赏课程"><a href="#关于翡翠及翡翠鉴赏课程" class="headerlink" title="关于翡翠及翡翠鉴赏课程"></a>关于翡翠及翡翠鉴赏课程</h3><p>“翡翠”一词最早用来指红与青绿两种羽毛的鸟，称之为翡翠鸟或翠鸟，俗称“打鱼郎”。</p>
-<p>在参与此门课程之前我并未了解过翡翠，这门课程对我最大的意义是纠正了我对翡翠的误解与偏见。翡翠不是富贾名流显示奢侈身家的工具，更不是上流社会的专利品，当然也不是毫无价值的庸俗石头。我国翡翠文化历史悠久，蕴涵了丰富的民间传统色彩。翡翠本确为石头，凝结了自然巧合与人文色彩的石头确实有其价值所在，翡翠本身就是大自然震撼人心的馈赠。从未间断地对翡翠的开采、买卖、收藏，既是对财富的永恒追求，也正是表现了人们对美好世界的不懈向往。</p>
-<p>课程结束，但是我对翡翠了解认知旅途才刚刚开始，继续前行。</p>
-<p>江湖路远，后会有期。</p>
-<p>Download_<a href="https://github.com/AlkeySheng/file_bed/raw/master/%E6%88%91%E6%9C%80%E7%88%B1%E7%9A%84%E5%B8%9D%E7%8E%8B%E7%BB%BF%E7%BF%A1%E7%BF%A0.pdf" target="_blank" rel="noopener">我最爱的帝王绿翡翠.pdf</a></p>
-]]></content>
-      <tags>
-        <tag>翡翠</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>邻二氮菲吸光光度法测定铁</title>
-    <url>/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/</url>
-    <content><![CDATA[<h1 id="邻二氮菲吸光光度法测定铁"><a href="#邻二氮菲吸光光度法测定铁" class="headerlink" title="邻二氮菲吸光光度法测定铁"></a>邻二氮菲吸光光度法测定铁</h1><hr>
-<h2 id="1-条件实验数据及结果"><a href="#1-条件实验数据及结果" class="headerlink" title="1.条件实验数据及结果"></a>1.条件实验数据及结果</h2><h3 id="（1）吸收曲线的绘制"><a href="#（1）吸收曲线的绘制" class="headerlink" title="（1）吸收曲线的绘制"></a>（1）吸收曲线的绘制</h3><p><strong>表1不同吸收波长下的吸光度</strong></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th><strong>λ/nm</strong></th>
-<th>440</th>
-<th>450</th>
-<th>460</th>
-<th>470</th>
-<th>480</th>
-<th>490</th>
-<th>495</th>
-<th>500</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>A</strong></td>
-<td>0.329</td>
-<td>0.358</td>
-<td>0.375</td>
-<td>0.407</td>
-<td>0.431</td>
-<td>0.441</td>
-<td>0.448</td>
-<td>0.457</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th><strong>λ/nm</strong></th>
-<th>505</th>
-<th>510</th>
-<th>515</th>
-<th>520</th>
-<th>530</th>
-<th>540</th>
-<th>550</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>A</strong></td>
-<td>0.467</td>
-<td>0.473</td>
-<td>0.464</td>
-<td>0.438</td>
-<td>0.346</td>
-<td>0.221</td>
-<td>0.120</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image002.png" alt="img"></p>
-<p>最大吸收波长： 510 nm</p>
-<h3 id="（2）溶液酸度的选择"><a href="#（2）溶液酸度的选择" class="headerlink" title="（2）溶液酸度的选择"></a>（2）溶液酸度的选择</h3><p><strong>表2不同酸度下的吸光度</strong></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th><strong>容量瓶编号</strong></th>
-<th><strong>1</strong></th>
-<th><strong>2</strong></th>
-<th><strong>3</strong></th>
-<th><strong>4</strong></th>
-<th><strong>5</strong></th>
-<th><strong>6</strong></th>
-<th><strong>7</strong></th>
-<th><strong>8</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>pH</strong></td>
-<td></td>
-<td>2.01</td>
-<td>2.23</td>
-<td>5.40</td>
-<td>6.37</td>
-<td>6.64</td>
-<td>9.86</td>
-<td>11.63</td>
-</tr>
-<tr>
-<td><strong>A</strong></td>
-<td>0.016</td>
-<td>0.175</td>
-<td>0.335</td>
-<td>0.353</td>
-<td>0.335</td>
-<td>0.344</td>
-<td>0.323</td>
-<td>0.274</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image004.png" alt="img"></p>
-<p>pH范围：3.00 ~ 6.00</p>
-<a id="more"></a>
-<h3 id="（3）显色剂用量的选择"><a href="#（3）显色剂用量的选择" class="headerlink" title="（3）显色剂用量的选择"></a>（3）显色剂用量的选择</h3><p><strong>表3不同显色剂用量时的吸光度</strong></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th><strong>Vphen / ml</strong></th>
-<th>1</th>
-<th>1.5</th>
-<th>2</th>
-<th>2.5</th>
-<th>3</th>
-<th>3.5</th>
-<th>4</th>
-<th>4.5</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>A</strong></td>
-<td>0.059</td>
-<td>0.131</td>
-<td>0.205</td>
-<td>0.265</td>
-<td>0.340</td>
-<td>0.347</td>
-<td>0.351</td>
-<td>0.346</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image006.png" alt="img"></p>
-<p>显色剂用量：3.2 ~ 4.2 mL</p>
-<h3 id="（4）显色时间"><a href="#（4）显色时间" class="headerlink" title="（4）显色时间"></a>（4）显色时间</h3><p><strong>表4不同显色时间时的吸光度</strong></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th><strong>放置时间t/min</strong></th>
-<th>0</th>
-<th>5</th>
-<th>10</th>
-<th>30</th>
-<th>60</th>
-<th>120</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>A</strong></td>
-<td>0.298</td>
-<td>0.302</td>
-<td>0.302</td>
-<td>0.302</td>
-<td>0.302</td>
-<td>0.296</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image008.png" alt="img"></p>
-<hr>
-<p>显色时间：0 ~ 5 min</p>
-<p>稳定时间：5 ~ 60 min</p>
-<p>由以上实验可得出最佳实验条件：波长510 nm、pH 3.00 ~ 6.00、显色剂用量3.2 ~ 4.2 mL、显色时间5 ~ 60 min</p>
-<h2 id="2-试样分析"><a href="#2-试样分析" class="headerlink" title="2.试样分析"></a>2.试样分析</h2><h3 id="标准曲线的制作"><a href="#标准曲线的制作" class="headerlink" title="标准曲线的制作"></a>标准曲线的制作</h3><p><strong>表5铁标准曲线的制作</strong></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th><strong>溶液</strong></th>
-<th><strong>标准铁溶液</strong></th>
-<th><strong>标准铁溶液</strong></th>
-<th><strong>标准铁溶液</strong></th>
-<th><strong>标准铁溶液</strong></th>
-<th><strong>标准铁溶液</strong></th>
-<th><strong>标准铁溶液</strong></th>
-<th><strong>试验溶液</strong></th>
-<th><strong>试验溶液</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>V Fe/ml</td>
-<td>0.0</td>
-<td>2.0</td>
-<td>4.0</td>
-<td>6.0</td>
-<td>8.0</td>
-<td>10.0</td>
-<td>试样1号</td>
-<td>试样2号</td>
-</tr>
-<tr>
-<td>m Fe/μg</td>
-<td>0</td>
-<td>40</td>
-<td>80</td>
-<td>120</td>
-<td>160</td>
-<td>200</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>吸光度 A</td>
-<td>0</td>
-<td>0.133</td>
-<td>0.302</td>
-<td>0.468</td>
-<td>0.61</td>
-<td>0.757</td>
-<td>0.323</td>
-<td>0.274</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image010.png" alt="img"></p>
-<p>试样1号：m Fe = 87 μg</p>
-<p>试样2号：m Fe = 74 μg</p>
-<h2 id="3-组成比、摩尔吸光系数及平衡常数"><a href="#3-组成比、摩尔吸光系数及平衡常数" class="headerlink" title="3.组成比、摩尔吸光系数及平衡常数"></a>3.组成比、摩尔吸光系数及平衡常数</h2><hr>
-<h3 id="组成比测定"><a href="#组成比测定" class="headerlink" title="组成比测定"></a>组成比测定</h3><p><strong>表6 组成比的测定</strong></p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th><strong>容量瓶编号</strong></th>
-<th><strong>1</strong></th>
-<th><strong>2</strong></th>
-<th><strong>3</strong></th>
-<th><strong>4</strong></th>
-<th><strong>5</strong></th>
-<th><strong>6</strong></th>
-<th><strong>7</strong></th>
-<th><strong>8</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>c phen/ c Fe2+</td>
-<td>1</td>
-<td>1.5</td>
-<td>2</td>
-<td>2.5</td>
-<td>3</td>
-<td>3.5</td>
-<td>4</td>
-<td>4.5</td>
-</tr>
-<tr>
-<td>A</td>
-<td>0.059</td>
-<td>0.131</td>
-<td>0.205</td>
-<td>0.265</td>
-<td>0.340</td>
-<td>0.347</td>
-<td>0.350</td>
-<td>0.351</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><img src="/2019/12/28/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81/clip_image012.png" alt="img"></p>
-<p>A max = 0.350</p>
-<blockquote>
-<p><a href="https://github.com/AlkeySheng/file_bed/raw/master/%E9%82%BB%E4%BA%8C%E6%B0%AE%E8%8F%B2%E5%90%B8%E5%85%89%E5%85%89%E5%BA%A6%E6%B3%95%E6%B5%8B%E5%AE%9A%E9%93%81.docx" target="_blank" rel="noopener">Download_邻二氮菲吸光光度法测定铁.docx</a>  — 盛亚琪 &amp; 陈秀琪</p>
-</blockquote>
-]]></content>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+            <tag> API </tag>
+            
+            <tag> 新浪微博 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>turtle库绘制复杂漫威蜘蛛侠Spiderman</title>
+      <link href="/2019/12/28/turtle%E5%BA%93%E7%BB%98%E5%88%B6%E5%A4%8D%E6%9D%82%E6%BC%AB%E5%A8%81%E8%9C%98%E8%9B%9B%E4%BE%A0Spiderman/"/>
+      <url>/2019/12/28/turtle%E5%BA%93%E7%BB%98%E5%88%B6%E5%A4%8D%E6%9D%82%E6%BC%AB%E5%A8%81%E8%9C%98%E8%9B%9B%E4%BE%A0Spiderman/</url>
+      
+        <content type="html"><![CDATA[<h1 id="演示效果"><a href="#演示效果" class="headerlink" title="演示效果"></a>演示效果</h1><p>点击播放：<a href="https://www.python123.io/index/turtles/5c95d01e24577506dc75fa68" target="_blank" rel="noopener">Python123平台 济南大学_盛亚琪_<em>spiderman</em></a></p><p><a href="https://www.python123.io/index/turtles/5c95d01e24577506dc75fa68" target="_blank" rel="noopener">(https://www.python123.io/index/turtles/5c95d01e24577506dc75fa68)</a></p><p><img src="https://img-blog.csdnimg.cn/20190807191601752.gif" alt="效果演示"></p><h1 id="源代码"><a href="#源代码" class="headerlink" title="源代码"></a>源代码</h1><p><a href="https://github.com/AlkeySheng/Spiderman.git" target="_blank" rel="noopener">AlkeySheng_Github:turtle库绘制复杂漫威蜘蛛侠Spiderman</a></p>]]></content>
+      
+      
       <categories>
-        <category>Chemistry</category>
+          
+          <category> Python </category>
+          
       </categories>
-      <tags>
-        <tag>Chemistry</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>@ 鲸鱼的小秘密</title>
-    <url>/2020/03/24/%E9%B2%B8%E9%B1%BC%E7%9A%84%E5%B0%8F%E7%A7%98%E5%AF%86/</url>
-    <content><![CDATA[<blockquote>
-<p>这段往事，看来鲸鱼深爱着星星。鲸鱼却有一个并不自知的小秘密，他热衷于表演自己，真正诱惑他的是追寻星星一缕幻光的过程，因为那里充满了想象、表演和野心。鲸鱼的内心细腻且狂妄，他不会允许自己拿到平淡无奇的剧本。他并不一定真的爱慕着星星，鲸鱼爱自己远胜于爱任何人。</p>
-</blockquote>
-]]></content>
-  </entry>
+      
+      
+        <tags>
+            
+            <tag> Python turtle </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+  
+  
 </search>
