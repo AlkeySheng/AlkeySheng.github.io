@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>1970年1月1日0时0分0秒</title>
+    <url>/2020/02/26/1970%E5%B9%B41%E6%9C%881%E6%97%A50%E6%97%B60%E5%88%860%E7%A7%92/</url>
+    <content><![CDATA[<blockquote>
+<p>NTP时间戳的1970年1月1日0时0分0秒有何特殊？</p>
+</blockquote>
+<h3 id="通俗理解"><a href="#通俗理解" class="headerlink" title="通俗理解"></a>通俗理解</h3><p>人类计算机系统起源于革命性的<code>UNIX</code>，而<code>UNIX</code>系统确定1970年1月1日0时为时间起点，所以后世系统及语言的时间戳是以1970年1月1日0时为起点记录时间的。</p>
+<h3 id="深入了解"><a href="#深入了解" class="headerlink" title="深入了解"></a>深入了解</h3><p>最初计算机操作系统是32位，时间也是32位表示。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 32位int类型数据储存最大整数为</span></span><br><span class="line">System.out.println(Integer.MAX_VALUE);     <span class="comment">// 21474836471</span></span><br></pre></td></tr></table></figure>
+<p>int类型数据在<code>java</code>内用32位表示，32位能表示的最大值是<code>2147483647</code>。一年365天的总共31536000秒。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="number">2147483647</span> / <span class="number">31536000</span> = <span class="number">68.1</span> <span class="comment">//年</span></span><br></pre></td></tr></table></figure>
+<p>因此32位数据能表示的最长时间是<code>68.1</code>年，从1970年开始计算，最终到<code>2038年01月19日03时14分07秒</code>时，会达到时间戳的最大值，到时，所有32位操作系统的时间便会发生溢出错误，出现时间回归现象，使系统运行异常。</p>
+<p>用32位来表示时间的最大间隔是68年，因此最早出现的UNIX系统综合考虑应用时限等问题，最终选取1970年1月1日作为UNIX TIME的纪元时间。</p>
+<p>至于时间回归现象，最新64位操作系统可以表示到<code>292,277,026,596年的12月4日14时30分08秒</code>，已经是千亿年以后了。</p>
+]]></content>
+      <tags>
+        <tag>Java</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Depth-First-Search</title>
     <url>/2020/01/21/Depth-First-Search/</url>
     <content><![CDATA[<h2 id="深度优先搜索算法-DFS-回溯法-解数独"><a href="#深度优先搜索算法-DFS-回溯法-解数独" class="headerlink" title="深度优先搜索算法(DFS) - 回溯法 解数独"></a>深度优先搜索算法(DFS) - 回溯法 解数独</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">su = [[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>]]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回下一个“0”的坐标(x,y)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_x_y</span><span class="params">(su)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">                    <span class="keyword">if</span> su[x][y] == <span class="number">0</span>:</span><br><span class="line">                        <span class="keyword">return</span> x,y</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"done"</span></span><br><span class="line"><span class="comment"># 检查并填入一个合法数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fill_num</span><span class="params">(su,x_y)</span>:</span></span><br><span class="line">    dcan = set()</span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> su[x_y[<span class="number">0</span>]]:</span><br><span class="line">        dcan.add(n)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">        dcan.add(su[i][x_y[<span class="number">1</span>]])</span><br><span class="line">    <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">                <span class="keyword">if</span> get_gong((x,y)) == get_gong(x_y):</span><br><span class="line">                    dcan.add(su[x][y])</span><br><span class="line">    dcan.remove(<span class="number">0</span>)</span><br><span class="line">    can = list(&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>&#125;-dcan)</span><br><span class="line">    now_n = su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]]</span><br><span class="line">    <span class="keyword">for</span> d <span class="keyword">in</span> range(now_n+<span class="number">1</span>,<span class="number">11</span>):</span><br><span class="line">        <span class="keyword">if</span> d <span class="keyword">in</span> can:</span><br><span class="line">            su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]] = d</span><br><span class="line">            print(<span class="string">"fill-down"</span>,x_y,d)</span><br><span class="line">            print(su)</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        su[x_y[<span class="number">0</span>]][x_y[<span class="number">1</span>]] = <span class="number">0</span></span><br><span class="line">        back_set(su,vectors)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"><span class="comment"># 返回“宫”序号</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_gong</span><span class="params">(x_y)</span>:</span></span><br><span class="line">      <span class="keyword">if</span> x_y[<span class="number">0</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">2</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">3</span></span><br><span class="line">      <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">0</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">4</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">5</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">6</span></span><br><span class="line">      <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> x_y[<span class="number">1</span>] &lt;= <span class="number">2</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">7</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">2</span> &lt; x_y[<span class="number">1</span>] &lt;= <span class="number">5</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">8</span></span><br><span class="line">            <span class="keyword">elif</span> <span class="number">5</span> &lt; x_y[<span class="number">1</span>] &lt;=<span class="number">8</span>:</span><br><span class="line">                  <span class="keyword">return</span> <span class="number">9</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">back_set</span><span class="params">(su,vectors)</span>:</span></span><br><span class="line">    x_y = get_x_y(su)</span><br><span class="line">    index = vectors.index(x_y)<span class="number">-1</span></span><br><span class="line">    print(<span class="string">"backset-down&lt;&lt;&lt;"</span>)</span><br><span class="line">    fill_num(su,vectors[index])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">vectors = []</span><br><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">      <span class="keyword">for</span> y <span class="keyword">in</span> range(<span class="number">9</span>):</span><br><span class="line">            <span class="keyword">if</span> su[x][y] == <span class="number">0</span>:</span><br><span class="line">                vectors.append((x,y))</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> get_x_y(su) != <span class="string">"done"</span>:</span><br><span class="line">    x_y = get_x_y(su)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> fill_num(su,x_y):</span><br><span class="line">        print(su)</span><br><span class="line">        back_set(su,vectors)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">""</span>)</span><br><span class="line">    </span><br><span class="line">print(<span class="string">"done!!!!!!!!!!!!!!!!!!!!!!!!"</span>)</span><br><span class="line">print(su)</span><br></pre></td></tr></table></figure>
@@ -12,12 +31,6 @@
         <tag>算法</tag>
         <tag>Python</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>test</title>
-    <url>/2020/02/08/test/</url>
-    <content><![CDATA[<p>test</p>
-]]></content>
   </entry>
   <entry>
     <title>Bili-Luckydog</title>
@@ -38,61 +51,10 @@
       </tags>
   </entry>
   <entry>
-    <title>1970年1月1日0时0分0秒</title>
-    <url>/2020/02/26/1970%E5%B9%B41%E6%9C%881%E6%97%A50%E6%97%B60%E5%88%860%E7%A7%92/</url>
-    <content><![CDATA[<blockquote>
-<p>NTP时间戳的1970年1月1日0时0分0秒有何特殊？</p>
-</blockquote>
-<h3 id="通俗理解"><a href="#通俗理解" class="headerlink" title="通俗理解"></a>通俗理解</h3><p>人类计算机系统起源于革命性的<code>UNIX</code>，而<code>UNIX</code>系统确定1970年1月1日0时为时间起点，所以后世系统及语言的时间戳是以1970年1月1日0时为起点记录时间的。</p>
-<h3 id="深入了解"><a href="#深入了解" class="headerlink" title="深入了解"></a>深入了解</h3><p>最初计算机操作系统是32位，时间也是32位表示。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 32位int类型数据储存最大整数为</span></span><br><span class="line">System.out.println(Integer.MAX_VALUE);     <span class="comment">// 21474836471</span></span><br></pre></td></tr></table></figure>
-<p>int类型数据在<code>java</code>内用32位表示，32位能表示的最大值是<code>2147483647</code>。一年365天的总共31536000秒。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="number">2147483647</span> / <span class="number">31536000</span> = <span class="number">68.1</span> <span class="comment">//年</span></span><br></pre></td></tr></table></figure>
-<p>因此32位数据能表示的最长时间是<code>68.1</code>年，从1970年开始计算，最终到<code>2038年01月19日03时14分07秒</code>时，会达到时间戳的最大值，到时，所有32位操作系统的时间便会发生溢出错误，出现时间回归现象，使系统运行异常。</p>
-<p>用32位来表示时间的最大间隔是68年，因此最早出现的UNIX系统综合考虑应用时限等问题，最终选取1970年1月1日作为UNIX TIME的纪元时间。</p>
-<p>至于时间回归现象，最新64位操作系统可以表示到<code>292,277,026,596年的12月4日14时30分08秒</code>，已经是千亿年以后了。</p>
+    <title>test</title>
+    <url>/2020/02/08/test/</url>
+    <content><![CDATA[<p>test</p>
 ]]></content>
-      <tags>
-        <tag>Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>The red scarf on trump&#39;s chest is even brighter</title>
-    <url>/2020/04/07/The-red-scarf-on-trump-s-chest-is-even-brighter/</url>
-    <content><![CDATA[<blockquote>
-<p>2019 was a year of rollarcoaster experience for Huawei, are they still good? I’m Albert, from Guancha.cn.</p>
-</blockquote>
-<p>On March 31th, Huawei just published its 2019 annual report. I gotta say I’m impressed, with all the difficulties, they’ve still got a beautiful number. In 2019, Huawei’s revenue achieved 123 billion US dollars, with net profits of 9 billion dollars, Which is 19.1 percent more than year 2018. However, if we take a closer look, the fact is that the revenue is below the expectation. Huawei’s H1 2019 report shows a growth of 23.2 percent increase, so it had to be some unavoidable difficulty to pull the number back to 19.1 percent. Well, I think we all know what happened. Just a few days before the announcement of the annual report, I heard something from the other side of the Ocean. According to CNBC, sources familiar with the matter said, Senior officials in the Trump administration agreed to new measures to restrict the global supply of chips to Huawei. Again, Huawei becomes the sacrifice for President Trump to shift the people’s attention away from internal troubles. </p>
-<a id="more"></a>
-<p>For now, the US is leading  the number of confirmed cases with coronavirus in the world and economy suffers from it. Politically, Democratic candidate, Joe Biden is leading the poll on 2020. Hey this number is from Fox News, the only news that Mr. President believes to be real. Meanwhile, Huawei is trying to help. On March 26th, Andrew Cuomo the Governor of the State of New York announced significant donations to help increase the state’s supply capacity and Huawei was among the list. Business is business, but when politics steps in, the free market fades away. President Trump vows to make America great again, but he doesn’t wanna do it decently. In May 2019, The US government banned Huawei from working with some of its longtime partners, such as Google, so Huawei can’t use all of Google’s services. It hurts the company a lot since global consumers heavily depend on Google, Google Maps and Gmail. Luckily the Chinese market doesn’t depend on Google service since is more familiar with local apps such as Baidu, Gaode Maps and Wechat. But still it is huge damage to the company’s global expansion. However, the company still sold 240 million smart-phones and along with PC, tablets, wearables and smart screens, consuming business still contributed over half of Huawei’s revenue in 2019, It means Huawei has proven itself to be a valuable and trustworthy brand in the market. But on the other side, the growth rate outside of the Chinese market had fallen 1.6 percent last year, the damage is real. </p>
-<p>Moreover the Trump administration is doing whatever they can to persuade European allies not to work with Huawei to establish their 5G network. Huawei is the best in this field and it is ridiculous not to use the best. It just like a guy who doesn’t want his girlfriend to speak to other excellent guys. They invest over 10 percent of their sales revenue into research and development every year, in 2019, they spend 18.8 billon dollars in R&amp;D and their total R&amp;D investment over the past decade is more than 85.7 billion dollars, in 2019 they had approximately 96000 R&amp;D employees, accounting for 49% of the total workforce.  All these investments make Huawei one of the largest patent holders in the world, they are granted more than 85000 patents by the end of 2019. Let’s put it simple, they are good they are fast and they are affordable. The Trump administration believes that killing Huawei is the key to maintain American supremacy in Technology. Let’s have a history lesson, Napoleon, the great French conqueror saw Great Britain was an obstacle on his way to conquer the world, in 1806 he created the Continental System to ban the European continent from doing business with Great Britain and he failed, his Empire collapsed with the system. After a brief history lesson, let’s look at the reason that the US holds against Huawei. Hum, interesting. China has never spied on French presidents and German chancellors as the US did. I mean, ask Snowden about it. On February 11th, 2020, the Washington Post had revealed the little secret of Crypto AG, it is a Swiss company that keep communications of spies soldiers and diplomats secret for governments all over the world. Guess who is the owner of this company? Why on earth does the US think they can teach the world about national security? American companies are also suffering from the Trade War. Micron CEO Sanjay Mehrotra made a very clear suggestion that boycotting Huawei will make American companies suffer. The 21st century is the century of globalization. Our world is deeply connected and no one can survive without friends and partners. </p>
-<p>Huawei is just another multinational corporation that wants to do business in America and every other country in the world, there is nothing different from Toyota Siemens or Samsung. Huawei is buying 6 billion US dollars components from American suppliers every year, which indirectly created 35 thousand jobs for American people. In 2018 Huawei even purchased 11 billion dollars of products from its American partners. Many times Huawei has mentioned how much they value American partners, the American market and American people, the company is actually helping out the goal to make America great again.  So cutting Huawei away from the US will do no good to American companies. I mean think about it putting a sanction on Huawei will weaken American tech firm’s revenue and they will have less money for R&amp;D, with less on R&amp;D they will become less competitive on the market, according to The Consulting Group’s report, China has been establishing alternative non-US suppliers for semiconductor demand and it caused the growth of the top 25 American semiconductor firms decreased 4-9 percent in 2019. No mention if the US keeps pushing China, then China will have to fight back. China is the second-largest market for Apple and biggest market for Qualcomm. In 2019 Qualcomm’s revenue was 24.7 billion dollars and the Chinese market contributed 11.6 billion dollars. I don’t think Qualcomm can keep up with the 5G R&amp;D with yearly revenue of 13.1 billion. The US Defense Department made a statement in their own report on 5G and they have already realized the reality. The report says that American companies are not competitive enough to stop the expansion of China’s 5G providers in the world. Wise men said if you can’t beat them join them, doing business side by side, so American companies can keep up with the latest tech development, remain in the playfield and wait for the next opportunity. I mean, isn’t that how you do business? Ren Zhengfei, the founder of Huawei, said 2020 will be the year of a true test. He is no prophet, I believe he was talking about the US sanction. But the coronavirus pandemic has created a bigger challenge to the whole world and we can see how technology can give hand. </p>
-<p>For medical people fighting the virus at the frontline, Huawei has helped carriers quickly deploy 5G networks, so patients could get better treatment and making remote diagnosis possible. For those people in quarantine, they have to work and hold meeting at home, so the company is doing their best to provide a stable and fast network. No one wants their boss to see them in a terrible definition, right? </p>
-<p>After all, can we just work hand in hand, the US is the most powerful country in the world, that’s a fact, no one wants to challenge it and no one wants to change it, we are all living in a world order which is established by the US. At this time of the disaster, why don’t we just give up all the divergence and save the world together? </p>
-<p>Thank you for watching, If you find this video helpful and inspiring, please like it, comment and share it with your friends. Thank you and see you next time.</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>分离方法评价</title>
-    <url>/2020/03/15/%E5%88%86%E7%A6%BB%E6%96%B9%E6%B3%95%E8%AF%84%E4%BB%B7/</url>
-    <content><![CDATA[<h2 id="回收率"><a href="#回收率" class="headerlink" title="回收率"></a>回收率</h2><blockquote>
-<p>表示<code>被分离组分</code>在分离中的完全程度。</p>
-</blockquote>
-<script type="math/tex; mode=display">
-R_i = \frac{通过分离后欲分离组分的测得量}{分离前欲分离组分原来的含量}\times100\%</script><h2 id="分离因数"><a href="#分离因数" class="headerlink" title="分离因数"></a>分离因数</h2><blockquote>
-<p><code>干扰组分B</code>与<code>欲测组分A</code>的回收率之比。</p>
-</blockquote>
-<script type="math/tex; mode=display">
-S_{B/A} = \frac{R_B}{R_A} = \frac{Q{^0_A} Q_B} { Q{^0_B} Q_A }</script><h2 id="分离要求"><a href="#分离要求" class="headerlink" title="分离要求"></a>分离要求</h2><p><strong><em>常量分析</em></strong> <strong>：</strong></p>
-<script type="math/tex; mode=display">
-R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <strong>：</strong> </p>
-<script type="math/tex; mode=display">R_i>95\% \quad或\quad R_i\geq90\%,10^{-6}<S_{B/A}<10^{-7}</script>]]></content>
-      <categories>
-        <category>Chemistry</category>
-      </categories>
-      <tags>
-        <tag>Chemistry</tag>
-      </tags>
   </entry>
   <entry>
     <title>世界很大，生活很大</title>
@@ -136,15 +98,42 @@ R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <st
       </tags>
   </entry>
   <entry>
-    <title>十六进制登录QQ</title>
-    <url>/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/</url>
-    <content><![CDATA[<h1 id="十六进制账号登录QQ、TIM"><a href="#十六进制账号登录QQ、TIM" class="headerlink" title="十六进制账号登录QQ、TIM"></a>十六进制账号登录QQ、TIM</h1><blockquote>
-<p> 据说近年以来腾讯登录界面采用了新的前端代码，推测为<code>JS</code>的<code>parseInt()</code>函数，可以同时将十进制字符串和十六进制字符串类型数据转换为十进制整型。</p>
+    <title>分离方法评价</title>
+    <url>/2020/03/15/%E5%88%86%E7%A6%BB%E6%96%B9%E6%B3%95%E8%AF%84%E4%BB%B7/</url>
+    <content><![CDATA[<h2 id="回收率"><a href="#回收率" class="headerlink" title="回收率"></a>回收率</h2><blockquote>
+<p>表示<code>被分离组分</code>在分离中的完全程度。</p>
 </blockquote>
-<h2 id="在PC端测试"><a href="#在PC端测试" class="headerlink" title="在PC端测试"></a>在PC端测试</h2><h4 id="1-使用计算器将QQ号码转换为十六进制-HEX"><a href="#1-使用计算器将QQ号码转换为十六进制-HEX" class="headerlink" title="1.使用计算器将QQ号码转换为十六进制(HEX)"></a>1.使用计算器将QQ号码转换为十六进制(HEX)</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153320.png" alt></p>
-<h4 id="2-以十六进制账号登录"><a href="#2-以十六进制账号登录" class="headerlink" title="2.以十六进制账号登录"></a>2.以十六进制账号登录</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153451.png" alt></p>
-<p>您见过如此之帅的QQ靓号吗？<br>注意十六进制以 <code>0</code>（数字） <code>x</code>（小写字母）开头</p>
-<h4 id="3-PC端成功登陆，手机端失败显示无此账号。"><a href="#3-PC端成功登陆，手机端失败显示无此账号。" class="headerlink" title="3.PC端成功登陆，手机端失败显示无此账号。"></a>3.PC端成功登陆，手机端失败显示无此账号。</h4>]]></content>
+<script type="math/tex; mode=display">
+R_i = \frac{通过分离后欲分离组分的测得量}{分离前欲分离组分原来的含量}\times100\%</script><h2 id="分离因数"><a href="#分离因数" class="headerlink" title="分离因数"></a>分离因数</h2><blockquote>
+<p><code>干扰组分B</code>与<code>欲测组分A</code>的回收率之比。</p>
+</blockquote>
+<script type="math/tex; mode=display">
+S_{B/A} = \frac{R_B}{R_A} = \frac{Q{^0_A} Q_B} { Q{^0_B} Q_A }</script><h2 id="分离要求"><a href="#分离要求" class="headerlink" title="分离要求"></a>分离要求</h2><p><strong><em>常量分析</em></strong> <strong>：</strong></p>
+<script type="math/tex; mode=display">
+R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <strong>：</strong> </p>
+<script type="math/tex; mode=display">R_i>95\% \quad或\quad R_i\geq90\%,10^{-6}<S_{B/A}<10^{-7}</script>]]></content>
+      <categories>
+        <category>Chemistry</category>
+      </categories>
+      <tags>
+        <tag>Chemistry</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>The red scarf on trump&#39;s chest is even brighter</title>
+    <url>/2020/04/07/The-red-scarf-on-trump-s-chest-is-even-brighter/</url>
+    <content><![CDATA[<blockquote>
+<p>2019 was a year of rollarcoaster experience for Huawei, are they still good? I’m Albert, from Guancha.cn.</p>
+</blockquote>
+<p>On March 31th, Huawei just published its 2019 annual report. I gotta say I’m impressed, with all the difficulties, they’ve still got a beautiful number. In 2019, Huawei’s revenue achieved 123 billion US dollars, with net profits of 9 billion dollars, Which is 19.1 percent more than year 2018. However, if we take a closer look, the fact is that the revenue is below the expectation. Huawei’s H1 2019 report shows a growth of 23.2 percent increase, so it had to be some unavoidable difficulty to pull the number back to 19.1 percent. Well, I think we all know what happened. Just a few days before the announcement of the annual report, I heard something from the other side of the Ocean. According to CNBC, sources familiar with the matter said, Senior officials in the Trump administration agreed to new measures to restrict the global supply of chips to Huawei. Again, Huawei becomes the sacrifice for President Trump to shift the people’s attention away from internal troubles. </p>
+<a id="more"></a>
+<p>For now, the US is leading  the number of confirmed cases with coronavirus in the world and economy suffers from it. Politically, Democratic candidate, Joe Biden is leading the poll on 2020. Hey this number is from Fox News, the only news that Mr. President believes to be real. Meanwhile, Huawei is trying to help. On March 26th, Andrew Cuomo the Governor of the State of New York announced significant donations to help increase the state’s supply capacity and Huawei was among the list. Business is business, but when politics steps in, the free market fades away. President Trump vows to make America great again, but he doesn’t wanna do it decently. In May 2019, The US government banned Huawei from working with some of its longtime partners, such as Google, so Huawei can’t use all of Google’s services. It hurts the company a lot since global consumers heavily depend on Google, Google Maps and Gmail. Luckily the Chinese market doesn’t depend on Google service since is more familiar with local apps such as Baidu, Gaode Maps and Wechat. But still it is huge damage to the company’s global expansion. However, the company still sold 240 million smart-phones and along with PC, tablets, wearables and smart screens, consuming business still contributed over half of Huawei’s revenue in 2019, It means Huawei has proven itself to be a valuable and trustworthy brand in the market. But on the other side, the growth rate outside of the Chinese market had fallen 1.6 percent last year, the damage is real. </p>
+<p>Moreover the Trump administration is doing whatever they can to persuade European allies not to work with Huawei to establish their 5G network. Huawei is the best in this field and it is ridiculous not to use the best. It just like a guy who doesn’t want his girlfriend to speak to other excellent guys. They invest over 10 percent of their sales revenue into research and development every year, in 2019, they spend 18.8 billon dollars in R&amp;D and their total R&amp;D investment over the past decade is more than 85.7 billion dollars, in 2019 they had approximately 96000 R&amp;D employees, accounting for 49% of the total workforce.  All these investments make Huawei one of the largest patent holders in the world, they are granted more than 85000 patents by the end of 2019. Let’s put it simple, they are good they are fast and they are affordable. The Trump administration believes that killing Huawei is the key to maintain American supremacy in Technology. Let’s have a history lesson, Napoleon, the great French conqueror saw Great Britain was an obstacle on his way to conquer the world, in 1806 he created the Continental System to ban the European continent from doing business with Great Britain and he failed, his Empire collapsed with the system. After a brief history lesson, let’s look at the reason that the US holds against Huawei. Hum, interesting. China has never spied on French presidents and German chancellors as the US did. I mean, ask Snowden about it. On February 11th, 2020, the Washington Post had revealed the little secret of Crypto AG, it is a Swiss company that keep communications of spies soldiers and diplomats secret for governments all over the world. Guess who is the owner of this company? Why on earth does the US think they can teach the world about national security? American companies are also suffering from the Trade War. Micron CEO Sanjay Mehrotra made a very clear suggestion that boycotting Huawei will make American companies suffer. The 21st century is the century of globalization. Our world is deeply connected and no one can survive without friends and partners. </p>
+<p>Huawei is just another multinational corporation that wants to do business in America and every other country in the world, there is nothing different from Toyota Siemens or Samsung. Huawei is buying 6 billion US dollars components from American suppliers every year, which indirectly created 35 thousand jobs for American people. In 2018 Huawei even purchased 11 billion dollars of products from its American partners. Many times Huawei has mentioned how much they value American partners, the American market and American people, the company is actually helping out the goal to make America great again.  So cutting Huawei away from the US will do no good to American companies. I mean think about it putting a sanction on Huawei will weaken American tech firm’s revenue and they will have less money for R&amp;D, with less on R&amp;D they will become less competitive on the market, according to The Consulting Group’s report, China has been establishing alternative non-US suppliers for semiconductor demand and it caused the growth of the top 25 American semiconductor firms decreased 4-9 percent in 2019. No mention if the US keeps pushing China, then China will have to fight back. China is the second-largest market for Apple and biggest market for Qualcomm. In 2019 Qualcomm’s revenue was 24.7 billion dollars and the Chinese market contributed 11.6 billion dollars. I don’t think Qualcomm can keep up with the 5G R&amp;D with yearly revenue of 13.1 billion. The US Defense Department made a statement in their own report on 5G and they have already realized the reality. The report says that American companies are not competitive enough to stop the expansion of China’s 5G providers in the world. Wise men said if you can’t beat them join them, doing business side by side, so American companies can keep up with the latest tech development, remain in the playfield and wait for the next opportunity. I mean, isn’t that how you do business? Ren Zhengfei, the founder of Huawei, said 2020 will be the year of a true test. He is no prophet, I believe he was talking about the US sanction. But the coronavirus pandemic has created a bigger challenge to the whole world and we can see how technology can give hand. </p>
+<p>For medical people fighting the virus at the frontline, Huawei has helped carriers quickly deploy 5G networks, so patients could get better treatment and making remote diagnosis possible. For those people in quarantine, they have to work and hold meeting at home, so the company is doing their best to provide a stable and fast network. No one wants their boss to see them in a terrible definition, right? </p>
+<p>After all, can we just work hand in hand, the US is the most powerful country in the world, that’s a fact, no one wants to challenge it and no one wants to change it, we are all living in a world order which is established by the US. At this time of the disaster, why don’t we just give up all the divergence and save the world together? </p>
+<p>Thank you for watching, If you find this video helpful and inspiring, please like it, comment and share it with your friends. Thank you and see you next time.</p>
+]]></content>
   </entry>
   <entry>
     <title>turtle库绘制复杂漫威蜘蛛侠Spiderman</title>
@@ -162,14 +151,15 @@ R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <st
       </tags>
   </entry>
   <entry>
-    <title>爬取maomi</title>
-    <url>/2020/01/14/%E7%88%AC%E5%8F%96maomi/</url>
-    <content><![CDATA[<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests,re,os</span><br><span class="line">headers = &#123;<span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36"</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">download</span><span class="params">(p,n)</span>:</span>    </span><br><span class="line">    res = requests.get(<span class="string">"https://www.npa69.com/tupian/list-&#123;&#125;-&#123;&#125;.html"</span>.format(p,n+<span class="number">1</span>),headers = headers)</span><br><span class="line">    index_html = res.text</span><br><span class="line">    pages = re.findall(<span class="string">'&lt;a href="(.*?)" title=".*?" target="_blank"&gt;'</span>,index_html)</span><br><span class="line">    print(pages)</span><br><span class="line">    <span class="keyword">for</span> page <span class="keyword">in</span> pages:</span><br><span class="line">        r = requests.get(<span class="string">"https://www.npa69.com"</span>+page,headers = headers)</span><br><span class="line">        r.encoding = <span class="string">"utf-8"</span></span><br><span class="line">        <span class="comment"># print(r.request.headers)</span></span><br><span class="line">        html = r.text</span><br><span class="line">        <span class="comment"># print(html)</span></span><br><span class="line">        dir_name = re.findall(<span class="string">'&lt;!--&lt;title&gt;(.*?)&lt;/title&gt;--&gt;'</span>,html)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(dir_name):</span><br><span class="line">            os.mkdir(dir_name)</span><br><span class="line">        urls = re.findall(<span class="string">'data-original="(.*?)"'</span>,html)</span><br><span class="line">        print(urls)</span><br><span class="line">        <span class="keyword">if</span> len(urls) != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">for</span> url <span class="keyword">in</span> urls:</span><br><span class="line">                print(<span class="string">"download"</span>)</span><br><span class="line">                file_name = url.split(<span class="string">"/"</span>)[<span class="number">-1</span>]</span><br><span class="line">                img = requests.get(url,headers = headers)</span><br><span class="line">                name = dir_name + <span class="string">"/"</span> + file_name</span><br><span class="line">                <span class="keyword">with</span> open(name,<span class="string">"wb"</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(img.content)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    download(<span class="string">"清纯唯美"</span>,i)</span><br></pre></td></tr></table></figure>
-<p><a href="https://github.com/AlkeySheng/file_bed/raw/master/maomi.py" target="_blank" rel="noopener">Download_maomi.py</a></p>
-]]></content>
-      <tags>
-        <tag>爬虫</tag>
-      </tags>
+    <title>十六进制登录QQ</title>
+    <url>/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/</url>
+    <content><![CDATA[<h1 id="十六进制账号登录QQ、TIM"><a href="#十六进制账号登录QQ、TIM" class="headerlink" title="十六进制账号登录QQ、TIM"></a>十六进制账号登录QQ、TIM</h1><blockquote>
+<p> 据说近年以来腾讯登录界面采用了新的前端代码，推测为<code>JS</code>的<code>parseInt()</code>函数，可以同时将十进制字符串和十六进制字符串类型数据转换为十进制整型。</p>
+</blockquote>
+<h2 id="在PC端测试"><a href="#在PC端测试" class="headerlink" title="在PC端测试"></a>在PC端测试</h2><h4 id="1-使用计算器将QQ号码转换为十六进制-HEX"><a href="#1-使用计算器将QQ号码转换为十六进制-HEX" class="headerlink" title="1.使用计算器将QQ号码转换为十六进制(HEX)"></a>1.使用计算器将QQ号码转换为十六进制(HEX)</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153320.png" alt></p>
+<h4 id="2-以十六进制账号登录"><a href="#2-以十六进制账号登录" class="headerlink" title="2.以十六进制账号登录"></a>2.以十六进制账号登录</h4><p><img src="/2020/01/02/%E5%8D%81%E5%85%AD%E8%BF%9B%E5%88%B6%E7%99%BB%E5%BD%95QQ/TIM截图20200102153451.png" alt></p>
+<p>您见过如此之帅的QQ靓号吗？<br>注意十六进制以 <code>0</code>（数字） <code>x</code>（小写字母）开头</p>
+<h4 id="3-PC端成功登陆，手机端失败显示无此账号。"><a href="#3-PC端成功登陆，手机端失败显示无此账号。" class="headerlink" title="3.PC端成功登陆，手机端失败显示无此账号。"></a>3.PC端成功登陆，手机端失败显示无此账号。</h4>]]></content>
   </entry>
   <entry>
     <title>液-液萃取分离</title>
@@ -212,6 +202,16 @@ R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <st
       </categories>
       <tags>
         <tag>Chemistry</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>爬取maomi</title>
+    <url>/2020/01/14/%E7%88%AC%E5%8F%96maomi/</url>
+    <content><![CDATA[<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests,re,os</span><br><span class="line">headers = &#123;<span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.117 Safari/537.36"</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">download</span><span class="params">(p,n)</span>:</span>    </span><br><span class="line">    res = requests.get(<span class="string">"https://www.npa69.com/tupian/list-&#123;&#125;-&#123;&#125;.html"</span>.format(p,n+<span class="number">1</span>),headers = headers)</span><br><span class="line">    index_html = res.text</span><br><span class="line">    pages = re.findall(<span class="string">'&lt;a href="(.*?)" title=".*?" target="_blank"&gt;'</span>,index_html)</span><br><span class="line">    print(pages)</span><br><span class="line">    <span class="keyword">for</span> page <span class="keyword">in</span> pages:</span><br><span class="line">        r = requests.get(<span class="string">"https://www.npa69.com"</span>+page,headers = headers)</span><br><span class="line">        r.encoding = <span class="string">"utf-8"</span></span><br><span class="line">        <span class="comment"># print(r.request.headers)</span></span><br><span class="line">        html = r.text</span><br><span class="line">        <span class="comment"># print(html)</span></span><br><span class="line">        dir_name = re.findall(<span class="string">'&lt;!--&lt;title&gt;(.*?)&lt;/title&gt;--&gt;'</span>,html)[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(dir_name):</span><br><span class="line">            os.mkdir(dir_name)</span><br><span class="line">        urls = re.findall(<span class="string">'data-original="(.*?)"'</span>,html)</span><br><span class="line">        print(urls)</span><br><span class="line">        <span class="keyword">if</span> len(urls) != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">for</span> url <span class="keyword">in</span> urls:</span><br><span class="line">                print(<span class="string">"download"</span>)</span><br><span class="line">                file_name = url.split(<span class="string">"/"</span>)[<span class="number">-1</span>]</span><br><span class="line">                img = requests.get(url,headers = headers)</span><br><span class="line">                name = dir_name + <span class="string">"/"</span> + file_name</span><br><span class="line">                <span class="keyword">with</span> open(name,<span class="string">"wb"</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(img.content)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">100</span>):</span><br><span class="line">    download(<span class="string">"清纯唯美"</span>,i)</span><br></pre></td></tr></table></figure>
+<p><a href="https://github.com/AlkeySheng/file_bed/raw/master/maomi.py" target="_blank" rel="noopener">Download_maomi.py</a></p>
+]]></content>
+      <tags>
+        <tag>爬虫</tag>
       </tags>
   </entry>
   <entry>
@@ -299,6 +299,14 @@ R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <st
       <tags>
         <tag>Chemistry</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>@ 鲸鱼的小秘密</title>
+    <url>/2020/03/24/%E9%B2%B8%E9%B1%BC%E7%9A%84%E5%B0%8F%E7%A7%98%E5%AF%86/</url>
+    <content><![CDATA[<blockquote>
+<p>这段往事，看来鲸鱼深爱着星星。鲸鱼却有一个并不自知的小秘密，他热衷于表演自己，真正诱惑他的是追寻星星一缕幻光的过程，因为那里充满了想象、表演和野心。鲸鱼的内心细腻且狂妄，他不会允许自己拿到平淡无奇的剧本。他并不一定真的爱慕着星星，鲸鱼爱自己远胜于爱任何人。</p>
+</blockquote>
+]]></content>
   </entry>
   <entry>
     <title>翡翠结课论文</title>
@@ -772,14 +780,6 @@ R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <st
       <tags>
         <tag>Chemistry</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>@ 鲸鱼的小秘密</title>
-    <url>/2020/03/24/%E9%B2%B8%E9%B1%BC%E7%9A%84%E5%B0%8F%E7%A7%98%E5%AF%86/</url>
-    <content><![CDATA[<blockquote>
-<p>这段往事，看来鲸鱼深爱着星星。鲸鱼却有一个并不自知的小秘密，他热衷于表演自己，真正诱惑他的是追寻星星一缕幻光的过程，因为那里充满了想象、表演和野心。鲸鱼的内心细腻且狂妄，他不会允许自己拿到平淡无奇的剧本。他并不一定真的爱慕着星星，鲸鱼爱自己远胜于爱任何人。</p>
-</blockquote>
-]]></content>
   </entry>
   <entry>
     <title>《睡前消息》节目往期新闻事件索引</title>
@@ -1702,279 +1702,6 @@ R_i>99.9\%,S_{B/A}<10^{-3}</script><p><strong><em>痕量分析</em></strong> <st
 <h3 id="【睡前消息】卖大麻竟然都卖亏本，加拿大此刻啥心情？【19-07-12】"><a href="#【睡前消息】卖大麻竟然都卖亏本，加拿大此刻啥心情？【19-07-12】" class="headerlink" title="【睡前消息】卖大麻竟然都卖亏本，加拿大此刻啥心情？【19-07-12】"></a>【睡前消息】卖大麻竟然都卖亏本，加拿大此刻啥心情？【19-07-12】</h3><hr>
 <p>播放量: 1335302     <a href="https://www.bilibili.com/video/av58920650" target="_blank" rel="noopener">AV58920650</a></p>
 <p>睡前消息：19/7/12</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>上了赌桌的狗</title>
-    <url>/2020/12/02/%E4%B8%8A%E4%BA%86%E8%B5%8C%E6%A1%8C%E7%9A%84%E7%8B%97/</url>
-    <content><![CDATA[<p><strong>Version 1.0</strong></p>
-<p><img src="/2020/12/02/%E4%B8%8A%E4%BA%86%E8%B5%8C%E6%A1%8C%E7%9A%84%E7%8B%97/图片1.png" style="zoom: 25%;"></p>
-<blockquote>
-<p>CET-4、CET-6  写作 &amp; 翻译</p>
-</blockquote>
-<h2 id="Words"><a href="#Words" class="headerlink" title="Words"></a>Words</h2><h3 id="Common"><a href="#Common" class="headerlink" title="Common"></a>Common</h3><ul>
-<li><em><code>think</code></em><ul>
-<li><strong>cling to the perspective that</strong></li>
-<li><strong>argue</strong></li>
-<li><strong>claim</strong></li>
-</ul>
-</li>
-<li><em><code>many</code></em><ul>
-<li><strong>multitudes of</strong></li>
-<li><strong>numerous</strong></li>
-<li><strong>plentiful</strong></li>
-</ul>
-</li>
-<li><em><code>people</code> /<code>we</code> /<code>us</code></em><ul>
-<li><strong>offspring</strong></li>
-<li><strong>youngsters on campus</strong></li>
-<li><strong>experts and professors</strong></li>
-</ul>
-</li>
-<li><em><code>very</code></em><ul>
-<li><strong>extremely</strong></li>
-<li><strong>extraordinarily</strong></li>
-</ul>
-</li>
-<li><em><code>important</code></em><ul>
-<li><strong>significant</strong></li>
-<li><strong>crucial</strong></li>
-</ul>
-</li>
-<li><strong>人称代词作主语的句子都可以写成被动</strong></li>
-</ul>
-<h3 id="Logic"><a href="#Logic" class="headerlink" title="Logic"></a>Logic</h3><ul>
-<li><em><code>And</code></em><ul>
-<li><strong>similarly</strong></li>
-<li><strong>likewise</strong></li>
-</ul>
-</li>
-<li><em><code>But</code></em><ul>
-<li><strong>nevertheless</strong></li>
-<li><strong>conversely</strong></li>
-</ul>
-</li>
-<li><em><code>So</code></em><ul>
-<li><strong>therefore</strong></li>
-<li><strong>consequently</strong></li>
-</ul>
-</li>
-<li><em><code>Then</code></em><ul>
-<li>in <strong>addition</strong></li>
-<li><strong>besides</strong></li>
-</ul>
-</li>
-</ul>
-<h2 id="Sentence"><a href="#Sentence" class="headerlink" title="Sentence"></a>Sentence</h2><ol>
-<li><p><strong><em>主语从句</em></strong></p>
-<ul>
-<li>可以写在任何一句话前面拉长句子</li>
-<li>==It seems beyond dispute that==</li>
-</ul>
-</li>
-<li><strong><em>定语从句</em></strong><ul>
-<li>which引导的非限制性定语从句可以修饰前面整句话，翻译成 “<code>这</code>”。</li>
-<li>He is a lady killer, </li>
-<li>==which has provoked the public’s widespread concern.==</li>
-<li>写在任何一句话的后面，对前面内容补充说明。</li>
-</ul>
-</li>
-<li><p><strong><em>万能状语</em></strong></p>
-<ul>
-<li>==as every one can see it==</li>
-</ul>
-<ol>
-<li>==with the rapid advance of science and technology==</li>
-<li>==in our contemporary society==</li>
-<li>==in the general routine of everyday living==</li>
-<li>可以写在任何一句话的<em>前面</em> | <em>主谓间</em> | <em>末尾</em></li>
-</ol>
-</li>
-<li><strong><em>插入语</em></strong><ul>
-<li>可以写在任何一句话主谓之间</li>
-<li>==as a matter of fact==</li>
-<li>某段第一句主谓间</li>
-</ul>
-</li>
-<li><strong><em>强调句型</em></strong><ul>
-<li>==It is … that …==</li>
-<li>It was yesterday that i met a crazy dog in the street.</li>
-<li>所有句子都可以写成强调句型，可写在某一段段首。</li>
-</ul>
-</li>
-</ol>
-<h2 id="Article"><a href="#Article" class="headerlink" title="Article"></a>Article</h2><h3 id="Argumentation"><a href="#Argumentation" class="headerlink" title="Argumentation"></a>Argumentation</h3><p><strong><em><code>Paragraph One</code></em></strong></p>
-<ol>
-<li><p><strong>引出主题</strong></p>
-<p> Recently the issue of … , ==as a matter of fact== , has been in the limelight into focus.</p>
-</li>
-<li><p><strong>观点</strong></p>
-<p> I <strong>cling to the perspective that + … + </strong>==with the rapid advance of science and technology==.</p>
-</li>
-</ol>
-<p><strong><em><code>Paragraph Two</code></em></strong></p>
-<ol>
-<li><p><strong>举例</strong></p>
-<p> ==It is== abundant ==that== examples to prove the statement are. </p>
-</li>
-<li><p><strong>我有一个 <em>真诚又有才华的</em> 朋友</strong></p>
-<p> The most persuasive one is the case of my sincere and talented friend Tom. </p>
-</li>
-<li><p>He …</p>
-</li>
-<li><p><strong>Nevertheless</strong>, …</p>
-</li>
-<li><p><strong>Therefore</strong>, …</p>
-</li>
-</ol>
-<p><strong><em><code>Paragraph Three</code></em></strong></p>
-<ol>
-<li><p><strong>总结</strong></p>
-</li>
-<li><p>Under no circumstances can we fail to pay attention to the seriousness of the fact that … ==in the general routine of everyday living==.</p>
-</li>
-<li><p><strong>措施</strong></p>
-<ul>
-<li><p>==个人==</p>
-<p>  Awareness about doing(being happy facing difficulties), ==as everyone can see==, could be cultivated to make ourselves lead a <strong>pleasant</strong> and <strong>favorable</strong> life.</p>
-</li>
-<li><p>==父母==</p>
-<p>  ==It seems beyond dispute that== parents are supposed to spend more time educating their kids to be happy facing difficulties.</p>
-<p>  eg.  to put eggs in different baskets.</p>
-</li>
-</ul>
-</li>
-<li><p><strong>口号</strong></p>
-<p> The more actively ==sb.== face the issue, the more<br> happily they will lead their life.</p>
-</li>
-</ol>
-<h3 id="Proverbs-amp-epigrams"><a href="#Proverbs-amp-epigrams" class="headerlink" title="Proverbs &amp; epigrams"></a>Proverbs &amp; epigrams</h3><p><strong><em><code>Paragraph One</code></em></strong></p>
-<ol>
-<li><p><strong>引出主题</strong></p>
-<p> Recently the issue of … , ==as a matter of fact== , has been in the limelight into focus.</p>
-</li>
-<li><p><strong>解释</strong></p>
-<ol>
-<li>The meaning of the saying seems that …</li>
-<li><strong>Similarly</strong>, … + ==in the general routine of everyday living==.</li>
-</ol>
-</li>
-</ol>
-<p><strong><em><code>Paragraph Two</code></em></strong></p>
-<p><strong>我有一个 <em>真诚又有才华的</em> 朋友</strong></p>
-<p><strong><em><code>Paragraph Three</code></em></strong></p>
-<p><strong>总结</strong> + <strong>措施</strong> + <strong>口号</strong></p>
-<h3 id="Pictures-amp-charts"><a href="#Pictures-amp-charts" class="headerlink" title="Pictures &amp; charts"></a>Pictures &amp; charts</h3><p><strong><em><code>Paragraph One</code></em></strong></p>
-<ol>
-<li><p><strong>引 </strong> 无可争议的</p>
-<p> ==It seems beyond dispute that==  in the vivid (chart /cartoon) …</p>
-</li>
-<li><p><strong>描述</strong></p>
-</li>
-<li><p><strong>总结中心</strong></p>
-<p> Simple as the cartoon looks, its meaning behind is really so far—reaching——</p>
-</li>
-</ol>
-<p><strong><em><code>Paragraph Two</code></em></strong></p>
-<p><strong>我有一个 <em>真诚又有才华的</em> 朋友</strong></p>
-<p><strong><em><code>Paragraph Three</code></em></strong></p>
-<p><strong>总结</strong> + <strong>措施</strong> + <strong>口号</strong></p>
-<h3 id="Letter"><a href="#Letter" class="headerlink" title="Letter"></a>Letter</h3><p><strong><em><code>Paragraph One</code></em></strong></p>
-<ol>
-<li><p><strong>自我介绍</strong></p>
-<p> I am a senior from the department of art at Xinhua university.</p>
-</li>
-<li><p><strong>目的</strong></p>
-<p> I am, ==as a matter of fact==, writing the letter in order to …</p>
-</li>
-</ol>
-<p><strong><em><code>Paragraph Two</code></em></strong></p>
-<ol>
-<li>, to begin with, </li>
-<li>In addition, </li>
-<li>Consequently, </li>
-</ol>
-<p><strong><em><code>Paragraph Three</code></em></strong></p>
-<ol>
-<li>Words fail me when I desire to express my sincere gratitude to you for your kind consideration my … (application/ complaint/ recommend)</li>
-<li>I look forward to a favorable reply at your earliest convenience.</li>
-</ol>
-<p>​                                                                                   </p>
-<p>​                                                                                     yours truly,</p>
-<p>​                                                                                                                 Lihua</p>
-<h3 id="Translate"><a href="#Translate" class="headerlink" title="Translate"></a>Translate</h3><ul>
-<li><p>某单词不会</p>
-<ul>
-<li>上位词</li>
-<li>同义词 | 近义词</li>
-<li>==<strong><em>解释</em></strong>==</li>
-<li><em>大词瞎胡写</em> <em>小词没看见</em></li>
-</ul>
-</li>
-<li><p>英汉差异</p>
-<ul>
-<li><p>汉语意合 英语形合</p>
-<ul>
-<li>句子结构</li>
-<li>逻辑关系词</li>
-</ul>
-</li>
-<li><p><strong>英语多被动 汉语多主动</strong></p>
-<ul>
-<li><p><strong><em>时态 — 语态 — 主干</em></strong></p>
-</li>
-<li><p>在过去几十年里，政府采取了各种措施防止灾害发生。</p>
-<p>  Various measures, in the past decades, have been taken to prevent disasters.</p>
-</li>
-<li><p>那时，黄色是专为皇帝使用的颜色，皇家宫殿全都漆成黄色，皇袍总是黄色的，而普通老百姓是禁止穿黄色衣服的。</p>
-<p>  At that time, yellow ==was designed== to use for the emperor, the royal palace ==was painted== yellow and the imperial robe was always yellow too. However, the ordinary people ==were not allowed== to wear yellow clothes. </p>
-</li>
-<li><p>最近，中国科学院(Chinese Academy of Sciences )出版了关于其最新科学发现与未来一年展望的年度系列报告。</p>
-<p>   An annual report about its latest scientific findings {<em>and the prospect of the next year</em>} was recently published by Chinese Academy of Science.</p>
-</li>
-</ul>
-</li>
-<li><p>英语多长句 汉语多短句</p>
-<ul>
-<li><p>非谓语动词</p>
-<ul>
-<li><p>长江==流==(ing)经多种不同的生态系统，<code>是</code>诸多濒危物种的栖息地，==灌溉了==(ing)中国五分之一的土地。</p>
-<p>  The Yangzi River, ==flowing== through different ecological systems, keeps the habitat of plentiful endangered animals, ==irrigating== one fifth of chinnese land.</p>
-</li>
-<li><p>大熊猫<code>是</code>熊科中最罕见的成员，主要==生活==(ing)在中国西南部的森林里。</p>
-<p>  Pandas are the rarest members, mainly living in the forest of Southeast in China.</p>
-</li>
-</ul>
-</li>
-<li><p>从句</p>
-<ul>
-<li><p>中国人自古以来就在中秋节庆祝丰收, <code>这</code>与北美庆祝感恩节非常相似。</p>
-<p>  Chinese have had the tradition to celebrated harvest in the Middle-Autumn, ==which== proves quite similar with Thanks Giving Day in North America.</p>
-</li>
-<li><p>乌镇是浙江的一座古老水镇，坐落在京杭大运河畔。这<code>是</code>一处迷 人的地方，有许多古桥、中式旅店和餐馆。</p>
-</li>
-<li><p>Wuzhen, an ancient water town of Zhejiang province, is located near the Beijing-Hangzhou Grand Canal, which is really a charming place with many ancient bridges, Chinese style hotels and restaurants there.</p>
-</li>
-</ul>
-</li>
-<li><p>连词</p>
-<ul>
-<li>在过去一千年里， 乌镇的水系和生活方式并未经历多少变化, 是一座展现古文明的博物馆。</li>
-<li>In the past thousand years, the water system and the life way of Wuzhen has not gone through many changes. ==Therefore==, it now is the museum to show anicent civilization.</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>翻译步骤</p>
-<ul>
-<li>以意群为单位读句子，确定句子时态语态</li>
-<li>确定句子的主干、非主干部分作为定语或状语</li>
-<li>每一句话翻译完都观察是否<em>加逻辑关系词</em></li>
-</ul>
-</li>
-</ul>
 ]]></content>
   </entry>
 </search>
